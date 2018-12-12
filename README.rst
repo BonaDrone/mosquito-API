@@ -1,10 +1,10 @@
 mosquito-API
 ================
-Python wrapper around bare MSP messages to talk to the Mosquito via WiFi
+Python wrapper around bare MSP messages to talk to the Mosquito via WiFi.
 
 Requirements
 ------------
-
+None
 
 How to use it
 -------------
@@ -28,7 +28,7 @@ For the API methods to work, first one should connect to the Mosquito's WiFi net
 
 Mosquito.connect
 ................
-Connects to the Mosquito
+Connect to the Mosquito
 
 
 Mosquito.disconnect
