@@ -34,6 +34,18 @@ class Mosquito(object):
 		self._timeout = timeout
 		self._socket = None
 
+	def __send_data(self, data):
+		"""
+		Send a serialized MSP message to the connected Mosquito
+
+		:param data: data to send to the Mosquito
+		:type data: bytes
+		"""
+		try:
+			self._socket.send(data)
+		except socket.timeout as e:
+			raise Exception('Timeout when trying to send: {}'.format(data))
+
 	def connect(self):
 		"""
 		Connect to the Mosquito
