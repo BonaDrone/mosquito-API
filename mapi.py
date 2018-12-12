@@ -29,10 +29,10 @@ class Mosquito(object):
 		:param timeout: allowed period of time in seconds to elapse before raising an exception 
 		:type timeout: integer
 		"""
-		self._address = address
-		self._port = port
-		self._timeout = timeout
-		self._socket = None
+		self.__address = address
+		self.__port = port
+		self.__timeout = timeout
+		self.__socket = None
 
 	def __send_data(self, data):
 		"""
@@ -41,11 +41,11 @@ class Mosquito(object):
 		:param data: data to send to the Mosquito
 		:type data: bytes
 		"""
-		if self._socket is None:
+		if self.__socket is None:
 			raise Exception('Please connect to a Mosquito')
 
 		try:
-			self._socket.send(data)
+			self.__socket.send(data)
 		except socket.timeout as e:
 			raise Exception('Timeout when trying to send: {}'.format(data))
 
@@ -53,17 +53,17 @@ class Mosquito(object):
 		"""
 		Connect to the Mosquito
 		"""
-		self._socket = socket()
-		self._socket.settimeout(self._timeout)
-		self._socket.connect((self._address, self._port))
+		self.__socket = socket()
+		self.__socket.settimeout(self.__timeout)
+		self.__socket.connect((self.__address, self.__port))
 
 	def disconnect(self):
 		"""
 		Disconnect from the Mosquito
 		"""
-		if self._socket is not None:
-			self._socket.shutdown()
-			self._socket.close()
+		if self.__socket is not None:
+			self.__socket.shutdown()
+			self.__socket.close()
 
 	def arm(self):
 		"""
