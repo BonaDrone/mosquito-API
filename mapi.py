@@ -41,6 +41,9 @@ class Mosquito(object):
 		:param data: data to send to the Mosquito
 		:type data: bytes
 		"""
+		if self._socket is None:
+			raise Exception('Please connect to a Mosquito')
+
 		try:
 			self._socket.send(data)
 		except socket.timeout as e:
@@ -61,3 +64,15 @@ class Mosquito(object):
 		if self._socket is not None:
 			self._socket.shutdown()
 			self._socket.close()
+
+	def arm(self):
+		"""
+		Arm the Mosquito
+		"""
+		self.__send_data(msppg.serialize_SET_ARMED(1))
+
+	def disarm(self):
+		"""
+		Disarm the Mosquito
+		"""
+		self.__send_data(msppg.serialize_SET_ARMED(0))
