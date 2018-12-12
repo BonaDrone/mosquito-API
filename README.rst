@@ -32,7 +32,7 @@ Connect to the Mosquito
 
    .. code:: python
 
-           Mosquito.connect()
+           >>> Mosquito.connect()
 
 Mosquito.disconnect
 ...................
@@ -40,4 +40,4 @@ Disconnect from the Mosquito
 
    .. code:: python
 
-           Mosquito.disconnect()
+           >>> Mosquito.disconnect()
