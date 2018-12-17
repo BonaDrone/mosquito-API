@@ -53,6 +53,8 @@ class Mosquito(object):
 		"""
 		Connect to the Mosquito
 		"""
+		# Before connecting, disconnect if already connected
+		self.disconnect()
 		self.__socket = socket()
 		self.__socket.settimeout(self.__timeout)
 		self.__socket.connect((self.__address, self.__port))
