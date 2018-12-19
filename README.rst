@@ -19,7 +19,7 @@ Import the wrapper
 
    .. code:: python
 
-           >>> import mapi
+           >>> from mosquito import mapi
            >>> Mosquito = mapi.Mosquito()
 
 API Methods
