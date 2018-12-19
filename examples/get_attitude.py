@@ -7,8 +7,12 @@ def main():
 	Mosquito = mapi.Mosquito()
 	Mosquito.connect()
 	while True:
-		print Mosquito.get_attitude()
-
+		try:
+			print Mosquito.get_attitude()
+		except KeyboardInterrupt:
+			Mosquito.disconnect()
+			# quit
+			sys.exit()
 
 if __name__ == "__main__":
 	main()
