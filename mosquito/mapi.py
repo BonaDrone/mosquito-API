@@ -140,4 +140,3 @@ class Mosquito(object):
 		self.__parser.set_ATTITUDE_RADIANS_Handler(self.__handle_attitude)
 		self.__send_data(msppg.serialize_ATTITUDE_RADIANS_Request())
 		return self.__roll_pitch_yaw
-
