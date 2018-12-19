@@ -99,6 +99,9 @@ class Mosquito(object):
 	def get_attitude(self):
 		"""
 		Get the orientation of the Mosquito
+
+		:return: Orientation of the Mosquito in radians
+		:rtype: tuple
 		"""
 		self.__parser.set_ATTITUDE_RADIANS_Handler(self.__handle_attitude)
 		self.__send_data(msppg.serialize_ATTITUDE_RADIANS_Request())
