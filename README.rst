@@ -4,7 +4,8 @@ Python wrapper around bare MSP messages to talk to the Mosquito via WiFi.
 
 Requirements
 ------------
-None
+
+* Python 3
 
 How to use it
 -------------
