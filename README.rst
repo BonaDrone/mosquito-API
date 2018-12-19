@@ -28,7 +28,9 @@ For the API methods to work, first one should connect to the Mosquito's WiFi net
 
 Mosquito.connect
 ................
-Connect to the Mosquito
+Connect to the Mosquito.
+* Parameters: None
+* Returns: None
 
    .. code:: python
 
@@ -36,8 +38,41 @@ Connect to the Mosquito
 
 Mosquito.disconnect
 ...................
-Disconnect from the Mosquito
+Disconnect from the Mosquito.
+* Parameters: None
+* Returns: None
 
    .. code:: python
 
            >>> Mosquito.disconnect()
+
+Mosquito.arm
+............
+Arm the Mosquito.
+* Parameters: None
+* Returns: None
+
+   .. code:: python
+
+           >>> Mosquito.arm()
+
+Mosquito.disarm
+...............
+Disarm the Mosquito.
+* Parameters: None
+* Returns: None
+
+   .. code:: python
+
+           >>> Mosquito.disarm()
+
+Mosquito.get_attitude
+.....................
+Get the orientation of the Mosquito in radians.
+* Parameters: None
+* Returns: 3 value tuple with the orientation of the Mosquito in radians as (Roll, Pitch, Yaw)
+
+   .. code:: python
+
+           >>> Mosquito.get_attitude()
+
