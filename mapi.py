@@ -12,10 +12,14 @@ import time
 class Mosquito(object):
 	"""
 	API object to communicate with a Mosquito via WiFi
-	based on MSP messages.
+	based on MSP messages. 
+
+	The laptop should be connected to the Mosquito's Wifi.
 	MSP message handling is delegated to Simon D. Levy's 
-	Hackflight's MSP Parser. For further info see: 
-	https://github.com/simondlevy/Hackflight/tree/master/extras/parser
+	Hackflight's MSP Parser. 
+
+	For further info see: 
+		https://github.com/simondlevy/Hackflight/tree/master/extras/parser
 	"""
 
 	def __init__(self, address='192.168.4.1', port=80, timeout=4):
@@ -38,7 +42,7 @@ class Mosquito(object):
 		"""
 		Send a serialized MSP message to the connected Mosquito
 
-		:param data: data to send to the Mosquito
+		:param data: serialized data to send to the Mosquito
 		:type data: bytes
 		"""
 		if self.__socket is None:
