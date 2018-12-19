@@ -439,7 +439,7 @@ class MSP_Parser(object):
         else:
             print('Unknown state detected: %d' % self.state)
 
-
+        return self.state    
 
     def set_RAW_IMU_Handler(self, handler):
 
