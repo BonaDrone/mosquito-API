@@ -24,11 +24,12 @@ Import the wrapper
 API Methods
 ~~~~~~~~~~~
 
-For the API methods to work, first one should connect to the Mosquito's WiFi network.
+For the API methods to work, one should first connect to the Mosquito's WiFi network.
 
 Mosquito.connect
 ................
 Connect to the Mosquito.
+
 * Parameters: None
 * Returns: None
 
@@ -39,6 +40,7 @@ Connect to the Mosquito.
 Mosquito.disconnect
 ...................
 Disconnect from the Mosquito.
+
 * Parameters: None
 * Returns: None
 
@@ -49,6 +51,7 @@ Disconnect from the Mosquito.
 Mosquito.arm
 ............
 Arm the Mosquito.
+
 * Parameters: None
 * Returns: None
 
@@ -59,6 +62,7 @@ Arm the Mosquito.
 Mosquito.disarm
 ...............
 Disarm the Mosquito.
+
 * Parameters: None
 * Returns: None
 
@@ -69,6 +73,7 @@ Disarm the Mosquito.
 Mosquito.get_attitude
 .....................
 Get the orientation of the Mosquito in radians.
+
 * Parameters: None
 * Returns: 3 value tuple with the orientation of the Mosquito in radians as (Roll, Pitch, Yaw)
 
