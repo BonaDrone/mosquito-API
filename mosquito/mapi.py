@@ -5,6 +5,7 @@
 # Date: 12-12-2018
 
 from socket import socket
+from threading import Thread
 import msppg
 import time
 
@@ -41,8 +42,12 @@ class Mosquito(object):
 		self.__port = port
 		self.__timeout = timeout
 		self.__socket = None
-		# Create a message parser
+		# Create a message parser and get ready to
+		# run it on a different thread
 		self.__parser = msppg.MSP_Parser()
+		self.__thread = Thread(target=self.__run)
+		self.__thread.setDaemon(True)
+		self.__running = False
 		# Mosquito's status vars
 		self.__roll_pitch_yaw = [0]*3
 
@@ -61,11 +66,38 @@ class Mosquito(object):
 		except socket.timeout as e:
 			raise Exception('Timeout when trying to send: {}'.format(data))
 
+	def __run(self):
+		"""
+		Run an instance of an MSP parser. Upon receiving a byte it
+		gets fed and parsed by the MSP parser.
+		This method is intended to run on a different thread that
+		constantly checks if new bytes are available and processes them
+		"""
+		while self.__running:
+			try:
+				byte = self.__socket.recv(1)
+				self.__parser.parse(byte)
+			except:
+				None
+
+	def __start(self):
+		"""
+		Start the parser thread
+		"""
+		self.__running = True
+		self.__thread.start()
+
+	def __stop(self):
+		"""
+		Stop the parser thread
+		"""
+		self.__running = False
+
 	# Message handlers
 	def __handle_attitude(self, x, y, z):
-		self.roll_pitch_yaw = x, -y, z  
-		self.gotimu = True
+		self.__roll_pitch_yaw = x, -y, z
 
+	# Public methods
 	def connect(self):
 		"""
 		Connect to the Mosquito
@@ -75,11 +107,13 @@ class Mosquito(object):
 		self.__socket = socket()
 		self.__socket.settimeout(self.__timeout)
 		self.__socket.connect((self.__address, self.__port))
+		self.__start()
 
 	def disconnect(self):
 		"""
 		Disconnect from the Mosquito
 		"""
+		self.__stop()
 		if self.__socket is not None:
 			self.__socket.shutdown()
 			self.__socket.close()
@@ -105,8 +139,5 @@ class Mosquito(object):
 		"""
 		self.__parser.set_ATTITUDE_RADIANS_Handler(self.__handle_attitude)
 		self.__send_data(msppg.serialize_ATTITUDE_RADIANS_Request())
-		# wait until answer is received and parsed
-		while (self.__parser.parse(self.__socket.recv(1)) != ANSWER_RECEIVED):
-			continue
 		return self.__roll_pitch_yaw
 
