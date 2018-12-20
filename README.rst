@@ -85,9 +85,9 @@ Get the orientation of the Mosquito in radians.
 
 Examples
 --------
-Under the `examples` folder there are several scripts that show how to the API can be used. For the examples to work one should either have installed the API via `pip` or cloned this repository. Also, the laptop should be connected to the Mosquito WiFi.
+Under the ``examples`` folder there are several scripts that show how to the API can be used. For the examples to work one should either have installed the API via ``pip`` or cloned this repository. Also, the laptop should be connected to the Mosquito WiFi.
 
 get_attitude.py
 ~~~~~~~~~~~~~~~
 
-Until exiting the program via `Ctrl-C` it constantly asks the Mosquito for its attitude and prints it on the terminal.
+Until exiting the program via ``Ctrl-C`` it constantly asks the Mosquito for its attitude and prints it on the terminal.
