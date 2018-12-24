@@ -63,7 +63,7 @@ class Mosquito(object):
 
 		try:
 			self.__socket.send(data)
-		except socket.timeout as e:
+		except:
 			raise Exception('Timeout when trying to send: {}'.format(data))
 
 	def __run(self):
