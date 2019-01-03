@@ -104,7 +104,7 @@ Set the values of the four motors.
 * Parameters:
 
   - ``values``: ordered list containing the desired values for the motors. Values should be floats in the range 0-1. The value in the first position will be set to the first motor, the second value will be set to the second motor and so on.
-  
+
 * Returns: None
 
    .. code:: python
@@ -114,9 +114,11 @@ Set the values of the four motors.
 
 Examples
 --------
-Under the ``examples`` folder there are several scripts that show how to the API can be used. For the examples to work one should either have installed the API via ``pip`` or cloned this repository. Also, the laptop should be connected to the Mosquito WiFi.
+Under the ``examples`` folder there are several scripts that show how the API can be used. For the examples to work one should either have installed the API via ``pip`` or cloned this repository. A part from that, the laptop should be connected to the Mosquito WiFi.
 
 get_attitude.py
 ~~~~~~~~~~~~~~~
+
+`Script <https://github.com/juangallostra/mosquito-API/blob/master/examples/get_attitude.py>`_.
 
 Until exiting the program via ``Ctrl-C`` it constantly asks the Mosquito for its attitude and prints it on the terminal.
