@@ -87,8 +87,10 @@ Mosquito.set_motor
 Set the value of the specified motor.
 
 * Parameters: 
+
   - motor: target motor. The value should be in the range 1-4
   - value: desired value. Should be a float in the range 0-1
+
 * Returns: None
 
    .. code:: python
