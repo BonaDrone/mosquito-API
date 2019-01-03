@@ -140,3 +140,18 @@ class Mosquito(object):
 		self.__parser.set_ATTITUDE_RADIANS_Handler(self.__handle_attitude)
 		self.__send_data(msppg.serialize_ATTITUDE_RADIANS_Request())
 		return self.__roll_pitch_yaw
+
+	def set_motor(self, motor, value):
+		"""
+		Set the value of a motor
+
+		:param motor: Target motor number to set the value (integer in the range 1-4)
+		:type data: int
+		:param value: Desired motor value in the range 0-1 being 1 maximum speed and 0 motor stopped
+		:type value: float
+		:return: None
+		:trype: None
+		"""
+		motor_idx = motor-1
+		motors = [0 if i != motor_idx else value for i in range(4)]
+		self.__send_data(msppg.serialize_SET_MOTOR_NORMAL(*motors))
