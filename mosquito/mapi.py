@@ -153,5 +153,17 @@ class Mosquito(object):
 		:trype: None
 		"""
 		motor_idx = motor-1
-		motors = [0 if i != motor_idx else value for i in range(4)]
-		self.__send_data(msppg.serialize_SET_MOTOR_NORMAL(*motors))
+		values = [0 if i != motor_idx else value for i in range(4)]
+		self.set_motors(values)
+
+	def set_motors(self, values):
+		"""
+		Set the values of all motors in the specified order
+
+		:param values: 4 value list with desired motor values in 
+		the range 0-1 being 1 maximum speed and 0 motor stopped.
+		:type values: list
+		:return: None
+		:trype: None
+		"""
+		self.__send_data(msppg.serialize_SET_MOTOR_NORMAL(*values))
