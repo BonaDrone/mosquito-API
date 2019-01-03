@@ -82,6 +82,31 @@ Get the orientation of the Mosquito in radians.
 
            >>> Mosquito.get_attitude()
 
+Mosquito.set_motor
+.....................
+Set the value of the specified motor.
+
+* Parameters: 
+  - motor: target motor. The value should be in the range 1-4
+  - value: desired value. Should be a float in the range 0-1
+* Returns: None
+
+   .. code:: python
+
+           >>> Mosquito.set_motor(motor, value)
+
+Mosquito.set_motors
+.....................
+Set the values of the four motors.
+
+* Parameters: 
+  - values: ordered list containing the desired values for the motors. Values should be floats in the range 0-1. The value in the first position will be set to the first motor, the second value will be set to the second motor and so on.
+* Returns: None
+
+   .. code:: python
+
+           >>> Mosquito.set_motors(values)
+
 
 Examples
 --------
