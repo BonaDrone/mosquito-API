@@ -16,7 +16,7 @@ def main():
 	Mosquito.connect()
 	while True:
 		try:
-			print Mosquito.get_attitude()
+			print(Mosquito.get_attitude())
 		except KeyboardInterrupt:
 			# Disconnect from the mosquito when quitting
 			Mosquito.disconnect()
