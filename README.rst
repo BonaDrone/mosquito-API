@@ -119,6 +119,6 @@ Under the ``examples`` folder there are several scripts that show how the API ca
 get_attitude.py
 ~~~~~~~~~~~~~~~
 
-`Script <https://github.com/juangallostra/mosquito-API/blob/master/examples/get_attitude.py>`_.
+`Script <https://github.com/juangallostra/mosquito-API/blob/master/examples/get_attitude.py>`_
 
 Until exiting the program via ``Ctrl-C`` it constantly asks the Mosquito for its attitude and prints it on the terminal.
