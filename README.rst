@@ -122,3 +122,10 @@ get_attitude.py
 `Script <https://github.com/juangallostra/mosquito-API/blob/master/examples/get_attitude.py>`_
 
 Until exiting the program via ``Ctrl-C`` it constantly asks the Mosquito for its attitude and prints it on the terminal.
+
+set_motors.py
+~~~~~~~~~~~~~~~
+
+`Script <https://github.com/juangallostra/mosquito-API/blob/master/examples/set_motors.py>`_
+
+Sets each of the motors (from 1 to 4) to a 10% of its maximum power for one second. 
