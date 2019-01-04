@@ -50,6 +50,7 @@ class Mosquito(object):
 		self.__running = False
 		# Mosquito's status vars
 		self.__roll_pitch_yaw = [0]*3
+		self.__motor_values = [0]*4
 
 	def __send_data(self, data):
 		"""
@@ -153,7 +154,11 @@ class Mosquito(object):
 		:trype: None
 		"""
 		motor_idx = motor-1
-		values = [0 if i != motor_idx else value for i in range(4)]
+		values = [self.__motor_values[i] if i != motor_idx else value for i in range(4)]
+		# Setting a motor to a specific value should not reset the rest of motor values.
+		# Since currently the MSP message to set a motor value requires the values of the
+		# four motors we store the already set values and send them along the new one.
+		self.__motor_values = values
 		self.set_motors(values)
 
 	def set_motors(self, values):
