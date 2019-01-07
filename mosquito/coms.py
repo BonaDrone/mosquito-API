@@ -35,7 +35,8 @@ class MosquitoComms(object):
 
 	def _send_data(self, data):
 		"""
-		Send a serialized MSP message to the connected Mosquito
+		Send a serialized MSP message (or any data you want,
+		really) to the connected Mosquito
 
 		:param data: serialized data to send to the Mosquito
 		:type data: bytes
@@ -51,7 +52,7 @@ class MosquitoComms(object):
 	def __run(self):
 		"""
 		Run an instance of an MSP parser. Upon receiving a byte it
-		gets fed and parsed by the MSP parser.
+		gets fed to and parsed by the MSP parser.
 		This method is intended to run on a different thread that
 		constantly checks if new bytes are available and processes them
 		"""
@@ -94,4 +95,4 @@ class MosquitoComms(object):
 		self.__stop()
 		if self.__socket is not None:
 			self.__socket.shutdown()
-			self.__socket.close()		
+			self.__socket.close()

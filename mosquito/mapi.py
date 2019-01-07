@@ -35,7 +35,7 @@ class Mosquito(MosquitoComms):
 	def __handle_attitude(self, x, y, z):
 		self.__roll_pitch_yaw = x, -y, z
 
-	# public methods
+	# Public methods
 	def arm(self):
 		"""
 		Arm the Mosquito
@@ -89,3 +89,15 @@ class Mosquito(MosquitoComms):
 		:trype: None
 		"""
 		self._send_data(msppg.serialize_SET_MOTOR_NORMAL(*values))
+
+	def set_target_altitude(self, altitude):
+		"""
+		Set the target altitude at which the Mosquito
+		should hover.
+
+		:param altitude: The desired altitude in meters
+		:type altitude: float
+		:return: None
+		:rtype: None
+		"""
+		pass
