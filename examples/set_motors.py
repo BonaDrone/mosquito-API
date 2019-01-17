@@ -17,16 +17,16 @@ def main():
 	Mosquito.connect()
 
 	# Set motors to a 10% power
-	Mosquito.set_motor(1, 0.1)
+	Mosquito.set_motor(1, 0.2)
 	time.sleep(1)
 	Mosquito.set_motor(1, 0.0)
-	Mosquito.set_motor(2, 0.1)
+	Mosquito.set_motor(2, 0.2)
 	time.sleep(1)
 	Mosquito.set_motor(2, 0.0)
-	Mosquito.set_motor(3, 0.1)
+	Mosquito.set_motor(3, 0.2)
 	time.sleep(1)
-	Mosquito.set_motor(3, 0.1)
-	Mosquito.set_motor(4, 0.1)
+	Mosquito.set_motor(3, 0.0)
+	Mosquito.set_motor(4, 0.2)
 	time.sleep(1)
 	Mosquito.set_motor(4, 0.0)
 
