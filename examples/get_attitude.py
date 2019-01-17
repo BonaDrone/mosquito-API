@@ -10,18 +10,17 @@ import sys
 sys.path.insert(0, '../')
 
 from mosquito import mapi
+import time
+import math
 
 def main():
 	Mosquito = mapi.Mosquito()
 	Mosquito.connect()
 	while True:
-		try:
-			print(Mosquito.get_attitude())
-		except KeyboardInterrupt:
-			# Disconnect from the mosquito when quitting
-			Mosquito.disconnect()
-			# quit
-			sys.exit()
+		attitude = Mosquito.get_attitude()
+		if isinstance(attitude, tuple):
+			print(tuple(i*180/math.pi for i in attitude))
+		time.sleep(0.1)
 
 if __name__ == "__main__":
 	main()
