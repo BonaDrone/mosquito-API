@@ -14,7 +14,7 @@ Import the wrapper
 ~~~~~~~~~~~~~~~~~~
 
 1. Download the wrapper via ``pip`` (not yet supported) or clone this repository by typing in a terminal: ``git clone https://github.com/juangallostra/mosquito-API.git``
-2. Start a terminal session in the directory where you cloned the repository
+2. Start a terminal session in the directory where you cloned the repository (only required if the repository was cloned)
 3. Import the wrapper with:
 
    .. code:: python
