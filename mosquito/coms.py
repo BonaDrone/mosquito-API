@@ -94,5 +94,5 @@ class MosquitoComms(object):
 		"""
 		self.__stop()
 		if self.__socket is not None:
-			self.__socket.shutdown()
+			self.__socket.shutdown(socket.SHUT_RDWR)
 			self.__socket.close()
