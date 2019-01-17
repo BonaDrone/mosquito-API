@@ -128,4 +128,11 @@ set_motors.py
 
 `Script <https://github.com/juangallostra/mosquito-API/blob/master/examples/set_motors.py>`_
 
-Sets each of the motors (from 1 to 4) to a 10% of its maximum power for one second. 
+Sets each of the motors (from 1 to 4) to a 10% of its maximum power for one second.
+
+attitude_and_motors.py
+~~~~~~~~~~~~~~~~~~~~~~
+
+`Script <https://github.com/juangallostra/mosquito-API/blob/master/examples/attitude_and_motors.py>`_
+
+When the absolute value of roll or pitch is bigger than 20 degrees the four motors start spinning at 20 percent of its maximum speed. 
