@@ -101,3 +101,23 @@ class Mosquito(MosquitoComms):
 		:rtype: None
 		"""
 		pass
+
+	def set_led(self, state):
+		"""
+		Set the on/off state of a LED.
+
+		:param state: 
+		:return: None
+		:rtype: None
+		"""
+		pass
+
+	def set_leds(self, state):
+		"""
+		Set the on/off state of all 3 leds (R,G,B)
+
+		:param state:
+		:return: None
+		:rtype: None
+		"""
+		pass
