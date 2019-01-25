@@ -114,7 +114,7 @@ Set the values of the four motors.
 
 Examples
 --------
-Under the ``examples`` folder there are several scripts that show how the API can be used. For the examples to work one should either have installed the API via ``pip`` or cloned this repository. A part from that, the laptop should be connected to the Mosquito WiFi.
+Under the ``examples`` `folder <https://github.com/BonaDrone/mosquito-API/tree/master/examples>`_ there are several scripts that show how the API can be used. For the examples to work one should either have installed the API via ``pip`` or cloned this repository. A part from that, the laptop should be connected to the Mosquito WiFi.
 
 get_attitude.py
 ~~~~~~~~~~~~~~~
