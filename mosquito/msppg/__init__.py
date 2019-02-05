@@ -5,8 +5,7 @@ Auto-generated code: DO NOT EDIT!
 
 Copyright (C) Rob Jones, Alec Singer, Chris Lavin, Blake Liebling, Simon D. Levy 2015
 
-This program is part of Hackflight. 
-See: https://github.com/simondlevy/Hackflight
+This program is part of Hackflight
 
 This code is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as 
@@ -402,6 +401,48 @@ class MSP_Parser(object):
 
                             self.WP_MISSION_FLAG_Handler(*struct.unpack('=B', self.message_buffer))
 
+                if self.message_id == 24:
+
+                    if self.message_direction == 0:
+
+                        if hasattr(self, 'ESC_CALIBRATION_Request_Handler'):
+
+                            self.ESC_CALIBRATION_Request_Handler()
+
+                    else:
+
+                        if hasattr(self, 'ESC_CALIBRATION_Handler'):
+
+                            self.ESC_CALIBRATION_Handler(*struct.unpack('=B', self.message_buffer))
+
+                if self.message_id == 25:
+
+                    if self.message_direction == 0:
+
+                        if hasattr(self, 'MOSQUITO_VERSION_Request_Handler'):
+
+                            self.MOSQUITO_VERSION_Request_Handler()
+
+                    else:
+
+                        if hasattr(self, 'MOSQUITO_VERSION_Handler'):
+
+                            self.MOSQUITO_VERSION_Handler(*struct.unpack('=B', self.message_buffer))
+
+                if self.message_id == 26:
+
+                    if self.message_direction == 0:
+
+                        if hasattr(self, 'POSITION_BOARD_Request_Handler'):
+
+                            self.POSITION_BOARD_Request_Handler()
+
+                    else:
+
+                        if hasattr(self, 'POSITION_BOARD_Handler'):
+
+                            self.POSITION_BOARD_Handler(*struct.unpack('=B', self.message_buffer))
+
                 if self.message_id == 30:
 
                     if self.message_direction == 0:
@@ -438,6 +479,7 @@ class MSP_Parser(object):
 
         else:
             print('Unknown state detected: %d' % self.state)
+
 
 
     def set_RAW_IMU_Handler(self, handler):
@@ -637,6 +679,33 @@ class MSP_Parser(object):
             flag
         '''
         self.WP_MISSION_FLAG_Handler = handler
+
+    def set_ESC_CALIBRATION_Handler(self, handler):
+
+        '''
+        Sets the handler method for when a ESC_CALIBRATION message is successfully parsed.
+        You should declare this message with the following parameter(s):
+            protocol
+        '''
+        self.ESC_CALIBRATION_Handler = handler
+
+    def set_MOSQUITO_VERSION_Handler(self, handler):
+
+        '''
+        Sets the handler method for when a MOSQUITO_VERSION message is successfully parsed.
+        You should declare this message with the following parameter(s):
+            mosquitoVersion
+        '''
+        self.MOSQUITO_VERSION_Handler = handler
+
+    def set_POSITION_BOARD_Handler(self, handler):
+
+        '''
+        Sets the handler method for when a POSITION_BOARD message is successfully parsed.
+        You should declare this message with the following parameter(s):
+            hasPositionBoard
+        '''
+        self.POSITION_BOARD_Handler = handler
 
     def set_WP_MISSION_BEGIN_Handler(self, handler):
 
@@ -1194,6 +1263,72 @@ def serialize_WP_MISSION_FLAG_Request():
     Serializes a request for WP_MISSION_FLAG data.
     '''
     msg = '$M<' + chr(0) + chr(23) + chr(23)
+    return bytes(msg) if sys.version[0] == '2' else bytes(msg, 'utf-8')
+
+def serialize_ESC_CALIBRATION(protocol):
+    '''
+    Serializes the contents of a message of type ESC_CALIBRATION.
+    '''
+    message_buffer = struct.pack('B', protocol)
+
+    if sys.version[0] == '2':
+        msg = chr(len(message_buffer)) + chr(24) + str(message_buffer)
+        return '$M>' + msg + chr(_CRC8(msg))
+
+    else:
+        msg = [len(message_buffer), 24] + list(message_buffer)
+        return bytes([ord('$'), ord('M'), ord('<')] + msg + [_CRC8(msg)])
+
+def serialize_ESC_CALIBRATION_Request():
+
+    '''
+    Serializes a request for ESC_CALIBRATION data.
+    '''
+    msg = '$M<' + chr(0) + chr(24) + chr(24)
+    return bytes(msg) if sys.version[0] == '2' else bytes(msg, 'utf-8')
+
+def serialize_MOSQUITO_VERSION(mosquitoVersion):
+    '''
+    Serializes the contents of a message of type MOSQUITO_VERSION.
+    '''
+    message_buffer = struct.pack('B', mosquitoVersion)
+
+    if sys.version[0] == '2':
+        msg = chr(len(message_buffer)) + chr(25) + str(message_buffer)
+        return '$M>' + msg + chr(_CRC8(msg))
+
+    else:
+        msg = [len(message_buffer), 25] + list(message_buffer)
+        return bytes([ord('$'), ord('M'), ord('<')] + msg + [_CRC8(msg)])
+
+def serialize_MOSQUITO_VERSION_Request():
+
+    '''
+    Serializes a request for MOSQUITO_VERSION data.
+    '''
+    msg = '$M<' + chr(0) + chr(25) + chr(25)
+    return bytes(msg) if sys.version[0] == '2' else bytes(msg, 'utf-8')
+
+def serialize_POSITION_BOARD(hasPositionBoard):
+    '''
+    Serializes the contents of a message of type POSITION_BOARD.
+    '''
+    message_buffer = struct.pack('B', hasPositionBoard)
+
+    if sys.version[0] == '2':
+        msg = chr(len(message_buffer)) + chr(26) + str(message_buffer)
+        return '$M>' + msg + chr(_CRC8(msg))
+
+    else:
+        msg = [len(message_buffer), 26] + list(message_buffer)
+        return bytes([ord('$'), ord('M'), ord('<')] + msg + [_CRC8(msg)])
+
+def serialize_POSITION_BOARD_Request():
+
+    '''
+    Serializes a request for POSITION_BOARD data.
+    '''
+    msg = '$M<' + chr(0) + chr(26) + chr(26)
     return bytes(msg) if sys.version[0] == '2' else bytes(msg, 'utf-8')
 
 def serialize_WP_MISSION_BEGIN(flag):
