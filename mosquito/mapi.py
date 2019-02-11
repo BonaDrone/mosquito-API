@@ -6,7 +6,7 @@
 
 import time
 import msppg
-from .coms import MosquitoComms
+from coms import MosquitoComms
 
 
 class Mosquito(MosquitoComms):
