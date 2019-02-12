@@ -15,6 +15,13 @@ import time
 import math
 
 def main():
+	"""
+	Function that gets executed when the script is directly
+	called from the command line.
+
+	What it does is request the attitude of the Mosquito
+	and print it to the command line.
+	"""
 	Mosquito = mapi.Mosquito()
 	Mosquito.connect()
 	while True:

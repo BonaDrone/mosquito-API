@@ -14,10 +14,18 @@ import time
 from mosquito import mapi
 
 def main():
+	"""
+	Function that gets executed when the script is directly
+	called from the command line.
+
+	What it does is set each of the 4 motors, one at a time,
+	to a 20% power during 1 second.
+	"""
+
 	Mosquito = mapi.Mosquito()
 	Mosquito.connect()
 
-	# Set motors to a 10% power
+	# Set motors to a 20% power, one at a time
 	Mosquito.set_motor(1, 0.2)
 	time.sleep(1)
 	Mosquito.set_motor(1, 0.0)
@@ -31,7 +39,7 @@ def main():
 	time.sleep(1)
 	Mosquito.set_motor(4, 0.0)
 
-	# Disconnect from the mosquito when quitting
+	# Disconnect from the mosquito when finished
 	Mosquito.disconnect()
 
 if __name__ == "__main__":
