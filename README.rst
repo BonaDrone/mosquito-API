@@ -103,7 +103,7 @@ Set the values of the four motors.
 
 * Parameters:
 
-  - ``values``: ordered list containing the desired values for the motors. Values should be floats in the range 0-1. The value in the first position will be set to the first motor, the second value will be set to the second motor and so on.
+  - ``values``: ordered tuple containing the desired values for the motors. Values should be floats in the range 0-1. The value in the first position will be set to the first motor, the second value will be set to the second motor and so on.
 
 * Returns: None
 
@@ -111,6 +111,30 @@ Set the values of the four motors.
 
            >>> Mosquito.set_motors(values)
 
+Mosquito.get_motor
+..................
+Get the current value of a single motor.
+
+* Parameters:
+
+  - ``motor``: Motor index -in the range 1,4- whose value is wanted.
+
+* Returns: The current value of the motor in the range 0,1
+
+   .. code:: python
+
+           >>> Mosquito.get_motor(motor)
+
+Mosquito.get_motors
+...................
+Get the current value of the four motors.
+
+* Parameters: None
+* Returns: An ordered tuple with the current value of the four motors in the range 0,1. The values are ordered so that the position in the tuple matches the motor index
+
+   .. code:: python
+
+           >>> Mosquito.get_motors()
 
 Examples
 --------
