@@ -28,12 +28,15 @@ class Mosquito(MosquitoComms):
 		"""
 		super(Mosquito, self).__init__()
 		# Mosquito's status vars
-		self.__roll_pitch_yaw = [0]*3
-		self.__motor_values = [0]*4
+		self.__roll_pitch_yaw = tuple([0]*3)
+		self.__motor_values = tuple([0]*4)
 
 	# Message handlers
-	def __handle_attitude(self, x, y, z):
-		self.__roll_pitch_yaw = x, -y, z
+	def __handle_get_attitude(self, x, y, z):
+		self.__roll_pitch_yaw = x, -y, z	
+
+	def __handle_get_motors(self, m1, m2, m3, m4):
+		self.__motor_values = m1, m2, m3, m4
 
 	# Public methods
 	def arm(self):
@@ -55,7 +58,7 @@ class Mosquito(MosquitoComms):
 		:return: Orientation of the Mosquito in radians
 		:rtype: tuple
 		"""
-		self._parser.set_ATTITUDE_RADIANS_Handler(self.__handle_attitude)
+		self._parser.set_ATTITUDE_RADIANS_Handler(self.__handle_get_attitude)
 		self._send_data(msppg.serialize_ATTITUDE_RADIANS_Request())
 		return self.__roll_pitch_yaw
 
@@ -71,11 +74,10 @@ class Mosquito(MosquitoComms):
 		:trype: None
 		"""
 		motor_idx = motor-1
-		values = [self.__motor_values[i] if i != motor_idx else value for i in range(4)]
+		values = (self.__motor_values[i] if i != motor_idx else value for i in range(4))
 		# Setting a motor to a specific value should not reset the rest of motor values.
 		# Since currently the MSP message to set a motor value requires the values of the
 		# four motors we store the already set values and send them along the new one.
-		self.__motor_values = values
 		self.set_motors(values)
 
 	def set_motors(self, values):
@@ -88,7 +90,32 @@ class Mosquito(MosquitoComms):
 		:return: None
 		:trype: None
 		"""
+		self.__motor_values = values
 		self._send_data(msppg.serialize_SET_MOTOR_NORMAL(*values))
+
+	def get_motor(self, motor):
+		"""
+		Get the value of a specific motors
+
+		:param motor: Motor number whose value is wanted
+		:type motor: int
+		:return: current motor value in the range 0-1
+		:trype: float
+		"""
+		motor_values = self.get_motors()
+		return motor_values[motor-1]
+
+	def get_motors(self):
+		"""
+		Get the values of all motors
+
+		:return: current motor values in the range 0-1. The values are ordered
+		so that the position in the tuple matches the motor index
+		:trype: tuple
+		"""
+		self._parser.set_GET_MOTOR_NORMAL_Handler(self.__handle_get_motors)
+		self._send_data(msppg.serialize_GET_MOTOR_NORMAL_Request())
+		return self.__motor_values
 
 	def set_target_altitude(self, altitude):
 		"""
