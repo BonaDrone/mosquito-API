@@ -74,7 +74,7 @@ class Mosquito(MosquitoComms):
 		:trype: None
 		"""
 		motor_idx = motor-1
-		values = (self.__motor_values[i] if i != motor_idx else value for i in range(4))
+		values = tuple([self.__motor_values[i] if i != motor_idx else value for i in range(4)])
 		# Setting a motor to a specific value should not reset the rest of motor values.
 		# Since currently the MSP message to set a motor value requires the values of the
 		# four motors we store the already set values and send them along the new one.
