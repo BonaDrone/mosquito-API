@@ -5,7 +5,7 @@
 # Date: 01-05-2019
 
 
-from socket import socket
+import socket
 from threading import Thread
 import msppg
 
@@ -83,7 +83,7 @@ class MosquitoComms(object):
 		"""
 		# Before connecting, disconnect if already connected
 		self.disconnect()
-		self.__socket = socket()
+		self.__socket = socket.socket()
 		self.__socket.settimeout(self.__timeout)
 		self.__socket.connect((self.__address, self.__port))
 		self.__start()
