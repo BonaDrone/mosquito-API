@@ -34,12 +34,12 @@ class Mosquito(MosquitoComms):
 		self.__motor_values = tuple([0]*4)
 
 	# Message handlers
-	def __handle_get_attitude(self, x, y, z):
+	def __handle_get_attitude(self, roll, pitch, yaw):
 		"""
 		Update Mosquito's orientation when receiving
 		a new attitude MSP message
 		"""
-		self.__roll_pitch_yaw = x, -y, z	
+		self.__roll_pitch_yaw = roll, -pitch, yaw	
 
 	def __handle_get_motors(self, m1, m2, m3, m4):
 		"""
