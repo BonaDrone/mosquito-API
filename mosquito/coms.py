@@ -10,10 +10,16 @@ from threading import Thread
 import msppg
 
 class MosquitoComms(object):
+	"""
+	Communications class. This class is in charge
+	of opening and closing communication channels 
+	with the Mosquito via WiFi as well as sending
+	and receiving data.
+	"""
 
 	def __init__(self, address='192.168.4.1', port=80, timeout=4):
 		"""
-		Initialize the interface to talk to the Mosquito
+		Initialize the WiFi communications class
 
 		:param address: Mosquito IP
 		:type address: string

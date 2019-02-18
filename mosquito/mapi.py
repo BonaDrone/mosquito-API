@@ -11,8 +11,8 @@ from coms import MosquitoComms
 
 class Mosquito(MosquitoComms):
 	"""
-	API object to communicate with a Mosquito via WiFi
-	based on MSP messages. 
+	API implementation to communicate with a Mosquito 
+	via WiFi based on MSP messages. 
 
 	The laptop should be connected to the Mosquito's Wifi.
 	MSP message handling is delegated to Simon D. Levy's 
@@ -24,18 +24,28 @@ class Mosquito(MosquitoComms):
 
 	def __init__(self):
 		"""
-		Initialize the WiFi communications class 
+		Initialize the API instance and create
+		a WiFi communication channel between laptop
+		and Mosquito
 		"""
 		super(Mosquito, self).__init__()
-		# Mosquito's status vars
+		# Mosquito's status
 		self.__roll_pitch_yaw = tuple([0]*3)
 		self.__motor_values = tuple([0]*4)
 
 	# Message handlers
 	def __handle_get_attitude(self, x, y, z):
+		"""
+		Update Mosquito's orientation when receiving
+		a new attitude MSP message
+		"""
 		self.__roll_pitch_yaw = x, -y, z	
 
 	def __handle_get_motors(self, m1, m2, m3, m4):
+		"""
+		Update Mosquito's motor status when receiving
+		a new motor values MSP message
+		"""
 		self.__motor_values = m1, m2, m3, m4
 
 	# Public methods
