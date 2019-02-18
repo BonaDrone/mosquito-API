@@ -37,7 +37,20 @@ class Mosquito(MosquitoComms):
 	def __handle_get_attitude(self, roll, pitch, yaw):
 		"""
 		Update Mosquito's orientation when receiving
-		a new attitude MSP message
+		a new attitude MSP message.
+
+		for a better understanding of the meaning of each of
+		the values see:
+		https://en.wikipedia.org/wiki/Aircraft_principal_axes
+
+		:param roll: Current roll of the Mosquito in radians
+		:type roll: float
+		:param pitch: Current pitch of the Mosquito in radians
+		:type pitch: float
+		:param yaw: Current yaw of the Mosquito in radians
+		:type yaw: float
+		:return: None
+		:rtype: None
 		"""
 		self.__roll_pitch_yaw = roll, -pitch, yaw	
 
@@ -45,6 +58,21 @@ class Mosquito(MosquitoComms):
 		"""
 		Update Mosquito's motor status when receiving
 		a new motor values MSP message
+
+		To check the relation between motor numbering and
+		physical motors see:
+		https://fpvfrenzy.com/betaflight-motor-order/
+
+		:param m1: Current value of motor 1 in the range 0-1
+		:type m1: float
+		:param m2: Current value of motor 2 in the range 0-1
+		:type m2: float
+		:param m3: Current value of motor 3 in the range 0-1
+		:type m3: float
+		:param m4: Current value of motor 4 in the range 0-1
+		:type m4: float
+		:return: None
+		:rtype: None
 		"""
 		self.__motor_values = m1, m2, m3, m4
 
@@ -52,12 +80,18 @@ class Mosquito(MosquitoComms):
 	def arm(self):
 		"""
 		Arm the Mosquito
+
+		:return: None
+		:rtype: None
 		"""
 		self._send_data(msppg.serialize_SET_ARMED(1))
 
 	def disarm(self):
 		"""
 		Disarm the Mosquito
+
+		:return: None
+		:rtype: None
 		"""
 		self._send_data(msppg.serialize_SET_ARMED(0))
 
