@@ -71,6 +71,34 @@ Disarm the Mosquito.
 
            >>> Mosquito.disarm()
 
+Mosquito.set_positioning_board
+..............................
+Set if the Mosquito has the positoning board.
+
+* Parameters:
+
+  - ``has_positioning_board``: Indicates via a boolean value wether the Mosquito is equipped with a positioning board or not.
+
+* Returns: None
+
+   .. code:: python
+
+           >>> Mosquito.set_positioning_board(has_positioning_board)
+
+Mosquito.set_mosquito_version
+.............................
+Set the version of the Mosquito (True meaning Mosquito 90 and False meaning Mosquito 150).
+
+* Parameters:
+
+  - ``is_mosquito_90``: Indicates via a boolean value the version of the Mosquito. True meaning Mosquito 90 anf false meaning Mosquito 150
+
+* Returns: None
+
+   .. code:: python
+
+           >>> Mosquito.set_mosquito_version(is_mosquito_90)
+
 Mosquito.get_attitude
 .....................
 Get the orientation of the Mosquito in radians.
