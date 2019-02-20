@@ -119,6 +119,16 @@ class Mosquito(MosquitoComms):
 		"""
 		self._send_data(msppg.serialize_SET_MOSQUITO_VERSION(is_mosquito_90))
 
+	def calibrate_ESCs(self):
+		"""
+		Calibrate ESCs with the MultiShot protocol. When this message is sent,
+		the calibration will be performed after powering off and on the board.
+
+		:return: None
+		:rtype: None 
+		"""
+		self._send_data(msppg.serialize_ESC_CALIBRATION(0))
+
 	def get_attitude(self):
 		"""
 		Get the orientation of the Mosquito
