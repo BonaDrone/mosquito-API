@@ -195,7 +195,7 @@ set_motors.py
 
 `Script <https://github.com/juangallostra/mosquito-API/blob/master/examples/set_motors.py>`_
 
-Sets each of the motors (from 1 to 4) to a 10% of its maximum power for one second.
+Sets each of the motors (from 1 to 4) to a 20% of its maximum power for one second.
 
 attitude_and_motors.py
 ~~~~~~~~~~~~~~~~~~~~~~
