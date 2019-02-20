@@ -103,9 +103,9 @@ Mosquito.calibrate_ESCs
 .......................
 Calibrate ESCs with the MultiShot protocol. When this message is sent, the calibration will be performed after powering off and on the board. Here are some additional links if you want to know a bit more about ESC protocols:
 
-- https://fpvsampa.com/esc-firmwares-and-protocolos/
-- https://quadmeup.com/pwm-oneshot125-oneshot42-and-multishot-comparison/
-- https://oscarliang.com/esc-firmware-protocols/
+1. https://fpvsampa.com/esc-firmwares-and-protocolos/
+2. https://quadmeup.com/pwm-oneshot125-oneshot42-and-multishot-comparison/
+3. https://oscarliang.com/esc-firmware-protocols/
 
 * Parameters: None
 * Returns: None
