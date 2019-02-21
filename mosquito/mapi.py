@@ -95,17 +95,17 @@ class Mosquito(MosquitoComms):
 		"""
 		self._send_data(msppg.serialize_SET_ARMED(0))
 
-	def set_positioning_board(self, has_positioning_board):
+	def set_position_board(self, has_position_board):
 		"""
 		Set if the Mosquito has the positoning board
 
 		:param has_positioning_board: Indicates wether the Mosquito is equipped with
-		a positioning board or not.
+		a position board or not.
 		:type has_positioning_board: bool
 		:return: None
 		:rtype: None
 		"""
-		self._send_data(msppg.serialize_SET_POSITIONING_BOARD(has_positioning_board))
+		self._send_data(msppg.serialize_SET_POSITIONING_BOARD(has_position_board))
 
 	def set_mosquito_version(self, is_mosquito_90):
 		"""
@@ -118,6 +118,7 @@ class Mosquito(MosquitoComms):
 		:rtype: None		
 		"""
 		self._send_data(msppg.serialize_SET_MOSQUITO_VERSION(is_mosquito_90))
+
 
 	def calibrate_ESCs(self):
 		"""
