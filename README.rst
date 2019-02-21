@@ -71,19 +71,19 @@ Disarm the Mosquito.
 
            >>> Mosquito.disarm()
 
-Mosquito.set_positioning_board
-..............................
+Mosquito.set_position_board
+...........................
 Set if the Mosquito has the positoning board.
 
 * Parameters:
 
-  - ``has_positioning_board``: Indicates via a boolean value wether the Mosquito is equipped with a positioning board or not.
+  - ``has_position_board``: Indicates via a boolean value wether the Mosquito is equipped with a positioning board or not.
 
 * Returns: None
 
    .. code:: python
 
-           >>> Mosquito.set_positioning_board(has_positioning_board)
+           >>> Mosquito.set_position_board(has_position_board)
 
 Mosquito.set_mosquito_version
 .............................
