@@ -32,6 +32,7 @@ class Mosquito(MosquitoComms):
 		# Mosquito's status
 		self.__roll_pitch_yaw = tuple([0]*3)
 		self.__motor_values = tuple([0]*4)
+		self.__position_board_connected = False
 
 	# Message handlers
 	def __handle_get_attitude(self, roll, pitch, yaw):
@@ -76,6 +77,19 @@ class Mosquito(MosquitoComms):
 		"""
 		self.__motor_values = m1, m2, m3, m4
 
+	def __handle_position_board_connected(self, is_connected):
+		"""
+		Handle the response to a position board check request and
+		update the status variable where the connection status is
+		stored
+
+		:param is_connected: Connection status of position board
+		:type is_connected: boolean
+		:return: None
+		:rtype: None
+		"""
+		self.__position_board_connected = is_connected
+
 	# Public methods
 	def arm(self):
 		"""
@@ -107,6 +121,13 @@ class Mosquito(MosquitoComms):
 		"""
 		self._send_data(msppg.serialize_SET_POSITIONING_BOARD(has_position_board))
 
+	def position_board_connected(self):
+		"""
+		"""
+		self._parser.set_POSITION_BOARD_CONNECTED_Handler(self.__handle_position_board_connected)
+		self._send_data(msppg.serialize_POSITION_BOARD_CONNECTED_Request())
+		return self.__position_board_connected
+
 	def set_mosquito_version(self, is_mosquito_90):
 		"""
 		Set the version of the Mosquito (True meaning Mosquito 90 and False meaning
@@ -118,7 +139,6 @@ class Mosquito(MosquitoComms):
 		:rtype: None		
 		"""
 		self._send_data(msppg.serialize_SET_MOSQUITO_VERSION(is_mosquito_90))
-
 
 	def calibrate_ESCs(self):
 		"""
