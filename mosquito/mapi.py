@@ -33,6 +33,7 @@ class Mosquito(MosquitoComms):
 		self.__roll_pitch_yaw = tuple([0]*3)
 		self.__motor_values = tuple([0]*4)
 		self.__position_board_connected = False
+		self.__firmware_version = None
 
 	# Message handlers
 	def __handle_get_attitude(self, roll, pitch, yaw):
@@ -90,6 +91,18 @@ class Mosquito(MosquitoComms):
 		"""
 		self.__position_board_connected = is_connected
 
+	def __handle_firmware_version(self, version):
+		"""
+		Handle the response to a firmware version request and
+		store the firmware version
+
+		:param version: Current firmware version
+		:type version: int
+		:return: None
+		:rtype: None
+		"""
+		self.__firmware_version = version
+
 	# Public methods
 	def arm(self):
 		"""
@@ -139,6 +152,18 @@ class Mosquito(MosquitoComms):
 		:rtype: None		
 		"""
 		self._send_data(msppg.serialize_SET_MOSQUITO_VERSION(is_mosquito_90))
+
+	def get_firmware_version(self):
+		"""
+		Get the version of the firmware running on the Mosquito
+
+		:return: Firmware version
+		:return: int
+		"""
+
+		self._parser.set_FIRMWARE_VERSION_Handler(self.__handle_firmware_version)
+		self._send_data(msppg.serialize_FIRMWARE_VERSION_Request())
+		return self.__firmware_version
 
 	def calibrate_ESCs(self):
 		"""
