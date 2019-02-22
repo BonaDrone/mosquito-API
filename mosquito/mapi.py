@@ -158,7 +158,7 @@ class Mosquito(MosquitoComms):
 		Get the version of the firmware running on the Mosquito
 
 		:return: Firmware version
-		:return: int
+		:rtype: int
 		"""
 
 		self._parser.set_FIRMWARE_VERSION_Handler(self.__handle_firmware_version)
