@@ -164,7 +164,6 @@ class Mosquito(MosquitoComms):
 		:return: Firmware version
 		:rtype: int
 		"""
-
 		self._parser.set_FIRMWARE_VERSION_Handler(self.__handle_firmware_version)
 		self._send_data(msppg.serialize_FIRMWARE_VERSION_Request())
 		return self.__firmware_version
