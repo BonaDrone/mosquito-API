@@ -136,6 +136,10 @@ class Mosquito(MosquitoComms):
 
 	def position_board_connected(self):
 		"""
+		Check if the position board is connected to the Mosquito.
+
+		:return: The status of the position board. True if connected and False otherwise
+		:rtype: boolean
 		"""
 		self._parser.set_POSITION_BOARD_CONNECTED_Handler(self.__handle_position_board_connected)
 		self._send_data(msppg.serialize_POSITION_BOARD_CONNECTED_Request())
