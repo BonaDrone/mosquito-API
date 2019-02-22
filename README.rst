@@ -85,6 +85,17 @@ Set if the Mosquito has the positoning board.
 
            >>> Mosquito.set_position_board(has_position_board)
 
+Mosquito.position_board_connected
+.................................
+Check if the position board is connected to the Mosquito.
+
+* Parameters: None
+* Returns: The connection status of the position board. True if connected and False otherwise.
+
+   .. code:: python
+
+           >>> Mosquito.position_board_connected()
+
 Mosquito.set_mosquito_version
 .............................
 Set the version of the Mosquito (True meaning Mosquito 90 and False meaning Mosquito 150).
