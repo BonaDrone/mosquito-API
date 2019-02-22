@@ -99,6 +99,17 @@ Set the version of the Mosquito (True meaning Mosquito 90 and False meaning Mosq
 
            >>> Mosquito.set_mosquito_version(is_mosquito_90)
 
+Mosquito.get_firmware_version
+.............................
+Get the version of the firmware running on the Mosquito.
+
+* Parameters: None
+* Returns: Firmware version as an integer
+
+   .. code:: python
+
+           >>> Mosquito.get_firmware_version()
+
 Mosquito.calibrate_ESCs
 .......................
 Calibrate ESCs with the MultiShot protocol. When this message is sent, the calibration will be performed after powering off and on the board. Here are some additional links if you want to know a bit more about ESC protocols:
