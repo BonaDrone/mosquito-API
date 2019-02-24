@@ -46,6 +46,8 @@ class MosquitoComms(object):
 
 		:param data: serialized data to send to the Mosquito
 		:type data: bytes
+		:return: None
+		:rtype:None
 		"""
 		if self.__socket is None:
 			raise Exception('Please connect to a Mosquito')
@@ -61,6 +63,9 @@ class MosquitoComms(object):
 		gets fed to and parsed by the MSP parser.
 		This method is intended to run on a different thread that
 		constantly checks if new bytes are available and processes them
+
+		:return: None
+		:rtype:None		
 		"""
 		while self.__running:
 			try:
@@ -72,6 +77,9 @@ class MosquitoComms(object):
 	def __start(self):
 		"""
 		Start the parser thread
+
+		:return: None
+		:rtype:None		
 		"""
 		self.__running = True
 		self.__thread.start()
@@ -79,6 +87,9 @@ class MosquitoComms(object):
 	def __stop(self):
 		"""
 		Stop the parser thread
+
+		:return: None
+		:rtype:None		
 		"""
 		self.__running = False
 
@@ -86,6 +97,9 @@ class MosquitoComms(object):
 	def connect(self):
 		"""
 		Connect to the Mosquito
+
+		:return: None
+		:rtype:None		
 		"""
 		# Before connecting, disconnect if already connected
 		self.disconnect()
@@ -97,6 +111,9 @@ class MosquitoComms(object):
 	def disconnect(self):
 		"""
 		Disconnect from the Mosquito
+
+		:return: None
+		:rtype:None		
 		"""
 		self.__stop()
 		if self.__socket is not None:
