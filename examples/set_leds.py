@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Author: Juan Gallostra, jgallostra<at>bonadrone.com
-# Date: 1-4-2019
+# Date: 02-25-2019
 
 import sys
 # Add parent folder to path so that the API can be imported.
@@ -21,7 +21,6 @@ def main():
 	What it does is set on and off the LEDs of the board at
 	2 seconds intervals
 	"""
-
 	Mosquito = mapi.Mosquito()
 	Mosquito.connect()
 
@@ -31,16 +30,24 @@ def main():
 	# omitted its current status is preserved
 	Mosquito.set_leds(red=0, green=0, blue=0)
 	Mosquito.set_leds(blue=1) # The status of the other LEDs is preserved
+
 	time.sleep(2)
+	
 	Mosquito.set_leds(blue=0)
 	Mosquito.set_leds(red=1)
+	
 	time.sleep(2)
+	
 	Mosquito.set_leds(red=0)
 	Mosquito.set_leds(green=1)
+	
 	time.sleep(2)
+	
 	Mosquito.set_leds(green=0)
 	Mosquito.set_leds(blue=1, red=1, green=1)
+	
 	time.sleep(2)
+	
 	Mosquito.set_leds(blue=0, red=0, green=0)
 
 	# Disconnect from the mosquito when finished
