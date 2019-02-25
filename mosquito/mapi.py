@@ -260,7 +260,8 @@ class Mosquito(MosquitoComms):
 
 	def set_leds(self, red=None, green=None, blue=None):
 		"""
-		Set the on/off state of the LEDs.
+		Set the on/off state of the LEDs. If any of the LEDs 
+		is omitted in the method call its current status is preserved.
 
 		:param red: Status of red LED. A True/1 value will turn the LED on and a False/0 value off
 		:type red: bool
