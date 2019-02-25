@@ -201,6 +201,22 @@ Get the current value of the four motors.
 
            >>> Mosquito.get_motors()
 
+Mosquito.set_leds
+.................
+Turn on or off the LEDs of the board. If any of the LEDs is omitted in the method call its current status is preserved.
+
+* Parameters: 
+  
+  - ``red``: Keyword argument indicating the status of the red LED. A True/1 value will turn the LED on and a False/0 value off.
+  - ``green``: Keyword argument indicating the status of the green LED. A True/1 value will turn the LED on and a False/0 value off.
+  - ``blue``: Keyword argument indicating the status of the blue LED. A True/1 value will turn the LED on and a False/0 value off.
+
+* Returns: None
+
+   .. code:: python
+
+           >>> Mosquito.set_leds(red=0/1,green=0/1,blue=0/1)
+
 Examples
 --------
 Under the ``examples`` `folder <https://github.com/BonaDrone/mosquito-API/tree/master/examples>`_ there are several scripts that show how the API can be used. For the examples to work one should either have installed the API via ``pip`` or cloned this repository. A part from that, the laptop should be connected to the Mosquito WiFi.
@@ -224,4 +240,11 @@ attitude_and_motors.py
 
 `Script <https://github.com/juangallostra/mosquito-API/blob/master/examples/attitude_and_motors.py>`_
 
-When the absolute value of roll or pitch is bigger than 20 degrees the four motors start spinning at 20 percent of its maximum speed. 
+When the absolute value of roll or pitch is bigger than 20 degrees the four motors start spinning at 20 percent of its maximum speed.
+
+set_leds.py
+~~~~~~~~~~~
+
+`Script <https://github.com/juangallostra/mosquito-API/blob/master/examples/set_leds.py>`_
+
+Turns the leds of the board on and off at 2 second intervals.
