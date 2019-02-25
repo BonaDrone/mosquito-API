@@ -33,6 +33,7 @@ class Mosquito(MosquitoComms):
 		# Mosquito's status
 		self.__roll_pitch_yaw = tuple([0]*3)
 		self.__motor_values = tuple([0]*4)
+		self.__led_status = tuple([0]*3)
 		self.__position_board_connected = False
 		self.__firmware_version = None
 
@@ -257,22 +258,18 @@ class Mosquito(MosquitoComms):
 		"""
 		pass
 
-	def set_led(self, state):
+	def set_leds(self, red=None, green=None, blue=None):
 		"""
 		Set the on/off state of a LED.
 
-		:param state: 
+		:param red: 
+		:type red: 
+		:param green: 
+		:type green: 
+		:param blue: 
+		:type blue: 
 		:return: None
 		:rtype: None
 		"""
-		pass
-
-	def set_leds(self, state):
-		"""
-		Set the on/off state of all 3 leds (R,G,B)
-
-		:param state:
-		:return: None
-		:rtype: None
-		"""
-		pass
+		self.__led_status = tuple([self.__led_status[idx] if value is None else value for idx, value in enumerate([red, green, blue])])
+		self._send_data(msppg.serialize_SET_LEDS(*self.__led_status))
