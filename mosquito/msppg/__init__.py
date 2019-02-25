@@ -1462,3 +1462,17 @@ def serialize_SET_POSITIONING_BOARD(hasBoard):
         msg = [len(message_buffer), 225] + list(message_buffer)
         return bytes([ord('$'), ord('M'), ord('<')] + msg + [_CRC8(msg)])
 
+def serialize_SET_LEDS(red, green, blue):
+    '''
+    Serializes the contents of a message of type SET_LEDS.
+    '''
+    message_buffer = struct.pack('BBB', red, green, blue)
+
+    if sys.version[0] == '2':
+        msg = chr(len(message_buffer)) + chr(227) + str(message_buffer)
+        return '$M<' + msg + chr(_CRC8(msg))
+
+    else:
+        msg = [len(message_buffer), 227] + list(message_buffer)
+        return bytes([ord('$'), ord('M'), ord('<')] + msg + [_CRC8(msg)])
+
