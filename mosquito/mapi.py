@@ -18,8 +18,9 @@ class Mosquito(MosquitoComms):
 	MSP message handling is delegated to Simon D. Levy's 
 	Hackflight's MSP Parser. 
 
-	For further info see: 
-		https://github.com/simondlevy/Hackflight/tree/master/extras/parser
+	For further info about the MSP parser see: 
+		- https://github.com/simondlevy/Hackflight/tree/master/extras/parser
+		- http://www.multiwii.com/wiki/index.php?title=Multiwii_Serial_Protocol
 	"""
 
 	def __init__(self):
