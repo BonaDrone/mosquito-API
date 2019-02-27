@@ -1,10 +1,10 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 version = '0.0.1a'
 
 setup(
     name='mosquito',
-    packages=['mosquito'], # this must be the same as the name above
+    packages=find_packages(), # this must be the same as the name above
     version=version,
     description="Python API to communicate with BonaDrone's Mosquito drones",
     long_description='\n\n'.join([
