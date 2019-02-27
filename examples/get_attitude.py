@@ -8,9 +8,9 @@ import sys
 # Add parent folder to path so that the API can be imported.
 # This shouldn't be required if the package has been installed via pip
 sys.path.insert(0, '../')
-sys.path.insert(0, '../mosquito/')
+sys.path.insert(0, '../src/')
 
-from mosquito import mapi
+import mapi
 import time
 import math
 
