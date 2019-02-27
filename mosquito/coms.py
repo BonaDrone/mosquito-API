@@ -82,7 +82,8 @@ class MosquitoComms(object):
 		:rtype:None		
 		"""
 		self.__running = True
-		self.__thread.start()
+		if self.__thread.ident is None:
+			self.__thread.start()
 
 	def __stop(self):
 		"""
@@ -106,8 +107,7 @@ class MosquitoComms(object):
 		self.__socket = socket.socket()
 		self.__socket.settimeout(self.__timeout)
 		self.__socket.connect((self.__address, self.__port))
-		if not self.__running:
-			self.__start()
+		self.__start()
 
 	def disconnect(self):
 		"""
