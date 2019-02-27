@@ -180,6 +180,17 @@ class Mosquito(MosquitoComms):
 		"""
 		self._send_data(msppg.serialize_ESC_CALIBRATION(0))
 
+	def calibrate_transmitter(self, stage):
+		"""
+		Trigger the different stages of the transmitter calibration
+		
+		:param stage: Calibration stage
+		:type stage: int in the range 0-2
+		:return: None
+		:rtype: None
+		"""
+		self._send_data(msppg.serialize_RC_CALIBRATION(stage))
+
 	def get_attitude(self):
 		"""
 		Get the orientation of the Mosquito
