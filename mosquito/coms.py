@@ -7,7 +7,7 @@
 
 import socket
 from threading import Thread
-import msppg
+import mosquito.msppg as msppg
 
 class MosquitoComms(object):
 	"""

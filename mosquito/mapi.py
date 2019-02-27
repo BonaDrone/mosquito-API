@@ -5,8 +5,8 @@
 # Date: 12-12-2018
 
 import time
-import msppg
-from coms import MosquitoComms
+import mosquito.msppg as msppg
+from mosquito.coms import MosquitoComms
 
 
 class Mosquito(MosquitoComms):
