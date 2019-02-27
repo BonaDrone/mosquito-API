@@ -15,11 +15,12 @@ Import the wrapper
 
 1. Download the wrapper via ``pip`` (not yet supported) or clone this repository by typing in a terminal: ``git clone https://github.com/juangallostra/mosquito-API.git``
 2. Start a terminal session in the directory where you cloned the repository (only required if the repository was cloned)
-3. Import the wrapper with:
+3. To install the library run ``sudo python3 setup.py install`` (only required if the repository was cloned). Note that this will result in a system wide installation. Altrnatives to this are using virtual environments or including the library folders and files inside your project. 
+4. Import the wrapper with:
 
    .. code:: python
 
-           >>> import mapi
+           >>> from mosquito import mapi
            >>> Mosquito = mapi.Mosquito()
 
 API Methods
