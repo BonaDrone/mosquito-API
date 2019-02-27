@@ -106,7 +106,8 @@ class MosquitoComms(object):
 		self.__socket = socket.socket()
 		self.__socket.settimeout(self.__timeout)
 		self.__socket.connect((self.__address, self.__port))
-		self.__start()
+		if not self.__running:
+			self.__start()
 
 	def disconnect(self):
 		"""
