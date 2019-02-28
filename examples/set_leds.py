@@ -50,6 +50,8 @@ def main():
 	
 	Mosquito.set_leds(blue=0, red=0, green=0)
 
+	time.sleep(0.1)
+
 	# Disconnect from the mosquito when finished
 	Mosquito.disconnect()
 
