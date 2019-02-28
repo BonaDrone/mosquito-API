@@ -103,7 +103,7 @@ Set the version of the Mosquito (True meaning Mosquito 90 and False meaning Mosq
 
 * Parameters:
 
-  - ``is_mosquito_90``: Indicates via a boolean value the version of the Mosquito. True meaning Mosquito 90 anf false meaning Mosquito 150
+  - ``is_mosquito_90``: Indicates via a boolean value the version of the Mosquito. True meaning Mosquito 90 and False meaning Mosquito 150
 
 * Returns: None
 
@@ -137,6 +137,24 @@ Calibrate ESCs with the MultiShot protocol. When this message is sent, the calib
 
            >>> Mosquito.calibrate_ESCs()
 
+Mosquito.calibrate_transmitter
+..............................
+Trigger the different stages (0,1,2) of the transmitter calibration. This calibration consists of three steps.
+
+- First stage (``stage = 0``): Throttle stick (left stick) at its minimum value and right stick centered.
+- Second stage (``stage = 1``): Move both sticks randomly between its maximum and minimum values.
+- Third stage (``stage = 2``): Sticks at rest. Trigger calibration computations.
+
+* Parameters:
+
+  - ``stage``: Indicates the calibration stage with an integer in the range 0-2.
+
+* Returns: None
+
+   .. code:: python
+
+           >>> Mosquito.calibrate_transmitter(stage)
+    
 Mosquito.get_attitude
 .....................
 Get the orientation of the Mosquito in radians.
