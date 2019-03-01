@@ -28,7 +28,7 @@ class TXCalibration(object):
 		"""
 		Change the calibration stage between 0,1 and 2
 		"""
-		Mosquito.calibrate_transmitter(stage)
+		self.Mosquito.calibrate_transmitter(stage)
 
 	def perform_calibration(self, stage):
 		"""
@@ -81,8 +81,8 @@ class TXCalibration(object):
 		self.__calibration = True
 
 		while self.__calibration:
-			stage = eval(input("Enter a calibration stage (0,1 or 2):"))
-			self.__calibration = perform_calibration(stage)
+			stage = eval(input("Enter a calibration stage (0,1 or 2): "))
+			self.__calibration = self.perform_calibration(stage)
 
 		self.Mosquito.disconnect()
 		print("Transmitter calibration finished")
