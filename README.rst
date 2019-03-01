@@ -267,3 +267,10 @@ set_leds.py
 `Script <https://github.com/juangallostra/mosquito-API/blob/master/examples/set_leds.py>`_
 
 Turns the leds of the board on and off at 2 second intervals.
+
+calibrate_transmitter.py
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+`Script <https://github.com/juangallostra/mosquito-API/blob/master/examples/calibrate_transmitter.py>`_
+
+Perform the calibration of the transmitter. Transmitter calibration consists in measuring the offsets between the measured and expected values of each of the transmitter sticks at certain positions (minimum, center, maximum) to be able to map the specific transmitter values to the exected values.
