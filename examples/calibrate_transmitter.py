@@ -43,7 +43,7 @@ class TXCalibration(object):
 		elif stage == 0:
 			print("Calibration stage 0:")
 			print("Keep LEFT stick at MINIMUM and RIGHT stick at REST!")
-			time.sleep(2)
+			time.sleep(1)
 			print("Calibrating...")
 			self._change_stage(0)
 			time.sleep(7)
@@ -81,7 +81,7 @@ class TXCalibration(object):
 		self.__calibration = True
 
 		while self.__calibration:
-			stage = eval(input("Enter a calibration stage (0,1 or 2): "))
+			stage = eval(input("Enter a calibration stage (0, 1 or 2): "))
 			self.__calibration = self.perform_calibration(stage)
 
 		self.Mosquito.disconnect()
