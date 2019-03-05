@@ -36,6 +36,7 @@ class Mosquito(MosquitoComms):
 		self.__led_status = tuple([0]*3)
 		self.__position_board_connected = False
 		self.__firmware_version = None
+		self.__voltage = 0.0
 
 	# Message handlers
 	def __handle_get_attitude(self, roll, pitch, yaw):
@@ -104,7 +105,21 @@ class Mosquito(MosquitoComms):
 		:rtype: None
 		"""
 		self.__firmware_version = version
+	
+	def __handle_get_voltage(self, voltage):
+		"""
+		Update Mosquito's orientation when receiving
+		a new attitude MSP message.
 
+		for a better understanding of the meaning of each of
+		the values see:
+		https://en.wikipedia.org/wiki/Aircraft_principal_axes
+
+		:param roll: Current roll of the Mosquito in radians
+		:type roll: float
+		"""
+		self.__voltage = voltage	
+	
 	# Public methods
 	def arm(self):
 		"""
@@ -207,7 +222,7 @@ class Mosquito(MosquitoComms):
 		Set the value of a motor
 
 		:param motor: Target motor number to set the value (integer in the range 1-4)
-		:type motor: int
+		:type data: int
 		:param value: Desired motor value in the range 0-1 being 1 maximum speed and 0 motor stopped
 		:type value: float
 		:return: None
@@ -232,6 +247,30 @@ class Mosquito(MosquitoComms):
 		"""
 		self.__motor_values = values
 		self._send_data(msppg.serialize_SET_MOTOR_NORMAL(*values))
+		
+	def set_voltage(self, voltage):
+		"""
+		Set the values of all motors in the specified order
+
+		:voltage: 4 value list with desired motor values in 
+		the range 0-1 being 1 maximum speed and 0 motor stopped.
+		:type values: float
+		:return: None
+		:trype: None
+		"""
+		self.__voltage = voltage
+		self._send_data(msppg.serialize_SET_BATTERY_VOLTAGE(voltage))
+	
+	def get_voltage(self):
+		"""
+		Get the orientation of the Mosquito
+
+		:return: Orientation of the Mosquito in radians
+		:rtype: tuple
+		"""
+		self._parser.set_GET_BATTERY_VOLTAGE_Handler(self.__handle_get_voltage)
+		self._send_data(msppg.serialize_GET_BATTERY_VOLTAGE_Request())
+		return self.__voltage	
 
 	def get_motor(self, motor):
 		"""
