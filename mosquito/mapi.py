@@ -62,7 +62,7 @@ class Mosquito(MosquitoComms):
 		:return: None
 		:rtype: None
 		"""
-		self.__roll_pitch_yaw = roll, -pitch, yaw	
+		self.__roll_pitch_yaw = roll, pitch, yaw	
 
 	def __handle_get_motors(self, m1, m2, m3, m4):
 		"""
