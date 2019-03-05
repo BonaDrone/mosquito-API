@@ -21,19 +21,27 @@ class TXCalibration(object):
 		"""
 		Initialize the TX Calibration class
 		"""
-		self.__calibration = True
+		self.__calibration = False
 		self.Mosquito = mapi.Mosquito()
 
 	def _change_stage(self, stage):
 		"""
-		Change the calibration stage between 0,1 and 2
+		Change the calibration stage. There are 3 calibration 
+		stages: 0,1 and 2
+
+		:param stage: Calibration stage
+		:type stage: int
 		"""
 		self.Mosquito.calibrate_transmitter(stage)
 
 	def perform_calibration(self, stage):
 		"""
 		Handle switching between different calibration stages and
-		print the appropriate messages to indicate what is going on.
+		print the appropriate messages to indicate the stage and 
+		actions to perform. Also, ask for input when required.
+
+		:param stage: Calibration stage
+		:type stage: int		
 		"""
 		keep_calibrating = True
 
@@ -65,7 +73,8 @@ class TXCalibration(object):
 
 	def calibrate(self):
 		"""
-		Begin and control the calibration process flow
+		Begin the TX calibration process and 
+		control the execution flow
 		"""
 		self.Mosquito.connect()
 		print("Please check that the RED LED turns on. If not, connection with the Mosquito wasn't successful")
