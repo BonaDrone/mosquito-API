@@ -207,7 +207,7 @@ class Mosquito(MosquitoComms):
 		Set the value of a motor
 
 		:param motor: Target motor number to set the value (integer in the range 1-4)
-		:type data: int
+		:type motor: int
 		:param value: Desired motor value in the range 0-1 being 1 maximum speed and 0 motor stopped
 		:type value: float
 		:return: None
