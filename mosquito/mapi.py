@@ -30,6 +30,12 @@ class Mosquito(MosquitoComms):
 		and Mosquito
 		"""
 		super(Mosquito, self).__init__()
+		# Set handlers
+		self._parser.set_POSITION_BOARD_CONNECTED_Handler(self.__handle_position_board_connected)
+		self._parser.set_FIRMWARE_VERSION_Handler(self.__handle_firmware_version)
+		self._parser.set_ATTITUDE_RADIANS_Handler(self.__handle_get_attitude)
+		self._parser.set_GET_MOTOR_NORMAL_Handler(self.__handle_get_motors)
+
 		# Mosquito's status
 		self.__roll_pitch_yaw = tuple([0]*3)
 		self.__motor_values = tuple([0]*4)
@@ -143,7 +149,6 @@ class Mosquito(MosquitoComms):
 		:return: The status of the position board. True if connected and False otherwise
 		:rtype: bool
 		"""
-		self._parser.set_POSITION_BOARD_CONNECTED_Handler(self.__handle_position_board_connected)
 		self._send_data(msppg.serialize_POSITION_BOARD_CONNECTED_Request())
 		return self.__position_board_connected
 
@@ -166,7 +171,6 @@ class Mosquito(MosquitoComms):
 		:return: Firmware version
 		:rtype: int
 		"""
-		self._parser.set_FIRMWARE_VERSION_Handler(self.__handle_firmware_version)
 		self._send_data(msppg.serialize_FIRMWARE_VERSION_Request())
 		return self.__firmware_version
 
@@ -198,7 +202,6 @@ class Mosquito(MosquitoComms):
 		:return: Orientation of the Mosquito in radians
 		:rtype: tuple
 		"""
-		self._parser.set_ATTITUDE_RADIANS_Handler(self.__handle_get_attitude)
 		self._send_data(msppg.serialize_ATTITUDE_RADIANS_Request())
 		return self.__roll_pitch_yaw
 
@@ -253,7 +256,6 @@ class Mosquito(MosquitoComms):
 		so that the position in the tuple matches the motor index
 		:trype: tuple
 		"""
-		self._parser.set_GET_MOTOR_NORMAL_Handler(self.__handle_get_motors)
 		self._send_data(msppg.serialize_GET_MOTOR_NORMAL_Request())
 		return self.__motor_values
 
