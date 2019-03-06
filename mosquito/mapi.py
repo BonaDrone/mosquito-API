@@ -35,6 +35,7 @@ class Mosquito(MosquitoComms):
 		self._parser.set_FIRMWARE_VERSION_Handler(self.__handle_firmware_version)
 		self._parser.set_ATTITUDE_RADIANS_Handler(self.__handle_get_attitude)
 		self._parser.set_GET_MOTOR_NORMAL_Handler(self.__handle_get_motors)
+		self._parser.set_GET_BATTERY_VOLTAGE_Handler(self.__handle_get_voltage)
 
 		# Mosquito's status
 		self.__roll_pitch_yaw = tuple([0]*3)
@@ -43,7 +44,6 @@ class Mosquito(MosquitoComms):
 		self.__position_board_connected = False
 		self.__firmware_version = None
 		self.__voltage = 0.0
-		self._parser.set_GET_BATTERY_VOLTAGE_Handler(self.__handle_get_voltage)
 
 	# Message handlers
 	def __handle_get_attitude(self, roll, pitch, yaw):
@@ -115,15 +115,13 @@ class Mosquito(MosquitoComms):
 
 	def __handle_get_voltage(self, voltage):
 		"""
-		Update Mosquito's orientation when receiving
-		a new attitude MSP message.
+		Handle the response to a battery voltage request and
+		store the read voltage
 
-		for a better understanding of the meaning of each of
-		the values see:
-		https://en.wikipedia.org/wiki/Aircraft_principal_axes
-
-		:param roll: Current roll of the Mosquito in radians
-		:type roll: float
+		:param voltage: Current battery voltage in V
+		:type voltage: float
+		:return: None
+		:rtype: None
 		"""
 		self.__voltage = voltage
 
@@ -254,13 +252,13 @@ class Mosquito(MosquitoComms):
 
 	def set_voltage(self, voltage):
 		"""
-		Set the voltage of the battery in the Mosquito. This MSP
-		message is only used by the ESP32 in order to send the
-		computed voltage to the STM32.
+		Set the voltage of the battery in the Mosquito.
+		This MSP message is only used by the ESP32 in 
+		order to send the computed voltage to the STM32.
 		This message in the API can be used to override.
 
-		:voltage: battery voltage in V
-		:type values: float
+		:param voltage: battery voltage in V
+		:type voltage: float
 		:return: None
 		:trype: None
 		"""
@@ -269,7 +267,8 @@ class Mosquito(MosquitoComms):
 
 	def get_voltage(self):
 		"""
-		Get the voltage of the battery in the Mosquito. If not connected it returns 0.0
+		Get the voltage of the battery in the Mosquito. 
+		If not connected it returns 0.0
 
 		:return: Battery voltage in V
 		:rtype: float
