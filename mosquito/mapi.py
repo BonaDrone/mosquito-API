@@ -11,14 +11,14 @@ from mosquito.coms import MosquitoComms
 
 class Mosquito(MosquitoComms):
 	"""
-	API implementation to communicate with a Mosquito 
-	via WiFi based on MSP messages. 
+	API implementation to communicate with a Mosquito
+	via WiFi based on MSP messages.
 
 	The laptop should be connected to the Mosquito's Wifi.
-	MSP message handling is delegated to Simon D. Levy's 
-	Hackflight's MSP Parser. 
+	MSP message handling is delegated to Simon D. Levy's
+	Hackflight's MSP Parser.
 
-	For further info about the MSP parser see: 
+	For further info about the MSP parser see:
 		- https://github.com/simondlevy/Hackflight/tree/master/extras/parser
 		- http://www.multiwii.com/wiki/index.php?title=Multiwii_Serial_Protocol
 	"""
@@ -37,6 +37,7 @@ class Mosquito(MosquitoComms):
 		self.__position_board_connected = False
 		self.__firmware_version = None
 		self.__voltage = 0.0
+		self._parser.set_GET_BATTERY_VOLTAGE_Handler(self.__handle_get_voltage)
 
 	# Message handlers
 	def __handle_get_attitude(self, roll, pitch, yaw):
@@ -57,7 +58,7 @@ class Mosquito(MosquitoComms):
 		:return: None
 		:rtype: None
 		"""
-		self.__roll_pitch_yaw = roll, -pitch, yaw	
+		self.__roll_pitch_yaw = roll, -pitch, yaw
 
 	def __handle_get_motors(self, m1, m2, m3, m4):
 		"""
@@ -105,7 +106,7 @@ class Mosquito(MosquitoComms):
 		:rtype: None
 		"""
 		self.__firmware_version = version
-	
+
 	def __handle_get_voltage(self, voltage):
 		"""
 		Update Mosquito's orientation when receiving
@@ -118,8 +119,8 @@ class Mosquito(MosquitoComms):
 		:param roll: Current roll of the Mosquito in radians
 		:type roll: float
 		"""
-		self.__voltage = voltage	
-	
+		self.__voltage = voltage
+
 	# Public methods
 	def arm(self):
 		"""
@@ -170,7 +171,7 @@ class Mosquito(MosquitoComms):
 		:param is_mosquito_90: Indicates the version of the Mosquito
 		:type is_mosquito_90: bool
 		:return: None
-		:rtype: None		
+		:rtype: None
 		"""
 		self._send_data(msppg.serialize_SET_MOSQUITO_VERSION(is_mosquito_90))
 
@@ -191,14 +192,14 @@ class Mosquito(MosquitoComms):
 		the calibration will be performed after powering off and on the board.
 
 		:return: None
-		:rtype: None 
+		:rtype: None
 		"""
 		self._send_data(msppg.serialize_ESC_CALIBRATION(0))
 
 	def calibrate_transmitter(self, stage):
 		"""
 		Trigger the different stages of the transmitter calibration
-		
+
 		:param stage: Calibration stage
 		:type stage: int in the range 0-2
 		:return: None
@@ -239,7 +240,7 @@ class Mosquito(MosquitoComms):
 		"""
 		Set the values of all motors in the specified order
 
-		:param values: 4 value list with desired motor values in 
+		:param values: 4 value list with desired motor values in
 		the range 0-1 being 1 maximum speed and 0 motor stopped.
 		:type values: list
 		:return: None
@@ -247,30 +248,31 @@ class Mosquito(MosquitoComms):
 		"""
 		self.__motor_values = values
 		self._send_data(msppg.serialize_SET_MOTOR_NORMAL(*values))
-		
+
 	def set_voltage(self, voltage):
 		"""
-		Set the values of all motors in the specified order
+		Set the voltage of the battery in the Mosquito. This MSP
+		message is only used by the ESP32 in order to send the
+		computed voltage to the STM32.
+		This message in the API can be used to override.
 
-		:voltage: 4 value list with desired motor values in 
-		the range 0-1 being 1 maximum speed and 0 motor stopped.
+		:voltage: battery voltage in V
 		:type values: float
 		:return: None
 		:trype: None
 		"""
 		self.__voltage = voltage
 		self._send_data(msppg.serialize_SET_BATTERY_VOLTAGE(voltage))
-	
+
 	def get_voltage(self):
 		"""
-		Get the orientation of the Mosquito
+		Get the voltage of the battery in the Mosquito. If not connected it returns 0.0
 
-		:return: Orientation of the Mosquito in radians
-		:rtype: tuple
+		:return: Battery voltage in V
+		:rtype: float
 		"""
-		self._parser.set_GET_BATTERY_VOLTAGE_Handler(self.__handle_get_voltage)
 		self._send_data(msppg.serialize_GET_BATTERY_VOLTAGE_Request())
-		return self.__voltage	
+		return self.__voltage
 
 	def get_motor(self, motor):
 		"""
@@ -310,12 +312,12 @@ class Mosquito(MosquitoComms):
 
 	def set_leds(self, red=None, green=None, blue=None):
 		"""
-		Set the on/off state of the LEDs. If any of the LEDs 
+		Set the on/off state of the LEDs. If any of the LEDs
 		is omitted in the method call its current status is preserved.
 
 		:param red: Status of red LED. A True/1 value will turn the LED on and a False/0 value off
 		:type red: bool
-		:param green: Status of green LED. A True/1 value will turn the LED on and a False/0 value off 
+		:param green: Status of green LED. A True/1 value will turn the LED on and a False/0 value off
 		:type green: bool
 		:param blue: Status of blue LED. A True/1 value will turn the LED on and a False/0 value off
 		:type blue: bool
