@@ -299,18 +299,6 @@ class Mosquito(MosquitoComms):
 		self._send_data(msppg.serialize_GET_MOTOR_NORMAL_Request())
 		return self.__motor_values
 
-	def set_target_altitude(self, altitude):
-		"""
-		Set the target altitude at which the Mosquito
-		should hover.
-
-		:param altitude: The desired altitude in meters
-		:type altitude: float
-		:return: None
-		:rtype: None
-		"""
-		pass
-
 	def set_leds(self, red=None, green=None, blue=None):
 		"""
 		Set the on/off state of the LEDs. If any of the LEDs
@@ -327,3 +315,15 @@ class Mosquito(MosquitoComms):
 		"""
 		self.__led_status = tuple([self.__led_status[idx] if value is None else value for idx, value in enumerate([red, green, blue])])
 		self._send_data(msppg.serialize_SET_LEDS(*self.__led_status))
+
+	def set_target_altitude(self, altitude):
+		"""
+		Set the target altitude at which the Mosquito
+		should hover.
+
+		:param altitude: The desired altitude in meters
+		:type altitude: float
+		:return: None
+		:rtype: None
+		"""
+		pass
