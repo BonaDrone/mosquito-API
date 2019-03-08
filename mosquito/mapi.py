@@ -7,6 +7,7 @@
 import time
 import mosquito.msppg as msppg
 from mosquito.coms import MosquitoComms
+from mosquito.notify import Publisher, Subscriber
 
 
 class Mosquito(MosquitoComms):
@@ -30,100 +31,94 @@ class Mosquito(MosquitoComms):
 		and Mosquito
 		"""
 		super(Mosquito, self).__init__()
-		# Set handlers
-		self._parser.set_POSITION_BOARD_CONNECTED_Handler(self.__handle_position_board_connected)
-		self._parser.set_FIRMWARE_VERSION_Handler(self.__handle_firmware_version)
-		self._parser.set_ATTITUDE_RADIANS_Handler(self.__handle_get_attitude)
-		self._parser.set_GET_MOTOR_NORMAL_Handler(self.__handle_get_motors)
-		self._parser.set_GET_BATTERY_VOLTAGE_Handler(self.__handle_get_voltage)
+
+		# Create publishers. The publishers will be set as the handlers
+		# of the MSP messages. This way, they will be called when the
+		# appropriate MSP message is received. When this happens, the
+		# publisher will call all its subscribers with the received
+		# values as parameters
+		self.__position_board_connected_pub = Publisher()
+		self.__firmware_version_pub = Publisher()
+		self.__get_attitude_pub = Publisher()
+		self.__get_motors_pub = Publisher()
+		self.__get_voltage_pub = Publisher()
+		# Set the publishers as the MSP message handlers
+		# They will be triggered when the appropriate message is received
+		self._parser.set_POSITION_BOARD_CONNECTED_Handler(self.__position_board_connected_pub)
+		self._parser.set_FIRMWARE_VERSION_Handler(self.__firmware_version_pub)
+		self._parser.set_ATTITUDE_RADIANS_Handler(self.__get_attitude_pub)
+		self._parser.set_GET_MOTOR_NORMAL_Handler(self.__get_motors_pub)
+		self._parser.set_GET_BATTERY_VOLTAGE_Handler(self.__get_voltage_pub)
+		# Create subscribers, which will be our public methods. The parameter passed 
+		# to the Subscriber constructor should be the method that sends the
+		# appropriate MSP request message to retrieve the desired data.
+		self.position_board_connected = Subscriber(self.__position_board_connected)
+		self.get_firmware_version = Subscriber(self.__get_firmware_version)
+		self.get_attitude = Subscriber(self.__get_attitude)
+		self.get_motors = Subscriber(self.__get_motors)
+		self.get_voltage = Subscriber(self.__get_voltage)
+		# Register the subscribers to their appropriate publisher
+		self.__position_board_connected_pub.register(self.position_board_connected)
+		self.__firmware_version_pub.register(self.get_firmware_version)
+		self.__get_attitude_pub.register(self.get_attitude)
+		self.__get_motors_pub.register(self.get_motors)
+		self.__get_voltage_pub.register(self.get_voltage)
 
 		# Mosquito's status
-		self.__roll_pitch_yaw = tuple([0]*3)
 		self.__motor_values = tuple([0]*4)
 		self.__led_status = tuple([0]*3)
-		self.__position_board_connected = False
-		self.__firmware_version = None
 		self.__voltage = 0.0
+		# self.__roll_pitch_yaw = tuple([0]*3)
+		# self.__position_board_connected = False
+		# self.__firmware_version = None
 
-	# Message handlers
-	def __handle_get_attitude(self, roll, pitch, yaw):
+	# Private methods
+	def __position_board_connected(self):
 		"""
-		Update Mosquito's orientation when receiving
-		a new attitude MSP message.
+		Check if the position board is connected to the Mosquito.
 
-		for a better understanding of the meaning of each of
-		the values see:
-		https://en.wikipedia.org/wiki/Aircraft_principal_axes
-
-		:param roll: Current roll of the Mosquito in radians
-		:type roll: float
-		:param pitch: Current pitch of the Mosquito in radians
-		:type pitch: float
-		:param yaw: Current yaw of the Mosquito in radians
-		:type yaw: float
-		:return: None
-		:rtype: None
+		:return: The status of the position board. True if connected and False otherwise
+		:rtype: bool
 		"""
-		self.__roll_pitch_yaw = roll, pitch, yaw	
+		self._send_data(msppg.serialize_POSITION_BOARD_CONNECTED_Request())
 
-	def __handle_get_motors(self, m1, m2, m3, m4):
+	def __get_firmware_version(self):
 		"""
-		Update Mosquito's motor status when receiving
-		a new motor values MSP message
+		Get the version of the firmware running on the Mosquito
 
-		To check the relation between motor numbering and
-		physical motors see:
-		https://fpvfrenzy.com/betaflight-motor-order/
-
-		:param m1: Current value of motor 1 in the range 0-1
-		:type m1: float
-		:param m2: Current value of motor 2 in the range 0-1
-		:type m2: float
-		:param m3: Current value of motor 3 in the range 0-1
-		:type m3: float
-		:param m4: Current value of motor 4 in the range 0-1
-		:type m4: float
-		:return: None
-		:rtype: None
+		:return: Firmware version
+		:rtype: int
 		"""
-		self.__motor_values = m1, m2, m3, m4
+		self._send_data(msppg.serialize_FIRMWARE_VERSION_Request())
 
-	def __handle_position_board_connected(self, is_connected):
+	def __get_attitude(self):
 		"""
-		Handle the response to a position board check request and
-		update the status variable where the connection status is
-		stored
+		Get the orientation of the Mosquito
 
-		:param is_connected: Connection status of position board
-		:type is_connected: boolean
-		:return: None
-		:rtype: None
+		:return: Orientation of the Mosquito in radians
+		:rtype: tuple
 		"""
-		self.__position_board_connected = is_connected
+		self._send_data(msppg.serialize_ATTITUDE_RADIANS_Request())
 
-	def __handle_firmware_version(self, version):
+	def __get_voltage(self):
 		"""
-		Handle the response to a firmware version request and
-		store the firmware version
+		Get the voltage of the battery in the Mosquito. 
+		If not connected it returns 0.0
 
-		:param version: Current firmware version
-		:type version: int
-		:return: None
-		:rtype: None
+		:return: Battery voltage in V
+		:rtype: float
 		"""
-		self.__firmware_version = version
+		self._send_data(msppg.serialize_GET_BATTERY_VOLTAGE_Request())
 
-	def __handle_get_voltage(self, voltage):
+	def __get_motors(self):
 		"""
-		Handle the response to a battery voltage request and
-		store the read voltage
+		Get the values of all motors
 
-		:param voltage: Current battery voltage in V
-		:type voltage: float
-		:return: None
-		:rtype: None
+		:return: current motor values in the range 0-1. The values are ordered
+		so that the position in the tuple matches the motor index
+		:trype: tuple
 		"""
-		self.__voltage = voltage
+		self._send_data(msppg.serialize_GET_MOTOR_NORMAL_Request())
 
 	# Public methods
 	def arm(self):
@@ -156,16 +151,6 @@ class Mosquito(MosquitoComms):
 		"""
 		self._send_data(msppg.serialize_SET_POSITIONING_BOARD(has_position_board))
 
-	def position_board_connected(self):
-		"""
-		Check if the position board is connected to the Mosquito.
-
-		:return: The status of the position board. True if connected and False otherwise
-		:rtype: bool
-		"""
-		self._send_data(msppg.serialize_POSITION_BOARD_CONNECTED_Request())
-		return self.__position_board_connected
-
 	def set_mosquito_version(self, is_mosquito_90):
 		"""
 		Set the version of the Mosquito (True meaning Mosquito 90 and False meaning
@@ -177,16 +162,6 @@ class Mosquito(MosquitoComms):
 		:rtype: None
 		"""
 		self._send_data(msppg.serialize_SET_MOSQUITO_VERSION(is_mosquito_90))
-
-	def get_firmware_version(self):
-		"""
-		Get the version of the firmware running on the Mosquito
-
-		:return: Firmware version
-		:rtype: int
-		"""
-		self._send_data(msppg.serialize_FIRMWARE_VERSION_Request())
-		return self.__firmware_version
 
 	def calibrate_ESCs(self):
 		"""
@@ -208,16 +183,6 @@ class Mosquito(MosquitoComms):
 		:rtype: None
 		"""
 		self._send_data(msppg.serialize_RC_CALIBRATION(stage))
-
-	def get_attitude(self):
-		"""
-		Get the orientation of the Mosquito
-
-		:return: Orientation of the Mosquito in radians
-		:rtype: tuple
-		"""
-		self._send_data(msppg.serialize_ATTITUDE_RADIANS_Request())
-		return self.__roll_pitch_yaw
 
 	def set_motor(self, motor, value):
 		"""
@@ -265,17 +230,6 @@ class Mosquito(MosquitoComms):
 		self.__voltage = voltage
 		self._send_data(msppg.serialize_SET_BATTERY_VOLTAGE(voltage))
 
-	def get_voltage(self):
-		"""
-		Get the voltage of the battery in the Mosquito. 
-		If not connected it returns 0.0
-
-		:return: Battery voltage in V
-		:rtype: float
-		"""
-		self._send_data(msppg.serialize_GET_BATTERY_VOLTAGE_Request())
-		return self.__voltage
-
 	def get_motor(self, motor):
 		"""
 		Get the value of a specific motors
@@ -287,17 +241,6 @@ class Mosquito(MosquitoComms):
 		"""
 		motor_values = self.get_motors()
 		return motor_values[motor-1]
-
-	def get_motors(self):
-		"""
-		Get the values of all motors
-
-		:return: current motor values in the range 0-1. The values are ordered
-		so that the position in the tuple matches the motor index
-		:trype: tuple
-		"""
-		self._send_data(msppg.serialize_GET_MOTOR_NORMAL_Request())
-		return self.__motor_values
 
 	def set_leds(self, red=None, green=None, blue=None):
 		"""
