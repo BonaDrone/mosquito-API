@@ -29,21 +29,26 @@ def main():
 	# in which they are passed doesn't matter. If any of the LEDs is
 	# omitted its current status is preserved
 	Mosquito.set_leds(red=0, green=0, blue=0)
+
+	print("Turning on blue Led...")
 	Mosquito.set_leds(blue=1) # The status of the other LEDs is preserved
 
 	time.sleep(2)
-	
+
 	Mosquito.set_leds(blue=0)
+	print("Turning on red Led...")
 	Mosquito.set_leds(red=1)
 	
 	time.sleep(2)
 	
 	Mosquito.set_leds(red=0)
+	print("Turning on green Led...")
 	Mosquito.set_leds(green=1)
 	
 	time.sleep(2)
 	
 	Mosquito.set_leds(green=0)
+	print("Turning on all three Leds...")
 	Mosquito.set_leds(blue=1, red=1, green=1)
 	
 	time.sleep(2)
