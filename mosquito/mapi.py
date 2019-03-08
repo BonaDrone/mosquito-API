@@ -7,7 +7,8 @@
 import time
 import mosquito.msppg as msppg
 from mosquito.coms import MosquitoComms
-
+from mosquito.pid_parameters import flightModeController as controller
+from mosquito.pid_parameters import pidParams
 
 class Mosquito(MosquitoComms):
 	"""
@@ -36,6 +37,7 @@ class Mosquito(MosquitoComms):
 		self._parser.set_ATTITUDE_RADIANS_Handler(self.__handle_get_attitude)
 		self._parser.set_GET_MOTOR_NORMAL_Handler(self.__handle_get_motors)
 		self._parser.set_GET_BATTERY_VOLTAGE_Handler(self.__handle_get_voltage)
+		self._parser.set_GET_PID_CONSTANTS_Handler(self.__handle_get_controller_constants)
 
 		# Mosquito's status
 		self.__roll_pitch_yaw = tuple([0]*3)
@@ -44,6 +46,9 @@ class Mosquito(MosquitoComms):
 		self.__position_board_connected = False
 		self.__firmware_version = None
 		self.__voltage = 0.0
+
+		# Mosquito's PID constants
+		self.__controller_constants = tuple([0]*16)
 
 	# Message handlers
 	def __handle_get_attitude(self, roll, pitch, yaw):
@@ -64,7 +69,7 @@ class Mosquito(MosquitoComms):
 		:return: None
 		:rtype: None
 		"""
-		self.__roll_pitch_yaw = roll, pitch, yaw	
+		self.__roll_pitch_yaw = roll, pitch, yaw
 
 	def __handle_get_motors(self, m1, m2, m3, m4):
 		"""
@@ -124,6 +129,13 @@ class Mosquito(MosquitoComms):
 		:rtype: None
 		"""
 		self.__voltage = voltage
+
+	def __handle_get_controller_constants(self, gyroRollPitchP, gyroRollPitchI, gyroRollPitchD,
+							gyroYawP, gyroYawI, demandsToRate,
+							levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude,
+							param6, param7, param8, param9):
+
+		self.__controller_constants = gyroRollPitchP, gyroRollPitchI, gyroRollPitchD, gyroYawP, gyroYawI, demandsToRate, levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude, param6, param7, param8, param9
 
 	# Public methods
 	def arm(self):
@@ -188,27 +200,6 @@ class Mosquito(MosquitoComms):
 		self._send_data(msppg.serialize_FIRMWARE_VERSION_Request())
 		return self.__firmware_version
 
-	def calibrate_ESCs(self):
-		"""
-		Calibrate ESCs with the MultiShot protocol. When this message is sent,
-		the calibration will be performed after powering off and on the board.
-
-		:return: None
-		:rtype: None
-		"""
-		self._send_data(msppg.serialize_ESC_CALIBRATION(0))
-
-	def calibrate_transmitter(self, stage):
-		"""
-		Trigger the different stages of the transmitter calibration
-
-		:param stage: Calibration stage
-		:type stage: int in the range 0-2
-		:return: None
-		:rtype: None
-		"""
-		self._send_data(msppg.serialize_RC_CALIBRATION(stage))
-
 	def get_attitude(self):
 		"""
 		Get the orientation of the Mosquito
@@ -250,32 +241,6 @@ class Mosquito(MosquitoComms):
 		self.__motor_values = values
 		self._send_data(msppg.serialize_SET_MOTOR_NORMAL(*values))
 
-	def set_voltage(self, voltage):
-		"""
-		Set the voltage of the battery in the Mosquito.
-		This MSP message is only used by the ESP32 in 
-		order to send the computed voltage to the STM32.
-		This message in the API can be used to override.
-
-		:param voltage: battery voltage in V
-		:type voltage: float
-		:return: None
-		:trype: None
-		"""
-		self.__voltage = voltage
-		self._send_data(msppg.serialize_SET_BATTERY_VOLTAGE(voltage))
-
-	def get_voltage(self):
-		"""
-		Get the voltage of the battery in the Mosquito. 
-		If not connected it returns 0.0
-
-		:return: Battery voltage in V
-		:rtype: float
-		"""
-		self._send_data(msppg.serialize_GET_BATTERY_VOLTAGE_Request())
-		return self.__voltage
-
 	def get_motor(self, motor):
 		"""
 		Get the value of a specific motors
@@ -298,6 +263,40 @@ class Mosquito(MosquitoComms):
 		"""
 		self._send_data(msppg.serialize_GET_MOTOR_NORMAL_Request())
 		return self.__motor_values
+
+	def set_voltage(self, voltage):
+		"""
+		Set the voltage of the battery in the Mosquito.
+		This MSP message is only used by the ESP32 in
+		order to send the computed voltage to the STM32.
+		This message in the API can be used to override.
+
+		:param voltage: battery voltage in V
+		:type voltage: float
+		:return: None
+		:trype: None
+		"""
+		self.__voltage = voltage
+		self._send_data(msppg.serialize_SET_BATTERY_VOLTAGE(voltage))
+
+	def get_voltage(self):
+		"""
+		Get the voltage of the battery in the Mosquito.
+		If not connected it returns 0.0
+
+		:return: Battery voltage in V
+		:rtype: float
+		"""
+		self._send_data(msppg.serialize_GET_BATTERY_VOLTAGE_Request())
+		return self.__voltage
+
+	def get_PID(self):
+		"""
+		Get the constants
+
+		"""
+		self._send_data(msppg.serialize_GET_PID_CONSTANTS_Request())
+		return self.__controller_constants
 
 	def set_target_altitude(self, altitude):
 		"""
@@ -327,3 +326,24 @@ class Mosquito(MosquitoComms):
 		"""
 		self.__led_status = tuple([self.__led_status[idx] if value is None else value for idx, value in enumerate([red, green, blue])])
 		self._send_data(msppg.serialize_SET_LEDS(*self.__led_status))
+
+	def calibrate_ESCs(self):
+		"""
+		Calibrate ESCs with the MultiShot protocol. When this message is sent,
+		the calibration will be performed after powering off and on the board.
+
+		:return: None
+		:rtype: None
+		"""
+		self._send_data(msppg.serialize_ESC_CALIBRATION(0))
+
+	def calibrate_transmitter(self, stage):
+		"""
+		Trigger the different stages of the transmitter calibration
+
+		:param stage: Calibration stage
+		:type stage: int in the range 0-2
+		:return: None
+		:rtype: None
+		"""
+		self._send_data(msppg.serialize_RC_CALIBRATION(stage))
