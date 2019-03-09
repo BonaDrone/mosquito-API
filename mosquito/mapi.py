@@ -290,10 +290,57 @@ class Mosquito(MosquitoComms):
 		self._send_data(msppg.serialize_GET_BATTERY_VOLTAGE_Request())
 		return self.__voltage
 
+	def set_PID(self,gyroRollPitchP, gyroRollPitchI, gyroRollPitchD,
+							gyroYawP, gyroYawI, demandsToRate,
+							levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude,
+							param6, param7, param8, param9):
+		"""
+		Set the constants of every PID controller in Hackflight.
+
+		:param gyroRollPitchP: Rate Pitch & Roll controller. Proportional constant.
+		:type gyroRollPitchP: float
+		:param gyroRollPitchI: Rate Pitch & Roll controller. Integral constant.
+		:type gyroRollPitchI: float
+		:param gyroRollPitchD: Rate Pitch & Roll controller. Derivative constant.
+		:type gyroRollPitchD: float
+		:param gyroYawP: Rate Yaw controller. Proportional constant.
+		:type gyroYawP: float
+		:param gyroYawI: Rate Yaw controller. Proportional constant.
+		:type gyroYawI: float
+		:param demandsToRate: In rate mode, demands from RC are multiplied by demandstoRate.
+		:type demandsToRate: float
+		:param levelP: Level Pitch & Roll controller. Proportional constant.
+		:type levelP: float
+		:param altHoldP: Altitude controller. Proportional constant.
+		:type altHoldP: float
+		:param altHoldVelP: Vertical velocity controller. Proportional constant.
+		:type altHoldVelP: float
+		:param altHoldVelI: Vertical velocity controller. Integral constant.
+		:type altHoldVelI: float
+		:param altHoldVelD: Vertical velocity controller. Derivative constant.
+		:type altHoldVelD: float
+		:param minAltitude: Minimum altitude, in meters.
+		:type minAltitude: float
+		:param param6: Param6.
+		:type param6: float
+		:param param7: Param7.
+		:type param7: float
+		:param param8: Param8.
+		:type param8: float
+		:param param9: Param9
+		:type param9: float
+		:return: None
+		:trype: None
+		"""
+		self.__controller_constants = gyroRollPitchP, gyroRollPitchI, gyroRollPitchD,gyroYawP, gyroYawI, demandsToRate,levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude,param6, param7, param8, param9
+		self._send_data(msppg.serialize_SET_PID_CONSTANTS(gyroRollPitchP, gyroRollPitchI, gyroRollPitchD,gyroYawP, gyroYawI, demandsToRate,levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude,param6, param7, param8, param9))
+
 	def get_PID(self):
 		"""
-		Get the constants
+		Get the constants of every PID controller in Hackflight.
 
+		:return: current values for PID controllers. See 'set_PID()' documentation for tuple details
+		:trype: tuple
 		"""
 		self._send_data(msppg.serialize_GET_PID_CONSTANTS_Request())
 		return self.__controller_constants
