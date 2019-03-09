@@ -200,6 +200,27 @@ class Mosquito(MosquitoComms):
 		self._send_data(msppg.serialize_FIRMWARE_VERSION_Request())
 		return self.__firmware_version
 
+	def calibrate_ESCs(self):
+		"""
+		Calibrate ESCs with the MultiShot protocol. When this message is sent,
+		the calibration will be performed after powering off and on the board.
+
+		:return: None
+		:rtype: None
+		"""
+		self._send_data(msppg.serialize_ESC_CALIBRATION(0))
+
+	def calibrate_transmitter(self, stage):
+		"""
+		Trigger the different stages of the transmitter calibration
+
+		:param stage: Calibration stage
+		:type stage: int in the range 0-2
+		:return: None
+		:rtype: None
+		"""
+		self._send_data(msppg.serialize_RC_CALIBRATION(stage))
+
 	def get_attitude(self):
 		"""
 		Get the orientation of the Mosquito
@@ -345,18 +366,6 @@ class Mosquito(MosquitoComms):
 		self._send_data(msppg.serialize_GET_PID_CONSTANTS_Request())
 		return self.__controller_constants
 
-	def set_target_altitude(self, altitude):
-		"""
-		Set the target altitude at which the Mosquito
-		should hover.
-
-		:param altitude: The desired altitude in meters
-		:type altitude: float
-		:return: None
-		:rtype: None
-		"""
-		pass
-
 	def set_leds(self, red=None, green=None, blue=None):
 		"""
 		Set the on/off state of the LEDs. If any of the LEDs
@@ -374,23 +383,14 @@ class Mosquito(MosquitoComms):
 		self.__led_status = tuple([self.__led_status[idx] if value is None else value for idx, value in enumerate([red, green, blue])])
 		self._send_data(msppg.serialize_SET_LEDS(*self.__led_status))
 
-	def calibrate_ESCs(self):
+	def set_target_altitude(self, altitude):
 		"""
-		Calibrate ESCs with the MultiShot protocol. When this message is sent,
-		the calibration will be performed after powering off and on the board.
+		Set the target altitude at which the Mosquito
+		should hover.
 
+		:param altitude: The desired altitude in meters
+		:type altitude: float
 		:return: None
 		:rtype: None
 		"""
-		self._send_data(msppg.serialize_ESC_CALIBRATION(0))
-
-	def calibrate_transmitter(self, stage):
-		"""
-		Trigger the different stages of the transmitter calibration
-
-		:param stage: Calibration stage
-		:type stage: int in the range 0-2
-		:return: None
-		:rtype: None
-		"""
-		self._send_data(msppg.serialize_RC_CALIBRATION(stage))
+		pass

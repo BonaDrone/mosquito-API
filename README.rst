@@ -220,6 +220,31 @@ Get the current value of the four motors.
 
            >>> Mosquito.get_motors()
 
+Mosquito.set_voltage
+....................
+Set the voltage of the battery in the Mosquito. This MSP message is only used by the ESP32 in order to send the computed voltage to the STM32. This message in the API can be used to override.
+
+* Parameters: 
+
+  - ``voltage``: battery voltage in V as a float
+
+* Returns: None
+
+   .. code:: python
+
+           >>> Mosquito.set_voltage(voltage)
+
+Mosquito.get_voltage
+....................
+Get the voltage of the battery in the Mosquito. If the battery is not connected (or detected) it returns 0.0.
+
+* Parameters: None
+* Returns: Battery voltage in V as a float
+
+   .. code:: python
+
+           >>> Mosquito.get_voltage()
+
 Mosquito.set_leds
 .................
 Turn on or off the LEDs of the board. If any of the LEDs is omitted in the method call its current status is preserved.
