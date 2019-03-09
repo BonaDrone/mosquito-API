@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# Author: Juan Gallostra, jgallostra<at>bonadrone.com
+# Authors: Juan Gallostra (jgallostra<at>bonadrone.com) and Pep Marti-Saumell (jmarti<at>bonadrone.com>)
 # Date: 12-12-2018
 
 import time
