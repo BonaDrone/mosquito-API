@@ -253,7 +253,7 @@ Set the constants (as floats) of every PID controller in Hackflight.
 
   - ``gyroRollPitchP``: Rate Pitch & Roll controller. Proportional constant.
   - ``gyroRollPitchI``: Rate Pitch & Roll controller. Integral constant.
-  - `` gyroRollPitchD``: Rate Pitch & Roll controller. Derivative constant.
+  - ``gyroRollPitchD``: Rate Pitch & Roll controller. Derivative constant.
   - ``gyroYawP``: Rate Yaw controller. Proportional constant.
   - ``gyroYawI``: Rate Yaw controller. Proportional constant.
   - ``demandsToRate``: In rate mode, demands from RC are multiplied by demandstoRate.
@@ -268,7 +268,7 @@ Set the constants (as floats) of every PID controller in Hackflight.
   - ``param8``: Param8.
   - ``param9``: Param9
   
-* Returns: Nnone
+* Returns: None
 
    .. code:: python
 
