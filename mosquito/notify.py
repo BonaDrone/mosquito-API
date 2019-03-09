@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+#
+# Author: Juan Gallostra (jgallostra<at>bonadrone.com)
+# Date: 03-07-2019
+
 class Publisher(object):
 	"""
 	"""
