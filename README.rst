@@ -245,6 +245,49 @@ Get the voltage of the battery in the Mosquito. If the battery is not connected 
 
            >>> Mosquito.get_voltage()
 
+Mosquito.set_PID
+................
+Set the constants (as floats) of every PID controller in Hackflight.
+
+* Parameters:
+
+  - ``gyroRollPitchP``: Rate Pitch & Roll controller. Proportional constant.
+  - ``gyroRollPitchI``: Rate Pitch & Roll controller. Integral constant.
+  - ``gyroRollPitchD``: Rate Pitch & Roll controller. Derivative constant.
+  - ``gyroYawP``: Rate Yaw controller. Proportional constant.
+  - ``gyroYawI``: Rate Yaw controller. Proportional constant.
+  - ``demandsToRate``: In rate mode, demands from RC are multiplied by demandstoRate.
+  - ``levelP``: Level Pitch & Roll controller. Proportional constant.
+  - ``altHoldP``: Altitude controller. Proportional constant.
+  - ``altHoldVelP``: Vertical velocity controller. Proportional constant.
+  - ``altHoldVelI``: Vertical velocity controller. Integral constant.
+  - ``altHoldVelD``: Vertical velocity controller. Derivative constant.
+  - ``minAltitude``: Minimum altitude, in meters.
+  - ``param6``: Param6.
+  - ``param7``: Param7.
+  - ``param8``: Param8.
+  - ``param9``: Param9
+  
+* Returns: None
+
+   .. code:: python
+
+           >>> Mosquito.set_PID(gyroRollPitchP, gyroRollPitchI, gyroRollPitchD,
+              gyroYawP, gyroYawI, demandsToRate,
+              levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude,
+              param6, param7, param8, param9)
+
+Mosquito.get_PID
+................
+Get the constants of every PID controller in Hackflight.
+
+* Parameters:  None
+* Returns: Current values for PID controllers. See 'set_PID()' documentation for tuple details
+
+   .. code:: python
+
+           >>> Mosquito.get_PID()
+
 Mosquito.set_leds
 .................
 Turn on or off the LEDs of the board. If any of the LEDs is omitted in the method call its current status is preserved.
@@ -299,3 +342,10 @@ calibrate_transmitter.py
 `Script <https://github.com/juangallostra/mosquito-API/blob/master/examples/calibrate_transmitter.py>`_
 
 Perform the calibration of the transmitter. Transmitter calibration consists in measuring the offsets between the measured and expected values of each of the transmitter sticks at certain positions (minimum, center, maximum) to be able to map the specific transmitter values to the exected values.
+
+M90_set_parameters.py
+~~~~~~~~~~~~~~~~~~~~~
+
+`Script <https://github.com/juangallostra/mosquito-API/blob/master/examples/M90_set_parameters.py>`_
+
+Set the values of the PID controllers for the Mosquito 90.
