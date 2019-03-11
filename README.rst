@@ -251,18 +251,18 @@ Set the constants (as floats) of every PID controller in Hackflight.
 
 * Parameters:
 
-  - ``gyroRollPitchP``: Rate Pitch & Roll controller. Proportional constant.
-  - ``gyroRollPitchI``: Rate Pitch & Roll controller. Integral constant.
-  - ``gyroRollPitchD``: Rate Pitch & Roll controller. Derivative constant.
-  - ``gyroYawP``: Rate Yaw controller. Proportional constant.
-  - ``gyroYawI``: Rate Yaw controller. Proportional constant.
-  - ``demandsToRate``: In rate mode, demands from RC are multiplied by demandstoRate.
-  - ``levelP``: Level Pitch & Roll controller. Proportional constant.
-  - ``altHoldP``: Altitude controller. Proportional constant.
-  - ``altHoldVelP``: Vertical velocity controller. Proportional constant.
-  - ``altHoldVelI``: Vertical velocity controller. Integral constant.
-  - ``altHoldVelD``: Vertical velocity controller. Derivative constant.
-  - ``minAltitude``: Minimum altitude, in meters.
+  - ``gyro_roll_pitch_P``: Rate Pitch & Roll controller. Proportional constant.
+  - ``gyro_roll_pitch_I``: Rate Pitch & Roll controller. Integral constant.
+  - ``gyro_roll_pitch_D``: Rate Pitch & Roll controller. Derivative constant.
+  - ``gyro_yaw_P``: Rate Yaw controller. Proportional constant.
+  - ``gyro_yaw_I``: Rate Yaw controller. Proportional constant.
+  - ``demands_to_rate``: In rate mode, demands from RC are multiplied by demandstoRate.
+  - ``level_P``: Level Pitch & Roll controller. Proportional constant.
+  - ``altHold_P``: Altitude controller. Proportional constant.
+  - ``altHold_vel_P``: Vertical velocity controller. Proportional constant.
+  - ``altHold_vel_I``: Vertical velocity controller. Integral constant.
+  - ``altHold_vel_D``: Vertical velocity controller. Derivative constant.
+  - ``min_altitude``: Minimum altitude, in meters.
   - ``param6``: Param6.
   - ``param7``: Param7.
   - ``param8``: Param8.
@@ -272,9 +272,9 @@ Set the constants (as floats) of every PID controller in Hackflight.
 
    .. code:: python
 
-           >>> Mosquito.set_PID(gyroRollPitchP, gyroRollPitchI, gyroRollPitchD,
-              gyroYawP, gyroYawI, demandsToRate,
-              levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude,
+           >>> Mosquito.set_PID(gyro_roll_pitch_P, gyro_roll_pitch_I, gyro_roll_pitch_D,
+              gyro_yaw_P, gyro_yaw_I, demands_to_rate,
+              level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,
               param6, param7, param8, param9)
 
 Mosquito.get_PID
