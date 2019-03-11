@@ -59,7 +59,7 @@ class Mosquito(MosquitoComms):
 		self.get_motors = Subscriber(self.__get_motors)
 		self.get_voltage = Subscriber(self.__get_voltage)
 		self.get_PID = Subscriber(self.__get_PID)
-		# Register the subscribers to their appropriate publisher
+		# Register the subscribers to their corresponding publisher
 		self.__position_board_connected_pub.register(self.position_board_connected)
 		self.__firmware_version_pub.register(self.get_firmware_version)
 		self.__get_attitude_pub.register(self.get_attitude)
