@@ -157,14 +157,17 @@ Trigger the different stages (0,1,2) of the transmitter calibration. This calibr
     
 Mosquito.get_attitude
 .....................
-Get the orientation of the Mosquito in radians.
+Get the orientation of the Mosquito in radians or degrees. By default (if the parameter ``degrees`` is omitted) the attitude will be obtained in radians.
 
-* Parameters: None
+* Parameters:
+  
+  - ``degrees``: Boolean value that indicates if the attitude should be returned in degrees. It is ``False`` by default
+
 * Returns: 3 value tuple with the orientation of the Mosquito in radians as (Roll, Pitch, Yaw)
 
    .. code:: python
 
-           >>> Mosquito.get_attitude()
+           >>> Mosquito.get_attitude(degrees=True/False)
 
 Mosquito.set_motor
 .....................

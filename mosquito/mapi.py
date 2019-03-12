@@ -5,6 +5,7 @@
 # Date: 12-12-2018
 
 import time
+import math
 import mosquito.msppg as msppg
 from mosquito.coms import MosquitoComms
 
@@ -257,15 +258,19 @@ class Mosquito(MosquitoComms):
 		"""
 		self._send_data(msppg.serialize_RC_CALIBRATION(stage))
 
-	def get_attitude(self):
+	def get_attitude(self, degrees=False):
 		"""
 		Get the orientation of the Mosquito
 
-		:return: Orientation of the Mosquito in radians
+		:param degrees: indicates if the attitude is wanted in degrees
+		:type degrees: bool
+		:return: Orientation of the Mosquito in radians or degrees
 		:rtype: tuple
 		"""
 		self._send_data(msppg.serialize_ATTITUDE_RADIANS_Request())
-		return self.__roll_pitch_yaw
+		if not degrees:
+			return self.__roll_pitch_yaw
+		return tuple([angle * 180.0 / math.pi for angle in self.__roll_pitch_yaw])
 
 	def set_motor(self, motor, value):
 		"""
