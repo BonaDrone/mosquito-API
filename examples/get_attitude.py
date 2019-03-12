@@ -25,9 +25,9 @@ def main():
 	Mosquito = mapi.Mosquito()
 	Mosquito.connect()
 	while True:
-		attitude = Mosquito.get_attitude()
+		attitude = Mosquito.get_attitude(degrees=True)
 		if isinstance(attitude, tuple):
-			print(tuple(i*180/math.pi for i in attitude))
+			print(attitude)
 		time.sleep(0.1)
 
 if __name__ == "__main__":

@@ -28,16 +28,14 @@ def main():
 	Mosquito.connect()
 
 	while True:
-
-		attitude = Mosquito.get_attitude()
+		# by default attitude is received in radians
+		attitude = Mosquito.get_attitude(degrees=True)
 		
 		if isinstance(attitude, tuple):
 
-			print(tuple(i*180/math.pi for i in attitude))
+			print(attitude)
 
-			# 0.35 radians is equivalent to more or less 20 degrees
-			# attitude[0] -> roll and attitude[1] -> pitch
-			if abs(attitude[0]) > 0.35 or abs(attitude[1]) > 0.35:
+			if abs(attitude[0]) > 20 or abs(attitude[1]) > 20:
 				Mosquito.set_motors([0.2,0.2,0.2,0.2])
 
 			else:
