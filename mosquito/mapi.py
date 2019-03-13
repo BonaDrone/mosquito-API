@@ -352,7 +352,7 @@ class Mosquito(MosquitoComms):
 		self._send_data(msppg.serialize_GET_BATTERY_VOLTAGE_Request())
 		return self.__voltage
 
-	def set_PID(self,gyro_roll_pitch_P, gyro_roll_pitch_I, gyro_roll_pitch_D,
+	def set_PID(self, gyro_roll_pitch_P, gyro_roll_pitch_I, gyro_roll_pitch_D,
 							gyro_yaw_P, gyro_yaw_I, demands_to_rate,
 							level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,
 							param6, param7, param8, param9):
@@ -394,8 +394,8 @@ class Mosquito(MosquitoComms):
 		:return: None
 		:trype: None
 		"""
-		self.__controller_constants = gyroRollPitchP, gyro_roll_pitch_I, gyro_roll_pitch_D,gyro_yaw_P, gyro_yaw_I, demands_to_rate,level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,param6, param7, param8, param9
-		self._send_data(msppg.serialize_SET_PID_CONSTANTS(gyroRollPitchP, gyro_roll_pitch_I, gyro_roll_pitch_D,gyro_yaw_P, gyro_yaw_I, demands_to_rate,level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,param6, param7, param8, param9))
+		self.__controller_constants = gyro_roll_pitch_P, gyro_roll_pitch_I, gyro_roll_pitch_D,gyro_yaw_P, gyro_yaw_I, demands_to_rate,level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,param6, param7, param8, param9
+		self._send_data(msppg.serialize_SET_PID_CONSTANTS(gyro_roll_pitch_P, gyro_roll_pitch_I, gyro_roll_pitch_D,gyro_yaw_P, gyro_yaw_I, demands_to_rate,level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,param6, param7, param8, param9))
 
 	def get_PID(self):
 		"""
