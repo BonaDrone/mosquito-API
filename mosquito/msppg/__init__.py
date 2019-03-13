@@ -191,20 +191,6 @@ class MSP_Parser(object):
 
                             self.GET_MOTOR_NORMAL_Handler(*struct.unpack('=ffff', self.message_buffer))
 
-                if self.message_id == 0:
-
-                    if self.message_direction == 0:
-
-                        if hasattr(self, 'CLEAR_EEPROM_Request_Handler'):
-
-                            self.CLEAR_EEPROM_Request_Handler()
-
-                    else:
-
-                        if hasattr(self, 'CLEAR_EEPROM_Handler'):
-
-                            self.CLEAR_EEPROM_Handler(*struct.unpack('=B', self.message_buffer))
-
                 if self.message_id == 1:
 
                     if self.message_direction == 0:
@@ -600,15 +586,6 @@ class MSP_Parser(object):
             m1,m2,m3,m4
         '''
         self.GET_MOTOR_NORMAL_Handler = handler
-
-    def set_CLEAR_EEPROM_Handler(self, handler):
-
-        '''
-        Sets the handler method for when a CLEAR_EEPROM message is successfully parsed.
-        You should declare this message with the following parameter(s):
-            code
-        '''
-        self.CLEAR_EEPROM_Handler = handler
 
     def set_WP_ARM_Handler(self, handler):
 
@@ -1025,28 +1002,6 @@ def serialize_GET_MOTOR_NORMAL_Request():
     Serializes a request for GET_MOTOR_NORMAL data.
     '''
     msg = '$M<' + chr(0) + chr(124) + chr(124)
-    return bytes(msg) if sys.version[0] == '2' else bytes(msg, 'utf-8')
-
-def serialize_CLEAR_EEPROM(code):
-    '''
-    Serializes the contents of a message of type CLEAR_EEPROM.
-    '''
-    message_buffer = struct.pack('B', code)
-
-    if sys.version[0] == '2':
-        msg = chr(len(message_buffer)) + chr(0) + str(message_buffer)
-        return '$M>' + msg + chr(_CRC8(msg))
-
-    else:
-        msg = [len(message_buffer), 0] + list(message_buffer)
-        return bytes([ord('$'), ord('M'), ord('<')] + msg + [_CRC8(msg)])
-
-def serialize_CLEAR_EEPROM_Request():
-
-    '''
-    Serializes a request for CLEAR_EEPROM data.
-    '''
-    msg = '$M<' + chr(0) + chr(0) + chr(0)
     return bytes(msg) if sys.version[0] == '2' else bytes(msg, 'utf-8')
 
 def serialize_WP_ARM(code):
@@ -1651,5 +1606,19 @@ def serialize_SET_RANGE_PARAMETERS(rx, ry, rz):
 
     else:
         msg = [len(message_buffer), 221] + list(message_buffer)
+        return bytes([ord('$'), ord('M'), ord('<')] + msg + [_CRC8(msg)])
+
+def serialize_CLEAR_EEPROM(section):
+    '''
+    Serializes the contents of a message of type CLEAR_EEPROM.
+    '''
+    message_buffer = struct.pack('B', section)
+
+    if sys.version[0] == '2':
+        msg = chr(len(message_buffer)) + chr(201) + str(message_buffer)
+        return '$M<' + msg + chr(_CRC8(msg))
+
+    else:
+        msg = [len(message_buffer), 201] + list(message_buffer)
         return bytes([ord('$'), ord('M'), ord('<')] + msg + [_CRC8(msg)])
 
