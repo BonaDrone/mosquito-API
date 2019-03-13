@@ -307,6 +307,24 @@ Turn on or off the LEDs of the board. If any of the LEDs is omitted in the metho
 
            >>> Mosquito.set_leds(red=0/1,green=0/1,blue=0/1)
 
+Mosquito.clear_EEPROM
+.....................
+Clear all or a specific section of the EEPROM. The three available options are:
+
+1. Clear the parameters section - section 0
+2. Clear the mission section - section 1
+3. Clear the whole EEPROM - section 2 
+
+* Parameters: 
+  
+  - ``section``: Integer indicating the section to clear. 0 - Parameters, 1 - Mission, 2 - all
+
+* Returns: None
+
+   .. code:: python
+
+           >>> Mosquito.clear_EEPROM(section)
+
 Examples
 --------
 Under the ``examples`` `folder <https://github.com/BonaDrone/mosquito-API/tree/master/examples>`_ there are several scripts that show how the API can be used. For the examples to work one should either have installed the API via ``pip`` or cloned this repository. A part from that, the laptop should be connected to the Mosquito WiFi.
