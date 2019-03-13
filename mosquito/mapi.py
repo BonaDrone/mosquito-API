@@ -424,6 +424,18 @@ class Mosquito(MosquitoComms):
 		self.__led_status = tuple([self.__led_status[idx] if value is None else value for idx, value in enumerate([red, green, blue])])
 		self._send_data(msppg.serialize_SET_LEDS(*self.__led_status))
 
+	def clear_EEPROM(self, section):
+		"""
+		Clear all or a specific section of the EEPROM
+
+		:param section: Section to clear. 0 - Parameters, 1 - Mission, 2 - all 
+		:type section: int
+		:return: None
+		:rtype: None
+		"""
+		self.__led_status = tuple([self.__led_status[idx] if value is None else value for idx, value in enumerate([red, green, blue])])
+		self._send_data(msppg.serialize_CLEAR_EEPROM(section))
+
 	def set_target_altitude(self, altitude):
 		"""
 		Set the target altitude at which the Mosquito
