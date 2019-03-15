@@ -309,7 +309,7 @@ Turn on or off the LEDs of the board. If any of the LEDs is omitted in the metho
 
 Mosquito.clear_EEPROM
 .....................
-Clear all or a specific section of the EEPROM. The three available options are:
+Clear a specific section, or all, of the Mosquito's EEPROM. There are three available options that clear different sections of the EEPROM. These are are:
 
 1. Clear the parameters section - section 0
 2. Clear the mission section - section 1
