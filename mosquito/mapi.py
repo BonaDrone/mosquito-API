@@ -138,17 +138,17 @@ class Mosquito(MosquitoComms):
 		Handle the response to a get controllers' constants
 		request and store them
 
-		:param gyro_roll_P: Rate Pitch & Roll controller. Proportional constant.
+		:param gyro_roll_P: Rate Roll controller. Proportional constant.
 		:type gyro_roll_P: float
-		:param gyro_roll_I: Rate Pitch & Roll controller. Integral constant.
+		:param gyro_roll_I: Rate Roll controller. Integral constant.
 		:type gyro_roll_I: float
-		:param gyro_roll_D: Rate Pitch & Roll controller. Derivative constant.
+		:param gyro_roll_D: Rate Roll controller. Derivative constant.
 		:type gyro_roll_D: float
-		:param gyro_pitch_P: Rate Pitch & Roll controller. Proportional constant.
+		:param gyro_pitch_P: Rate Pitch controller. Proportional constant.
 		:type gyro_pitch_P: float
-		:param gyro_pitch_I: Rate Pitch & Roll controller. Integral constant.
+		:param gyro_pitch_I: Rate Pitch controller. Integral constant.
 		:type gyro_pitch_I: float
-		:param gyro_pitch_D: Rate Pitch & Roll controller. Derivative constant.
+		:param gyro_pitch_D: Rate Pitch controller. Derivative constant.
 		:type gyro_pitch_D: float
 		:param gyro_yaw_P: Rate Yaw controller. Proportional constant.
 		:type gyro_yaw_P: float
@@ -367,17 +367,17 @@ class Mosquito(MosquitoComms):
 		"""
 		Set the constants of every PID controller in Hackflight.
 
-		:param gyro_roll_P: Rate Pitch & Roll controller. Proportional constant.
+		:param gyro_roll_P: Rate Roll controller. Proportional constant.
 		:type gyro_roll_P: float
-		:param gyro_roll_I: Rate Pitch & Roll controller. Integral constant.
+		:param gyro_roll_I: Rate Roll controller. Integral constant.
 		:type gyro_roll_I: float
-		:param gyro_roll_D: Rate Pitch & Roll controller. Derivative constant.
+		:param gyro_roll_D: Rate Roll controller. Derivative constant.
 		:type gyro_roll_D: float
-		:param gyro_pitch_P: Rate Pitch & Roll controller. Proportional constant.
+		:param gyro_pitch_P: Rate Pitch controller. Proportional constant.
 		:type gyro_pitch_P: float
-		:param gyro_pitch_I: Rate Pitch & Roll controller. Integral constant.
+		:param gyro_pitch_I: Rate Pitch controller. Integral constant.
 		:type gyro_pitch_I: float
-		:param gyro_pitch_D: Rate Pitch & Roll controller. Derivative constant.
+		:param gyro_pitch_D: Rate Pitch controller. Derivative constant.
 		:type gyro_pitch_D: float
 		:param gyro_yaw_P: Rate Yaw controller. Proportional constant.
 		:type gyro_yaw_P: float
@@ -408,7 +408,7 @@ class Mosquito(MosquitoComms):
 		:return: None
 		:type: None
 		"""
-		self.__controller_constants = gyro_roll_P, gyro_roll_I, gyro_roll_D,gyro_pitch_P, gyro_pitch_I, gyro_pitch_D,gyro_yaw_P, gyro_yaw_I, demands_to_rate,level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,param6, param7, param8, param9
+		self.__controller_constants = gyro_roll_P, gyro_roll_I, gyro_roll_D, gyro_pitch_P, gyro_pitch_I, gyro_pitch_D, gyro_yaw_P, gyro_yaw_I, demands_to_rate,level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,param6, param7, param8, param9
 		self._send_data(msppg.serialize_SET_PID_CONSTANTS(gyro_roll_P, gyro_roll_I, gyro_roll_D,gyro_pitch_P, gyro_pitch_I, gyro_pitch_D,gyro_yaw_P, gyro_yaw_I, demands_to_rate,level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,param6, param7, param8, param9))
 
 	def get_PID(self):
