@@ -435,6 +435,16 @@ class Mosquito(MosquitoComms):
 		"""
 		self._send_data(msppg.serialize_CLEAR_EEPROM(section))
 
+	def emergency_stop(self):
+		"""
+		Trigger an emergency stop that will hault the Mosquito and stop any action
+		being performed
+
+		:return: None
+		:rtype: None
+		"""
+		self._send_data(msppg.serialize_SET_EMERGENCY_STOP(0))
+
 	def set_target_altitude(self, altitude):
 		"""
 		Set the target altitude at which the Mosquito
