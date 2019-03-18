@@ -47,7 +47,7 @@ class Mosquito(MosquitoComms):
 		self.__voltage = 0.0
 
 		# Mosquito's PID constants
-		self.__controller_constants = tuple([0]*16)
+		self.__controller_constants = tuple([0]*19)
 
 	# Message handlers
 	def __handle_get_attitude(self, roll, pitch, yaw):
@@ -129,7 +129,8 @@ class Mosquito(MosquitoComms):
 		"""
 		self.__voltage = voltage
 
-	def __handle_get_controller_constants(self, gyro_roll_pitch_P, gyro_roll_pitch_I, gyro_roll_pitch_D,
+	def __handle_get_controller_constants(self, gyro_roll_P, gyro_roll_I, gyro_roll_D,
+							gyro_pitch_P, gyro_pitch_I, gyro_pitch_D,
 							gyro_yaw_P, gyro_yaw_I, demands_to_rate,
 							level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,
 							param6, param7, param8, param9):
@@ -137,12 +138,18 @@ class Mosquito(MosquitoComms):
 		Handle the response to a get controllers' constants
 		request and store them
 
-		:param gyro_roll_pitch_P: Rate Pitch & Roll controller. Proportional constant.
-		:type gyro_roll_pitch_P: float
-		:param gyro_roll_pitch_I: Rate Pitch & Roll controller. Integral constant.
-		:type gyro_roll_pitch_I: float
-		:param gyro_roll_pitch_D: Rate Pitch & Roll controller. Derivative constant.
-		:type gyro_roll_pitch_D: float
+		:param gyro_roll_P: Rate Pitch & Roll controller. Proportional constant.
+		:type gyro_roll_P: float
+		:param gyro_roll_I: Rate Pitch & Roll controller. Integral constant.
+		:type gyro_roll_I: float
+		:param gyro_roll_D: Rate Pitch & Roll controller. Derivative constant.
+		:type gyro_roll_D: float
+		:param gyro_pitch_P: Rate Pitch & Roll controller. Proportional constant.
+		:type gyro_pitch_P: float
+		:param gyro_pitch_I: Rate Pitch & Roll controller. Integral constant.
+		:type gyro_pitch_I: float
+		:param gyro_pitch_D: Rate Pitch & Roll controller. Derivative constant.
+		:type gyro_pitch_D: float
 		:param gyro_yaw_P: Rate Yaw controller. Proportional constant.
 		:type gyro_yaw_P: float
 		:param gyro_yaw_I: Rate Yaw controller. Proportional constant.
@@ -170,9 +177,9 @@ class Mosquito(MosquitoComms):
 		:param param9: Param9
 		:type param9: float
 		:return: None
-		:trype: None
+		:type: None
 		"""
-		self.__controller_constants = gyro_roll_pitch_P, gyro_roll_pitch_I, gyro_roll_pitch_D, gyro_yaw_P, gyro_yaw_I, demands_to_rate, level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude, param6, param7, param8, param9
+		self.__controller_constants = gyro_roll_P, gyro_roll_I, gyro_roll_D,gyro_pitch_P, gyro_pitch_I, gyro_pitch_D, gyro_yaw_P, gyro_yaw_I, demands_to_rate, level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude, param6, param7, param8, param9
 
 	# Public methods
 	def arm(self):
@@ -352,19 +359,26 @@ class Mosquito(MosquitoComms):
 		self._send_data(msppg.serialize_GET_BATTERY_VOLTAGE_Request())
 		return self.__voltage
 
-	def set_PID(self, gyro_roll_pitch_P, gyro_roll_pitch_I, gyro_roll_pitch_D,
+	def set_PID(self, gyro_roll_P, gyro_roll_I, gyro_roll_D,
+							gyro_pitch_P, gyro_pitch_I, gyro_pitch_D,
 							gyro_yaw_P, gyro_yaw_I, demands_to_rate,
 							level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,
 							param6, param7, param8, param9):
 		"""
 		Set the constants of every PID controller in Hackflight.
 
-		:param gyro_roll_pitch_P: Rate Pitch & Roll controller. Proportional constant.
-		:type gyro_roll_pitch_P: float
-		:param gyro_roll_pitch_I: Rate Pitch & Roll controller. Integral constant.
-		:type gyro_roll_pitch_I: float
-		:param gyro_roll_pitch_D: Rate Pitch & Roll controller. Derivative constant.
-		:type gyro_roll_pitch_D: float
+		:param gyro_roll_P: Rate Pitch & Roll controller. Proportional constant.
+		:type gyro_roll_P: float
+		:param gyro_roll_I: Rate Pitch & Roll controller. Integral constant.
+		:type gyro_roll_I: float
+		:param gyro_roll_D: Rate Pitch & Roll controller. Derivative constant.
+		:type gyro_roll_D: float
+		:param gyro_pitch_P: Rate Pitch & Roll controller. Proportional constant.
+		:type gyro_pitch_P: float
+		:param gyro_pitch_I: Rate Pitch & Roll controller. Integral constant.
+		:type gyro_pitch_I: float
+		:param gyro_pitch_D: Rate Pitch & Roll controller. Derivative constant.
+		:type gyro_pitch_D: float
 		:param gyro_yaw_P: Rate Yaw controller. Proportional constant.
 		:type gyro_yaw_P: float
 		:param gyro_yaw_I: Rate Yaw controller. Proportional constant.
@@ -392,10 +406,10 @@ class Mosquito(MosquitoComms):
 		:param param9: Param9
 		:type param9: float
 		:return: None
-		:trype: None
+		:type: None
 		"""
-		self.__controller_constants = gyro_roll_pitch_P, gyro_roll_pitch_I, gyro_roll_pitch_D,gyro_yaw_P, gyro_yaw_I, demands_to_rate,level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,param6, param7, param8, param9
-		self._send_data(msppg.serialize_SET_PID_CONSTANTS(gyro_roll_pitch_P, gyro_roll_pitch_I, gyro_roll_pitch_D,gyro_yaw_P, gyro_yaw_I, demands_to_rate,level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,param6, param7, param8, param9))
+		self.__controller_constants = gyro_roll_P, gyro_roll_I, gyro_roll_D,gyro_pitch_P, gyro_pitch_I, gyro_pitch_D,gyro_yaw_P, gyro_yaw_I, demands_to_rate,level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,param6, param7, param8, param9
+		self._send_data(msppg.serialize_SET_PID_CONSTANTS(gyro_roll_P, gyro_roll_I, gyro_roll_D,gyro_pitch_P, gyro_pitch_I, gyro_pitch_D,gyro_yaw_P, gyro_yaw_I, demands_to_rate,level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,param6, param7, param8, param9))
 
 	def get_PID(self):
 		"""
@@ -428,7 +442,7 @@ class Mosquito(MosquitoComms):
 		"""
 		Clear all or a specific section of the EEPROM
 
-		:param section: Section to clear. 0 - Parameters, 1 - Mission, 2 - all 
+		:param section: Section to clear. 0 - Parameters, 1 - Mission, 2 - all
 		:type section: int
 		:return: None
 		:rtype: None
