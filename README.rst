@@ -157,14 +157,17 @@ Trigger the different stages (0,1,2) of the transmitter calibration. This calibr
     
 Mosquito.get_attitude
 .....................
-Get the orientation of the Mosquito in radians.
+Get the orientation of the Mosquito in radians or degrees. By default (if the parameter ``degrees`` is omitted) the attitude will be obtained in radians.
 
-* Parameters: None
+* Parameters:
+  
+  - ``degrees``: Boolean value that indicates if the attitude should be returned in degrees. It is ``False`` by default
+
 * Returns: 3 value tuple with the orientation of the Mosquito in radians as (Roll, Pitch, Yaw)
 
    .. code:: python
 
-           >>> Mosquito.get_attitude()
+           >>> Mosquito.get_attitude(degrees=True/False)
 
 Mosquito.set_motor
 .....................
@@ -251,18 +254,18 @@ Set the constants (as floats) of every PID controller in Hackflight.
 
 * Parameters:
 
-  - ``gyroRollPitchP``: Rate Pitch & Roll controller. Proportional constant.
-  - ``gyroRollPitchI``: Rate Pitch & Roll controller. Integral constant.
-  - ``gyroRollPitchD``: Rate Pitch & Roll controller. Derivative constant.
-  - ``gyroYawP``: Rate Yaw controller. Proportional constant.
-  - ``gyroYawI``: Rate Yaw controller. Proportional constant.
-  - ``demandsToRate``: In rate mode, demands from RC are multiplied by demandstoRate.
-  - ``levelP``: Level Pitch & Roll controller. Proportional constant.
-  - ``altHoldP``: Altitude controller. Proportional constant.
-  - ``altHoldVelP``: Vertical velocity controller. Proportional constant.
-  - ``altHoldVelI``: Vertical velocity controller. Integral constant.
-  - ``altHoldVelD``: Vertical velocity controller. Derivative constant.
-  - ``minAltitude``: Minimum altitude, in meters.
+  - ``gyro_roll_pitch_P``: Rate Pitch & Roll controller. Proportional constant.
+  - ``gyro_roll_pitch_I``: Rate Pitch & Roll controller. Integral constant.
+  - ``gyro_roll_pitch_D``: Rate Pitch & Roll controller. Derivative constant.
+  - ``gyro_yaw_P``: Rate Yaw controller. Proportional constant.
+  - ``gyro_yaw_I``: Rate Yaw controller. Proportional constant.
+  - ``demands_to_rate``: In rate mode, demands from RC are multiplied by demandstoRate.
+  - ``level_P``: Level Pitch & Roll controller. Proportional constant.
+  - ``altHold_P``: Altitude controller. Proportional constant.
+  - ``altHold_vel_P``: Vertical velocity controller. Proportional constant.
+  - ``altHold_vel_I``: Vertical velocity controller. Integral constant.
+  - ``altHold_vel_D``: Vertical velocity controller. Derivative constant.
+  - ``min_altitude``: Minimum altitude, in meters.
   - ``param6``: Param6.
   - ``param7``: Param7.
   - ``param8``: Param8.
@@ -272,9 +275,9 @@ Set the constants (as floats) of every PID controller in Hackflight.
 
    .. code:: python
 
-           >>> Mosquito.set_PID(gyroRollPitchP, gyroRollPitchI, gyroRollPitchD,
-              gyroYawP, gyroYawI, demandsToRate,
-              levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude,
+           >>> Mosquito.set_PID(gyro_roll_pitch_P, gyro_roll_pitch_I, gyro_roll_pitch_D,
+              gyro_yaw_P, gyro_yaw_I, demands_to_rate,
+              level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,
               param6, param7, param8, param9)
 
 Mosquito.get_PID
@@ -303,6 +306,35 @@ Turn on or off the LEDs of the board. If any of the LEDs is omitted in the metho
    .. code:: python
 
            >>> Mosquito.set_leds(red=0/1,green=0/1,blue=0/1)
+
+Mosquito.clear_EEPROM
+.....................
+Clear a specific section, or all, of the Mosquito's EEPROM. There are three available options that clear different sections of the EEPROM. These are are:
+
+1. Clear the parameters section - section 0
+2. Clear the mission section - section 1
+3. Clear the whole EEPROM - section 2 
+
+* Parameters: 
+  
+  - ``section``: Integer indicating the section to clear. 0 - Parameters, 1 - Mission, 2 - all
+
+* Returns: None
+
+   .. code:: python
+
+           >>> Mosquito.clear_EEPROM(section)
+
+Mosquito.emergency_stop
+.......................
+Trigger an emergency stop that will hault the Mosquito and stop any action being performed.
+
+* Parameters: None
+* Returns: None
+
+   .. code:: python
+
+           >>> Mosquito.emergency_stop()
 
 Examples
 --------

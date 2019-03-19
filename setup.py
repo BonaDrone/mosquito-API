@@ -12,8 +12,8 @@ setup(
     author='Juan Gallostra',
     author_email='juangallostra@gmail.com',
     license='GPL version 3',
-    url='https://github.com/juangallostra/mosquito-API', # use the URL to the github repo
-    download_url='https://github.com/juangallostra/mosquito-API/archive/'+version+'.tar.gz',
+    url='https://github.com/BonaDrone/mosquito-API', # use the URL to the github repo
+    download_url='https://github.com/BonaDrone/mosquito-API/archive/'+version+'.tar.gz',
     keywords=['mosquito', 'API', 'MSP', 'drone', 'wrapper'],
     classifiers=[
         'Development Status :: 3 - Alpha',
