@@ -4,38 +4,31 @@
 # Author: Juan Gallostra (jgallostra<at>bonadrone.com)
 # Date: 03-07-2019
 
-class Publisher(object):
+from enum import Enum
+
+class ReturnType(Enum):
+	BOOL = 1
+	INT = 2
+	INTS = 3
+	FLOAT = 4
+	FLOATS = 5
+
+# We only allow a one to one relation between publishers and subscribers
+def publisher(subscriber):
 	"""
 	"""
-
-	def __init__(self):
-		"""
-		"""
-		self.subscribers = set()
-
-	def __call__(self, *values):
-		"""
-		"""
-		for subscriber in self.subscribers:
-			subscriber.on_update(values)
-
-	def register(self, subscriber):
-		"""
-		"""
-		self.subscribers.add(subscriber)
-
-	def unregister(self, subscriber):
-		"""
-		"""
-		self.subscribers.discard(subscriber)
-
+	subscriber = subscriber
+	def update_subscriber(*values):
+		subscriber.on_update(values)
+	return update_subscriber
 
 class Subscriber(object):
 	"""
 	"""
-	def __init__(self, function_to_call):
+	def __init__(self, function_to_call, return_type):
 		"""
 		"""
+		self.return_type = return_type
 		self.__updated = False
 		self.__value = None
 		self.__function_to_call = function_to_call
@@ -46,6 +39,15 @@ class Subscriber(object):
 		self.__value = value
 		self.__updated = True
 
+	def wrap_value(self, value):
+		"""
+		"""
+		if self.return_type == ReturnType.BOOL:
+			return bool(value[0])
+		elif self.return_type == ReturnType.INT or self.return_type == ReturnType.FLOAT:
+			return value[0]
+		return value
+
 	def __call__(self):
 		"""
 		"""
@@ -53,4 +55,4 @@ class Subscriber(object):
 		while not self.__updated:
 			pass
 		self.__updated = False
-		return self.__value
+		return self.wrap_value(self.__value)

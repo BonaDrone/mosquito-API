@@ -7,7 +7,7 @@
 import time
 import mosquito.msppg as msppg
 from mosquito.coms import MosquitoComms
-from mosquito.notify import Publisher, Subscriber
+from mosquito.notify import publisher, Subscriber, ReturnType
 
 class Mosquito(MosquitoComms):
 	"""
@@ -31,17 +31,25 @@ class Mosquito(MosquitoComms):
 		"""
 		super(Mosquito, self).__init__()
 
-		# Create publishers. The publishers will be set as the handlers
-		# of the MSP messages. This way, they will be called when the
-		# appropriate MSP message is received. When this happens, the
-		# publisher will call all its subscribers with the received
-		# values as parameters
-		self.__position_board_connected_pub = Publisher()
-		self.__firmware_version_pub = Publisher()
-		self.__get_attitude_pub = Publisher()
-		self.__get_motors_pub = Publisher()
-		self.__get_voltage_pub = Publisher()
-		self.__get_PID_pub = Publisher()
+		# Create subscribers, which will be our public get methods. The parameter passed 
+		# to the Subscriber constructor should be the method that sends the
+		# appropriate MSP request message to retrieve the desired data.
+		self.position_board_connected = Subscriber(self.__position_board_connected, ReturnType.BOOL)
+		self.get_firmware_version = Subscriber(self.__get_firmware_version, ReturnType.INT)
+		self.get_attitude = Subscriber(self.__get_attitude, ReturnType.FLOATS)
+		self.get_motors = Subscriber(self.__get_motors, ReturnType.FLOATS)
+		self.get_voltage = Subscriber(self.__get_voltage, ReturnType.FLOAT)
+		self.get_PID = Subscriber(self.__get_PID, ReturnType.FLOATS)
+		# Create publishers. The publishers will be set as the handlers of the MSP
+		# messages. This way, they will be called when the appropriate MSP message
+		# is received. When this happens, the publisher will call its subscriber
+		# with the received values as parameters
+		self.__position_board_connected_pub = publisher(self.position_board_connected)
+		self.__firmware_version_pub = publisher(self.get_firmware_version)
+		self.__get_attitude_pub = publisher(self.get_attitude)
+		self.__get_motors_pub = publisher(self.get_motors)
+		self.__get_voltage_pub = publisher(self.get_voltage)
+		self.__get_PID_pub = publisher(self.get_PID)
 		# Set the publishers as the MSP message handlers
 		# They will be triggered when the appropriate message is received
 		self._parser.set_POSITION_BOARD_CONNECTED_Handler(self.__position_board_connected_pub)
@@ -50,32 +58,12 @@ class Mosquito(MosquitoComms):
 		self._parser.set_GET_MOTOR_NORMAL_Handler(self.__get_motors_pub)
 		self._parser.set_GET_BATTERY_VOLTAGE_Handler(self.__get_voltage_pub)
 		self._parser.set_GET_PID_CONSTANTS_Handler(self.__get_PID_pub)
-		# Create subscribers, which will be our public methods. The parameter passed 
-		# to the Subscriber constructor should be the method that sends the
-		# appropriate MSP request message to retrieve the desired data.
-		self.position_board_connected = Subscriber(self.__position_board_connected)
-		self.get_firmware_version = Subscriber(self.__get_firmware_version)
-		self.get_attitude = Subscriber(self.__get_attitude)
-		self.get_motors = Subscriber(self.__get_motors)
-		self.get_voltage = Subscriber(self.__get_voltage)
-		self.get_PID = Subscriber(self.__get_PID)
-		# Register the subscribers to their corresponding publisher
-		self.__position_board_connected_pub.register(self.position_board_connected)
-		self.__firmware_version_pub.register(self.get_firmware_version)
-		self.__get_attitude_pub.register(self.get_attitude)
-		self.__get_motors_pub.register(self.get_motors)
-		self.__get_voltage_pub.register(self.get_voltage)
-		self.__get_PID_pub.register(self.get_PID)
-
 		# Mosquito's status
 		self.__motor_values = tuple([0]*4)
 		self.__led_status = tuple([0]*3)
 		self.__voltage = 0.0
 		# Mosquito's PID constants
 		self.__controller_constants = tuple([0]*16)
-		# self.__roll_pitch_yaw = tuple([0]*3)
-		# self.__position_board_connected = False
-		# self.__firmware_version = None
 
 	# Private methods
 	def __position_board_connected(self):
