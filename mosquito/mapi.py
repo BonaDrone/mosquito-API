@@ -130,10 +130,10 @@ class Mosquito(MosquitoComms):
 		self.__voltage = voltage
 
 	def __handle_get_controller_constants(self, gyro_roll_P, gyro_roll_I, gyro_roll_D,
-							gyro_pitch_P, gyro_pitch_I, gyro_pitch_D,
-							gyro_yaw_P, gyro_yaw_I, demands_to_rate,
-							level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,
-							param6, param7, param8, param9):
+		gyro_pitch_P, gyro_pitch_I, gyro_pitch_D,
+		gyro_yaw_P, gyro_yaw_I, demands_to_rate,
+		level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,
+		param6, param7, param8, param9):
 		"""
 		Handle the response to a get controllers' constants
 		request and store them
@@ -360,10 +360,10 @@ class Mosquito(MosquitoComms):
 		return self.__voltage
 
 	def set_PID(self, gyro_roll_P, gyro_roll_I, gyro_roll_D,
-							gyro_pitch_P, gyro_pitch_I, gyro_pitch_D,
-							gyro_yaw_P, gyro_yaw_I, demands_to_rate,
-							level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,
-							param6, param7, param8, param9):
+		gyro_pitch_P, gyro_pitch_I, gyro_pitch_D,
+		gyro_yaw_P, gyro_yaw_I, demands_to_rate,
+		level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,
+		param6, param7, param8, param9):
 		"""
 		Set the constants of every PID controller in Hackflight.
 
