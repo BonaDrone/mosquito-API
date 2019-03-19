@@ -32,8 +32,9 @@ class Mosquito(MosquitoComms):
 		"""
 		super(Mosquito, self).__init__()
 
-		# Create subscribers, which will be bound to our public get methods.
-		# The subscribers will be notified when their respective publishers are called
+		# Create subscribers, which will be used in our public get methods to retrieve
+		# the requested values. A subscriber will be notified when its respective publisher
+		# is called.
 		self.__position_board_connected_sub = Subscriber()
 		self.__firmware_version_sub = Subscriber()
 		self.__attitude_sub = Subscriber()
@@ -42,8 +43,8 @@ class Mosquito(MosquitoComms):
 		self.__PID_sub = Subscriber()
 		# Create publishers. The publishers will be set as the handlers of the MSP
 		# messages. This way, they will be called when the appropriate MSP message
-		# is received. When this happens, the publisher will call its subscriber
-		# with the received values as parameters
+		# is received. When this happens, the publisher will notify its subscriber
+		# and deliver the new value
 		self.__position_board_connected_pub = publisher(self.__position_board_connected_sub)
 		self.__firmware_version_pub = publisher(self.__firmware_version_sub)
 		self.__attitude_pub = publisher(self.__attitude_sub)
@@ -58,7 +59,7 @@ class Mosquito(MosquitoComms):
 		self._parser.set_GET_MOTOR_NORMAL_Handler(self.__motors_pub)
 		self._parser.set_GET_BATTERY_VOLTAGE_Handler(self.__voltage_pub)
 		self._parser.set_GET_PID_CONSTANTS_Handler(self.__PID_pub)
-		# Mosquito's status
+		# Mosquito's status attributes
 		self.__motor_values = tuple([0]*4)
 		self.__led_status = tuple([0]*3)
 		self.__voltage = 0.0
@@ -255,9 +256,8 @@ class Mosquito(MosquitoComms):
 		return motor_values[motor-1]
 
 	def set_PID(self, gyroRollP, gyroRollI, gyroRollD, gyroPitchP, gyroPitchI, gyroPitchD,
-		gyroYawP, gyroYawI, demandsToRate,
-		levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude,
-		param6, param7, param8, param9):
+		gyroYawP, gyroYawI, demandsToRate, levelP, altHoldP, altHoldVelP, altHoldVelI,
+		altHoldVelD, minAltitude, param6, param7, param8, param9):
 		"""
 		Set the constants of every PID controller in Hackflight.
 
