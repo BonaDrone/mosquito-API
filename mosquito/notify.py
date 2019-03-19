@@ -25,13 +25,11 @@ def publisher(subscriber):
 class Subscriber(object):
 	"""
 	"""
-	def __init__(self, function_to_call, return_type):
+	def __init__(self):
 		"""
 		"""
-		self.return_type = return_type
 		self.__updated = False
 		self.__value = None
-		self.__function_to_call = function_to_call
 
 	def on_update(self, value):
 		"""
@@ -39,20 +37,10 @@ class Subscriber(object):
 		self.__value = value
 		self.__updated = True
 
-	def wrap_value(self, value):
+	def get_value(self):
 		"""
 		"""
-		if self.return_type == ReturnType.BOOL:
-			return bool(value[0])
-		elif self.return_type == ReturnType.INT or self.return_type == ReturnType.FLOAT:
-			return value[0]
-		return value
-
-	def __call__(self):
-		"""
-		"""
-		self.__function_to_call()
 		while not self.__updated:
 			pass
 		self.__updated = False
-		return self.wrap_value(self.__value)
+		return self.__value

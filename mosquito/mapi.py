@@ -5,6 +5,7 @@
 # Date: 12-12-2018
 
 import time
+import math
 import mosquito.msppg as msppg
 from mosquito.coms import MosquitoComms
 from mosquito.notify import publisher, Subscriber, ReturnType
@@ -31,42 +32,41 @@ class Mosquito(MosquitoComms):
 		"""
 		super(Mosquito, self).__init__()
 
-		# Create subscribers, which will be our public get methods. The parameter passed 
-		# to the Subscriber constructor should be the method that sends the
-		# appropriate MSP request message to retrieve the desired data.
-		self.position_board_connected = Subscriber(self.__position_board_connected, ReturnType.BOOL)
-		self.get_firmware_version = Subscriber(self.__get_firmware_version, ReturnType.INT)
-		self.get_attitude = Subscriber(self.__get_attitude, ReturnType.FLOATS)
-		self.get_motors = Subscriber(self.__get_motors, ReturnType.FLOATS)
-		self.get_voltage = Subscriber(self.__get_voltage, ReturnType.FLOAT)
-		self.get_PID = Subscriber(self.__get_PID, ReturnType.FLOATS)
+		# Create subscribers, which will be bound to our public get methods.
+		# The subscribers will be notified when their respective publishers are called
+		self.__position_board_connected_sub = Subscriber()
+		self.__firmware_version_sub = Subscriber()
+		self.__attitude_sub = Subscriber()
+		self.__motors_sub = Subscriber()
+		self.__voltage_sub = Subscriber()
+		self.__PID_sub = Subscriber()
 		# Create publishers. The publishers will be set as the handlers of the MSP
 		# messages. This way, they will be called when the appropriate MSP message
 		# is received. When this happens, the publisher will call its subscriber
 		# with the received values as parameters
-		self.__position_board_connected_pub = publisher(self.position_board_connected)
-		self.__firmware_version_pub = publisher(self.get_firmware_version)
-		self.__get_attitude_pub = publisher(self.get_attitude)
-		self.__get_motors_pub = publisher(self.get_motors)
-		self.__get_voltage_pub = publisher(self.get_voltage)
-		self.__get_PID_pub = publisher(self.get_PID)
+		self.__position_board_connected_pub = publisher(self.__position_board_connected_sub)
+		self.__firmware_version_pub = publisher(self.__firmware_version_sub)
+		self.__attitude_pub = publisher(self.__attitude_sub)
+		self.__motors_pub = publisher(self.__motors_sub)
+		self.__voltage_pub = publisher(self.__voltage_sub)
+		self.__PID_pub = publisher(self.__PID_sub)
 		# Set the publishers as the MSP message handlers
 		# They will be triggered when the appropriate message is received
 		self._parser.set_POSITION_BOARD_CONNECTED_Handler(self.__position_board_connected_pub)
 		self._parser.set_FIRMWARE_VERSION_Handler(self.__firmware_version_pub)
-		self._parser.set_ATTITUDE_RADIANS_Handler(self.__get_attitude_pub)
-		self._parser.set_GET_MOTOR_NORMAL_Handler(self.__get_motors_pub)
-		self._parser.set_GET_BATTERY_VOLTAGE_Handler(self.__get_voltage_pub)
-		self._parser.set_GET_PID_CONSTANTS_Handler(self.__get_PID_pub)
+		self._parser.set_ATTITUDE_RADIANS_Handler(self.__attitude_pub)
+		self._parser.set_GET_MOTOR_NORMAL_Handler(self.__motors_pub)
+		self._parser.set_GET_BATTERY_VOLTAGE_Handler(self.__voltage_pub)
+		self._parser.set_GET_PID_CONSTANTS_Handler(self.__PID_pub)
 		# Mosquito's status
 		self.__motor_values = tuple([0]*4)
 		self.__led_status = tuple([0]*3)
 		self.__voltage = 0.0
 		# Mosquito's PID constants
-		self.__controller_constants = tuple([0]*16)
+		self.__controller_constants = tuple([0]*19)
 
-	# Private methods
-	def __position_board_connected(self):
+	# Public methods
+	def position_board_connected(self):
 		"""
 		Check if the position board is connected to the Mosquito.
 
@@ -74,8 +74,9 @@ class Mosquito(MosquitoComms):
 		:rtype: bool
 		"""
 		self._send_data(msppg.serialize_POSITION_BOARD_CONNECTED_Request())
+		return bool(self.__position_board_connected_sub.get_value())
 
-	def __get_firmware_version(self):
+	def get_firmware_version(self):
 		"""
 		Get the version of the firmware running on the Mosquito
 
@@ -83,8 +84,9 @@ class Mosquito(MosquitoComms):
 		:rtype: int
 		"""
 		self._send_data(msppg.serialize_FIRMWARE_VERSION_Request())
+		return self.__firmware_version_sub.get_value()[0]
 
-	def __get_attitude(self):
+	def get_attitude(self, degrees=False):
 		"""
 		Get the orientation of the Mosquito
 
@@ -92,8 +94,13 @@ class Mosquito(MosquitoComms):
 		:rtype: tuple
 		"""
 		self._send_data(msppg.serialize_ATTITUDE_RADIANS_Request())
+		attitude = self.__attitude_sub.get_value()
+		if not degrees:
+			return attitude
+		return tuple([angle*180/math.pi for angle in attitude])
 
-	def __get_voltage(self):
+
+	def get_voltage(self):
 		"""
 		Get the voltage of the battery in the Mosquito. 
 		If not connected it returns 0.0
@@ -102,8 +109,9 @@ class Mosquito(MosquitoComms):
 		:rtype: float
 		"""
 		self._send_data(msppg.serialize_GET_BATTERY_VOLTAGE_Request())
+		return self.__voltage_sub.get_value()[0]
 
-	def __get_motors(self):
+	def get_motors(self):
 		"""
 		Get the values of all motors
 
@@ -112,8 +120,9 @@ class Mosquito(MosquitoComms):
 		:trype: tuple
 		"""
 		self._send_data(msppg.serialize_GET_MOTOR_NORMAL_Request())
+		return self.__motors_sub.get_value()
 
-	def __get_PID(self):
+	def get_PID(self):
 		"""
 		Get the constants of every PID controller in Hackflight.
 
@@ -121,6 +130,7 @@ class Mosquito(MosquitoComms):
 		:trype: tuple
 		"""
 		self._send_data(msppg.serialize_GET_PID_CONSTANTS_Request())
+		return self.__PID_sub.get_value()
 
 	# Public methods
 	def arm(self):
@@ -244,19 +254,25 @@ class Mosquito(MosquitoComms):
 		motor_values = self.get_motors()
 		return motor_values[motor-1]
 
-	def set_PID(self,gyroRollPitchP, gyroRollPitchI, gyroRollPitchD,
-							gyroYawP, gyroYawI, demandsToRate,
-							levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude,
-							param6, param7, param8, param9):
+	def set_PID(self, gyroRollP, gyroRollI, gyroRollD, gyroPitchP, gyroPitchI, gyroPitchD,
+		gyroYawP, gyroYawI, demandsToRate,
+		levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude,
+		param6, param7, param8, param9):
 		"""
 		Set the constants of every PID controller in Hackflight.
 
-		:param gyroRollPitchP: Rate Pitch & Roll controller. Proportional constant.
-		:type gyroRollPitchP: float
-		:param gyroRollPitchI: Rate Pitch & Roll controller. Integral constant.
-		:type gyroRollPitchI: float
-		:param gyroRollPitchD: Rate Pitch & Roll controller. Derivative constant.
-		:type gyroRollPitchD: float
+		:param gyroRollP: Rate Roll controller. Proportional constant.
+		:type gyroRollP: float
+		:param gyroRollI: Rate Roll controller. Integral constant.
+		:type gyroRollI: float
+		:param gyroRollD: Rate Roll controller. Derivative constant.
+		:type gyroRollD: float
+		:param gyroPitchP: Rate Pitch controller. Proportional constant.
+		:type gyroPitchP: float
+		:param gyroPitchI: Rate Pitch controller. Integral constant.
+		:type gyroPitchI: float
+		:param gyroPitchD: Rate Pitch controller. Derivative constant.
+		:type gyroPitchD: float		
 		:param gyroYawP: Rate Yaw controller. Proportional constant.
 		:type gyroYawP: float
 		:param gyroYawI: Rate Yaw controller. Proportional constant.
@@ -286,7 +302,7 @@ class Mosquito(MosquitoComms):
 		:return: None
 		:trype: None
 		"""
-		self.__controller_constants = gyroRollPitchP, gyroRollPitchI, gyroRollPitchD,gyroYawP, gyroYawI, demandsToRate,levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude,param6, param7, param8, param9
+		self.__controller_constants = gyroRollP, gyroRollI, gyroRollD, gyroPitchP, gyroPitchI, gyroPitchD, gyroYawP, gyroYawI, demandsToRate,levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude,param6, param7, param8, param9
 		self._send_data(msppg.serialize_SET_PID_CONSTANTS(gyroRollPitchP, gyroRollPitchI, gyroRollPitchD,gyroYawP, gyroYawI, demandsToRate,levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude,param6, param7, param8, param9))
 
 	def set_leds(self, red=None, green=None, blue=None):
