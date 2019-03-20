@@ -4,6 +4,8 @@
 # Author: Juan Gallostra (jgallostra<at>bonadrone.com)
 # Date: 03-07-2019
 
+import time
+
 def publisher(subscriber):
 	"""
 	Closure that stores the subscriber it is bound to and notifies it
@@ -23,10 +25,11 @@ class Subscriber(object):
 	Subscribe to a publisher and get notified when the publisher
 	is called and receives a new set of values
 	"""
-	def __init__(self):
+	def __init__(self, timeout=5):
 		"""
 		Initialize the subscriber
 		"""
+		self.__timeout = timeout 
 		self.__updated = False
 		self.__value = None
 
@@ -45,7 +48,10 @@ class Subscriber(object):
 		that it has acquired a new value. This value is then 
 		retrieved by the subscriber and returned
 		"""
+		init_time = time.time()
 		while not self.__updated:
+			if time.time() - init_time > self.__timeout:
+				raise TimeoutError("Timed out while waiting for response")
 			pass
 		self.__updated = False
 		return self.__value
