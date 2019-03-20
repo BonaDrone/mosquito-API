@@ -4,41 +4,46 @@
 # Author: Juan Gallostra (jgallostra<at>bonadrone.com)
 # Date: 03-07-2019
 
-from enum import Enum
-
-class ReturnType(Enum):
-	BOOL = 1
-	INT = 2
-	INTS = 3
-	FLOAT = 4
-	FLOATS = 5
-
-# We only allow a one to one relation between publishers and subscribers
 def publisher(subscriber):
 	"""
+	Closure that stores the subscriber it is bound to and notifies it
+	when called with the new set of received values. Note that we only
+	allow a one to one relation between publishers and subscribers
 	"""
 	subscriber = subscriber
 	def update_subscriber(*values):
+		"""
+		Notify the subscriber with the newly received values
+		"""
 		subscriber.on_update(values)
 	return update_subscriber
 
 class Subscriber(object):
 	"""
+	Subscribe to a publisher and get notified when the publisher
+	is called and receives a new set of values
 	"""
 	def __init__(self):
 		"""
+		Initialize the subscriber
 		"""
 		self.__updated = False
 		self.__value = None
 
 	def on_update(self, value):
 		"""
+		Method that the publisher calls when a new value arrives.
+		It notifies the subscriber, which changes its state to 
+		updated and stores the value
 		"""
 		self.__value = value
 		self.__updated = True
 
 	def get_value(self):
 		"""
+		Blocking method that waits until the publisher notifies
+		that it has acquired a new value. This value is then 
+		retrieved by the subscriber and returned
 		"""
 		while not self.__updated:
 			pass
