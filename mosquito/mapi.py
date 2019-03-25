@@ -100,7 +100,6 @@ class Mosquito(MosquitoComms):
 			return attitude
 		return tuple([angle*180/math.pi for angle in attitude])
 
-
 	def get_voltage(self):
 		"""
 		Get the voltage of the battery in the Mosquito. 
