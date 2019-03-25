@@ -8,6 +8,7 @@ import time
 import math
 import mosquito.msppg as msppg
 from mosquito.coms import MosquitoComms
+from mosquito.notify import publisher, Subscriber
 
 class Mosquito(MosquitoComms):
 	"""
@@ -30,158 +31,108 @@ class Mosquito(MosquitoComms):
 		and Mosquito
 		"""
 		super(Mosquito, self).__init__()
-		# Set handlers
-		self._parser.set_POSITION_BOARD_CONNECTED_Handler(self.__handle_position_board_connected)
-		self._parser.set_FIRMWARE_VERSION_Handler(self.__handle_firmware_version)
-		self._parser.set_ATTITUDE_RADIANS_Handler(self.__handle_get_attitude)
-		self._parser.set_GET_MOTOR_NORMAL_Handler(self.__handle_get_motors)
-		self._parser.set_GET_BATTERY_VOLTAGE_Handler(self.__handle_get_voltage)
-		self._parser.set_GET_PID_CONSTANTS_Handler(self.__handle_get_controller_constants)
 
-		# Mosquito's status
-		self.__roll_pitch_yaw = tuple([0]*3)
+		# Create subscribers, which will be used in our public get methods to retrieve
+		# the requested values. A subscriber will be notified when its respective publisher
+		# is called.
+		self.__position_board_connected_sub = Subscriber()
+		self.__firmware_version_sub = Subscriber()
+		self.__attitude_sub = Subscriber()
+		self.__motors_sub = Subscriber()
+		self.__voltage_sub = Subscriber()
+		self.__PID_sub = Subscriber()
+		# Create publishers. The publishers will be set as the handlers of the MSP
+		# messages. This way, they will be called when the appropriate MSP message
+		# is received. When this happens, the publisher will notify its subscriber
+		# and deliver the new value
+		self.__position_board_connected_pub = publisher(self.__position_board_connected_sub)
+		self.__firmware_version_pub = publisher(self.__firmware_version_sub)
+		self.__attitude_pub = publisher(self.__attitude_sub)
+		self.__motors_pub = publisher(self.__motors_sub)
+		self.__voltage_pub = publisher(self.__voltage_sub)
+		self.__PID_pub = publisher(self.__PID_sub)
+		# Set the publishers as the MSP message handlers
+		# They will be triggered when the appropriate message is received
+		self._parser.set_POSITION_BOARD_CONNECTED_Handler(self.__position_board_connected_pub)
+		self._parser.set_FIRMWARE_VERSION_Handler(self.__firmware_version_pub)
+		self._parser.set_ATTITUDE_RADIANS_Handler(self.__attitude_pub)
+		self._parser.set_GET_MOTOR_NORMAL_Handler(self.__motors_pub)
+		self._parser.set_GET_BATTERY_VOLTAGE_Handler(self.__voltage_pub)
+		self._parser.set_GET_PID_CONSTANTS_Handler(self.__PID_pub)
+		# Mosquito's status attributes
 		self.__motor_values = tuple([0]*4)
 		self.__led_status = tuple([0]*3)
-		self.__position_board_connected = False
-		self.__firmware_version = None
 		self.__voltage = 0.0
-
 		# Mosquito's PID constants
 		self.__controller_constants = tuple([0]*19)
 
-	# Message handlers
-	def __handle_get_attitude(self, roll, pitch, yaw):
-		"""
-		Update Mosquito's orientation when receiving
-		a new attitude MSP message.
-
-		for a better understanding of the meaning of each of
-		the values see:
-		https://en.wikipedia.org/wiki/Aircraft_principal_axes
-
-		:param roll: Current roll of the Mosquito in radians
-		:type roll: float
-		:param pitch: Current pitch of the Mosquito in radians
-		:type pitch: float
-		:param yaw: Current yaw of the Mosquito in radians
-		:type yaw: float
-		:return: None
-		:rtype: None
-		"""
-		self.__roll_pitch_yaw = roll, pitch, yaw
-
-	def __handle_get_motors(self, m1, m2, m3, m4):
-		"""
-		Update Mosquito's motor status when receiving
-		a new motor values MSP message
-
-		To check the relation between motor numbering and
-		physical motors see:
-		https://fpvfrenzy.com/betaflight-motor-order/
-
-		:param m1: Current value of motor 1 in the range 0-1
-		:type m1: float
-		:param m2: Current value of motor 2 in the range 0-1
-		:type m2: float
-		:param m3: Current value of motor 3 in the range 0-1
-		:type m3: float
-		:param m4: Current value of motor 4 in the range 0-1
-		:type m4: float
-		:return: None
-		:rtype: None
-		"""
-		self.__motor_values = m1, m2, m3, m4
-
-	def __handle_position_board_connected(self, is_connected):
-		"""
-		Handle the response to a position board check request and
-		update the status variable where the connection status is
-		stored
-
-		:param is_connected: Connection status of position board
-		:type is_connected: boolean
-		:return: None
-		:rtype: None
-		"""
-		self.__position_board_connected = is_connected
-
-	def __handle_firmware_version(self, version):
-		"""
-		Handle the response to a firmware version request and
-		store the firmware version
-
-		:param version: Current firmware version
-		:type version: int
-		:return: None
-		:rtype: None
-		"""
-		self.__firmware_version = version
-
-	def __handle_get_voltage(self, voltage):
-		"""
-		Handle the response to a battery voltage request and
-		store the read voltage
-
-		:param voltage: Current battery voltage in V
-		:type voltage: float
-		:return: None
-		:rtype: None
-		"""
-		self.__voltage = voltage
-
-	def __handle_get_controller_constants(self, gyro_roll_P, gyro_roll_I, gyro_roll_D,
-		gyro_pitch_P, gyro_pitch_I, gyro_pitch_D,
-		gyro_yaw_P, gyro_yaw_I, demands_to_rate,
-		level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,
-		param6, param7, param8, param9):
-		"""
-		Handle the response to a get controllers' constants
-		request and store them
-
-		:param gyro_roll_P: Rate Roll controller. Proportional constant.
-		:type gyro_roll_P: float
-		:param gyro_roll_I: Rate Roll controller. Integral constant.
-		:type gyro_roll_I: float
-		:param gyro_roll_D: Rate Roll controller. Derivative constant.
-		:type gyro_roll_D: float
-		:param gyro_pitch_P: Rate Pitch controller. Proportional constant.
-		:type gyro_pitch_P: float
-		:param gyro_pitch_I: Rate Pitch controller. Integral constant.
-		:type gyro_pitch_I: float
-		:param gyro_pitch_D: Rate Pitch controller. Derivative constant.
-		:type gyro_pitch_D: float
-		:param gyro_yaw_P: Rate Yaw controller. Proportional constant.
-		:type gyro_yaw_P: float
-		:param gyro_yaw_I: Rate Yaw controller. Proportional constant.
-		:type gyro_yaw_I: float
-		:param demands_to_rate: In rate mode, demands from RC are multiplied by demands_to_rate.
-		:type demands_to_rate: float
-		:param level_P: Level Pitch & Roll controller. Proportional constant.
-		:type level_P: float
-		:param altHold_P: Altitude controller. Proportional constant.
-		:type altHold_P: float
-		:param altHold_vel_P: Vertical velocity controller. Proportional constant.
-		:type altHold_vel_P: float
-		:param altHold_vel_I: Vertical velocity controller. Integral constant.
-		:type altHold_vel_I: float
-		:param altHold_vel_D: Vertical velocity controller. Derivative constant.
-		:type altHold_vel_D: float
-		:param min_altitude: Minimum altitude, in meters.
-		:type min_altitude: float
-		:param param6: Param6.
-		:type param6: float
-		:param param7: Param7.
-		:type param7: float
-		:param param8: Param8.
-		:type param8: float
-		:param param9: Param9
-		:type param9: float
-		:return: None
-		:type: None
-		"""
-		self.__controller_constants = gyro_roll_P, gyro_roll_I, gyro_roll_D,gyro_pitch_P, gyro_pitch_I, gyro_pitch_D, gyro_yaw_P, gyro_yaw_I, demands_to_rate, level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude, param6, param7, param8, param9
-
 	# Public methods
+	def position_board_connected(self):
+		"""
+		Check if the position board is connected to the Mosquito.
+
+		:return: The status of the position board. True if connected and False otherwise
+		:rtype: bool
+		"""
+		self._send_data(msppg.serialize_POSITION_BOARD_CONNECTED_Request())
+		return bool(self.__position_board_connected_sub.get_value())
+
+	def get_firmware_version(self):
+		"""
+		Get the version of the firmware running on the Mosquito
+
+		:return: Firmware version
+		:rtype: int
+		"""
+		self._send_data(msppg.serialize_FIRMWARE_VERSION_Request())
+		return self.__firmware_version_sub.get_value()[0]
+
+	def get_attitude(self, degrees=False):
+		"""
+		Get the orientation of the Mosquito
+
+		:return: Orientation of the Mosquito in radians
+		:rtype: tuple
+		"""
+		self._send_data(msppg.serialize_ATTITUDE_RADIANS_Request())
+		attitude = self.__attitude_sub.get_value()
+		if not degrees:
+			return attitude
+		return tuple([angle*180/math.pi for angle in attitude])
+
+
+	def get_voltage(self):
+		"""
+		Get the voltage of the battery in the Mosquito. 
+		If not connected it returns 0.0
+
+		:return: Battery voltage in V
+		:rtype: float
+		"""
+		self._send_data(msppg.serialize_GET_BATTERY_VOLTAGE_Request())
+		return self.__voltage_sub.get_value()[0]
+
+	def get_motors(self):
+		"""
+		Get the values of all motors
+
+		:return: current motor values in the range 0-1. The values are ordered
+		so that the position in the tuple matches the motor index
+		:trype: tuple
+		"""
+		self._send_data(msppg.serialize_GET_MOTOR_NORMAL_Request())
+		return self.__motors_sub.get_value()
+
+	def get_PID(self):
+		"""
+		Get the constants of every PID controller in Hackflight.
+
+		:return: current values for PID controllers. See 'set_PID()' documentation for tuple details
+		:trype: tuple
+		"""
+		self._send_data(msppg.serialize_GET_PID_CONSTANTS_Request())
+		return self.__PID_sub.get_value()
+
 	def arm(self):
 		"""
 		Arm the Mosquito
@@ -212,16 +163,6 @@ class Mosquito(MosquitoComms):
 		"""
 		self._send_data(msppg.serialize_SET_POSITIONING_BOARD(has_position_board))
 
-	def position_board_connected(self):
-		"""
-		Check if the position board is connected to the Mosquito.
-
-		:return: The status of the position board. True if connected and False otherwise
-		:rtype: bool
-		"""
-		self._send_data(msppg.serialize_POSITION_BOARD_CONNECTED_Request())
-		return self.__position_board_connected
-
 	def set_mosquito_version(self, is_mosquito_90):
 		"""
 		Set the version of the Mosquito (True meaning Mosquito 90 and False meaning
@@ -233,16 +174,6 @@ class Mosquito(MosquitoComms):
 		:rtype: None
 		"""
 		self._send_data(msppg.serialize_SET_MOSQUITO_VERSION(is_mosquito_90))
-
-	def get_firmware_version(self):
-		"""
-		Get the version of the firmware running on the Mosquito
-
-		:return: Firmware version
-		:rtype: int
-		"""
-		self._send_data(msppg.serialize_FIRMWARE_VERSION_Request())
-		return self.__firmware_version
 
 	def calibrate_ESCs(self):
 		"""
@@ -264,20 +195,6 @@ class Mosquito(MosquitoComms):
 		:rtype: None
 		"""
 		self._send_data(msppg.serialize_RC_CALIBRATION(stage))
-
-	def get_attitude(self, degrees=False):
-		"""
-		Get the orientation of the Mosquito
-
-		:param degrees: indicates if the attitude is wanted in degrees
-		:type degrees: bool
-		:return: Orientation of the Mosquito in radians or degrees
-		:rtype: tuple
-		"""
-		self._send_data(msppg.serialize_ATTITUDE_RADIANS_Request())
-		if not degrees:
-			return self.__roll_pitch_yaw
-		return tuple([angle * 180.0 / math.pi for angle in self.__roll_pitch_yaw])
 
 	def set_motor(self, motor, value):
 		"""
@@ -310,29 +227,6 @@ class Mosquito(MosquitoComms):
 		self.__motor_values = values
 		self._send_data(msppg.serialize_SET_MOTOR_NORMAL(*values))
 
-	def get_motor(self, motor):
-		"""
-		Get the value of a specific motors
-
-		:param motor: Motor number whose value is wanted
-		:type motor: int
-		:return: current motor value in the range 0-1
-		:trype: float
-		"""
-		motor_values = self.get_motors()
-		return motor_values[motor-1]
-
-	def get_motors(self):
-		"""
-		Get the values of all motors
-
-		:return: current motor values in the range 0-1. The values are ordered
-		so that the position in the tuple matches the motor index
-		:trype: tuple
-		"""
-		self._send_data(msppg.serialize_GET_MOTOR_NORMAL_Request())
-		return self.__motor_values
-
 	def set_voltage(self, voltage):
 		"""
 		Set the voltage of the battery in the Mosquito.
@@ -348,22 +242,21 @@ class Mosquito(MosquitoComms):
 		self.__voltage = voltage
 		self._send_data(msppg.serialize_SET_BATTERY_VOLTAGE(voltage))
 
-	def get_voltage(self):
+	def get_motor(self, motor):
 		"""
-		Get the voltage of the battery in the Mosquito.
-		If not connected it returns 0.0
+		Get the value of a specific motors
 
-		:return: Battery voltage in V
-		:rtype: float
+		:param motor: Motor number whose value is wanted
+		:type motor: int
+		:return: current motor value in the range 0-1
+		:trype: float
 		"""
-		self._send_data(msppg.serialize_GET_BATTERY_VOLTAGE_Request())
-		return self.__voltage
+		motor_values = self.get_motors()
+		return motor_values[motor-1]
 
-	def set_PID(self, gyro_roll_P, gyro_roll_I, gyro_roll_D,
-		gyro_pitch_P, gyro_pitch_I, gyro_pitch_D,
-		gyro_yaw_P, gyro_yaw_I, demands_to_rate,
-		level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,
-		param6, param7, param8, param9):
+	def set_PID(self, gyro_roll_P, gyro_roll_I, gyro_roll_D, gyro_pitch_P, gyro_pitch_I, gyro_pitch_D,
+		gyro_yaw_P, gyro_yaw_I, demands_to_rate, level_P, altHold_P, altHold_vel_P, altHold_vel_I,
+		altHold_vel_D, min_altitude, param6, param7, param8, param9):
 		"""
 		Set the constants of every PID controller in Hackflight.
 
@@ -378,12 +271,12 @@ class Mosquito(MosquitoComms):
 		:param gyro_pitch_I: Rate Pitch controller. Integral constant.
 		:type gyro_pitch_I: float
 		:param gyro_pitch_D: Rate Pitch controller. Derivative constant.
-		:type gyro_pitch_D: float
+		:type gyro_pitch_D: float		
 		:param gyro_yaw_P: Rate Yaw controller. Proportional constant.
 		:type gyro_yaw_P: float
 		:param gyro_yaw_I: Rate Yaw controller. Proportional constant.
 		:type gyro_yaw_I: float
-		:param demands_to_rate: In rate mode, demands from RC are multiplied by demands_to_rate.
+		:param demands_to_rate: In rate mode, demands from RC are multiplied by demandstoRate.
 		:type demands_to_rate: float
 		:param level_P: Level Pitch & Roll controller. Proportional constant.
 		:type level_P: float
@@ -406,20 +299,10 @@ class Mosquito(MosquitoComms):
 		:param param9: Param9
 		:type param9: float
 		:return: None
-		:type: None
+		:trype: None
 		"""
-		self.__controller_constants = gyro_roll_P, gyro_roll_I, gyro_roll_D, gyro_pitch_P, gyro_pitch_I, gyro_pitch_D, gyro_yaw_P, gyro_yaw_I, demands_to_rate,level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,param6, param7, param8, param9
-		self._send_data(msppg.serialize_SET_PID_CONSTANTS(gyro_roll_P, gyro_roll_I, gyro_roll_D,gyro_pitch_P, gyro_pitch_I, gyro_pitch_D,gyro_yaw_P, gyro_yaw_I, demands_to_rate,level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,param6, param7, param8, param9))
-
-	def get_PID(self):
-		"""
-		Get the constants of every PID controller in Hackflight.
-
-		:return: current values for PID controllers. See 'set_PID()' documentation for tuple details
-		:trype: tuple
-		"""
-		self._send_data(msppg.serialize_GET_PID_CONSTANTS_Request())
-		return self.__controller_constants
+		self.__controller_constants = gyro_roll_P, gyro_roll_I, gyro_roll_D, gyro_pitch_P, gyro_pitch_I, gyro_pitch_D, gyro_yaw_P, gyro_yaw_I, demands_to_rate, level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,param6, param7, param8, param9
+		self._send_data(msppg.serialize_SET_PID_CONSTANTS(gyro_roll_P, gyro_roll_I, gyro_roll_D, gyro_pitch_P, gyro_pitch_I, gyro_pitch_D, gyro_yaw_P, gyro_yaw_I, demands_to_rate, level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,param6, param7, param8, param9))
 
 	def set_leds(self, red=None, green=None, blue=None):
 		"""
