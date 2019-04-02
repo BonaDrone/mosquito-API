@@ -255,7 +255,7 @@ class Mosquito(MosquitoComms):
 
 	def set_PID(self, gyro_roll_P, gyro_roll_I, gyro_roll_D, gyro_pitch_P, gyro_pitch_I, gyro_pitch_D,
 		gyro_yaw_P, gyro_yaw_I, demands_to_rate, level_P, altHold_P, altHold_vel_P, altHold_vel_I,
-		altHold_vel_D, min_altitude, param6, param7, param8, param9):
+		altHold_vel_D, min_altitude, posHold_vel_P, posHold_vel_I, posHold_vel_D, param9):
 		"""
 		Set the constants of every PID controller in Hackflight.
 
@@ -289,19 +289,19 @@ class Mosquito(MosquitoComms):
 		:type altHold_vel_D: float
 		:param min_altitude: Minimum altitude, in meters.
 		:type min_altitude: float
-		:param param6: Param6.
-		:type param6: float
-		:param param7: Param7.
-		:type param7: float
-		:param param8: Param8.
-		:type param8: float
+		:param posHold_vel_P: Horizontal velocity controller. Proportional constant.
+		:type posHold_vel_P: float
+		:param posHold_vel_I: Horizontal velocity controller. Integral constant.
+		:type posHold_vel_I: float
+		:param posHold_vel_D: Horizontal velocity controller. Derivative constant.
+		:type posHold_vel_D: float
 		:param param9: Param9
 		:type param9: float
 		:return: None
 		:trype: None
 		"""
-		self.__controller_constants = gyro_roll_P, gyro_roll_I, gyro_roll_D, gyro_pitch_P, gyro_pitch_I, gyro_pitch_D, gyro_yaw_P, gyro_yaw_I, demands_to_rate, level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,param6, param7, param8, param9
-		self._send_data(msppg.serialize_SET_PID_CONSTANTS(gyro_roll_P, gyro_roll_I, gyro_roll_D, gyro_pitch_P, gyro_pitch_I, gyro_pitch_D, gyro_yaw_P, gyro_yaw_I, demands_to_rate, level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,param6, param7, param8, param9))
+		self.__controller_constants = gyro_roll_P, gyro_roll_I, gyro_roll_D, gyro_pitch_P, gyro_pitch_I, gyro_pitch_D, gyro_yaw_P, gyro_yaw_I, demands_to_rate, level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude, posHold_vel_P, posHold_vel_I, posHold_vel_D, param9
+		self._send_data(msppg.serialize_SET_PID_CONSTANTS(gyro_roll_P, gyro_roll_I, gyro_roll_D, gyro_pitch_P, gyro_pitch_I, gyro_pitch_D, gyro_yaw_P, gyro_yaw_I, demands_to_rate, level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude, posHold_vel_P, posHold_vel_I, posHold_vel_D, param9))
 
 	def set_leds(self, red=None, green=None, blue=None):
 		"""
