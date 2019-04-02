@@ -786,7 +786,7 @@ class MSP_Parser(object):
         '''
         Sets the handler method for when a GET_PID_CONSTANTS message is successfully parsed.
         You should declare this message with the following parameter(s):
-            gyroRollP,gyroRollI,gyroRollD,gyroPitchP,gyroPitchI,gyroPitchD,gyroYawP,gyroYawI,demandsToRate,levelP,altHoldP,altHoldVelP,altHoldVelI,altHoldVelD,minAltitude,param6,param7,param8,param9
+            gyroRollP,gyroRollI,gyroRollD,gyroPitchP,gyroPitchI,gyroPitchD,gyroYawP,gyroYawI,demandsToRate,levelP,altHoldP,altHoldVelP,altHoldVelI,altHoldVelD,minAltitude,posHoldVelP,posHoldVelI,posHoldVelD,param9
         '''
         self.GET_PID_CONSTANTS_Handler = handler
 
@@ -1481,11 +1481,11 @@ def serialize_SET_MOSQUITO_VERSION(version):
         msg = [len(message_buffer), 223] + list(message_buffer)
         return bytes([ord('$'), ord('M'), ord('<')] + msg + [_CRC8(msg)])
 
-def serialize_SET_PID_CONSTANTS(gyroRollP, gyroRollI, gyroRollD, gyroPitchP, gyroPitchI, gyroPitchD, gyroYawP, gyroYawI, demandsToRate, levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude, param6, param7, param8, param9):
+def serialize_SET_PID_CONSTANTS(gyroRollP, gyroRollI, gyroRollD, gyroPitchP, gyroPitchI, gyroPitchD, gyroYawP, gyroYawI, demandsToRate, levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude, posHoldVelP, posHoldVelI, posHoldVelD, param9):
     '''
     Serializes the contents of a message of type SET_PID_CONSTANTS.
     '''
-    message_buffer = struct.pack('fffffffffffffffffff', gyroRollP, gyroRollI, gyroRollD, gyroPitchP, gyroPitchI, gyroPitchD, gyroYawP, gyroYawI, demandsToRate, levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude, param6, param7, param8, param9)
+    message_buffer = struct.pack('fffffffffffffffffff', gyroRollP, gyroRollI, gyroRollD, gyroPitchP, gyroPitchI, gyroPitchD, gyroYawP, gyroYawI, demandsToRate, levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude, posHoldVelP, posHoldVelI, posHoldVelD, param9)
 
     if sys.version[0] == '2':
         msg = chr(len(message_buffer)) + chr(224) + str(message_buffer)
@@ -1495,11 +1495,11 @@ def serialize_SET_PID_CONSTANTS(gyroRollP, gyroRollI, gyroRollD, gyroPitchP, gyr
         msg = [len(message_buffer), 224] + list(message_buffer)
         return bytes([ord('$'), ord('M'), ord('<')] + msg + [_CRC8(msg)])
 
-def serialize_GET_PID_CONSTANTS(gyroRollP, gyroRollI, gyroRollD, gyroPitchP, gyroPitchI, gyroPitchD, gyroYawP, gyroYawI, demandsToRate, levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude, param6, param7, param8, param9):
+def serialize_GET_PID_CONSTANTS(gyroRollP, gyroRollI, gyroRollD, gyroPitchP, gyroPitchI, gyroPitchD, gyroYawP, gyroYawI, demandsToRate, levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude, posHoldVelP, posHoldVelI, posHoldVelD, param9):
     '''
     Serializes the contents of a message of type GET_PID_CONSTANTS.
     '''
-    message_buffer = struct.pack('fffffffffffffffffff', gyroRollP, gyroRollI, gyroRollD, gyroPitchP, gyroPitchI, gyroPitchD, gyroYawP, gyroYawI, demandsToRate, levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude, param6, param7, param8, param9)
+    message_buffer = struct.pack('fffffffffffffffffff', gyroRollP, gyroRollI, gyroRollD, gyroPitchP, gyroPitchI, gyroPitchD, gyroYawP, gyroYawI, demandsToRate, levelP, altHoldP, altHoldVelP, altHoldVelI, altHoldVelD, minAltitude, posHoldVelP, posHoldVelI, posHoldVelD, param9)
 
     if sys.version[0] == '2':
         msg = chr(len(message_buffer)) + chr(127) + str(message_buffer)
