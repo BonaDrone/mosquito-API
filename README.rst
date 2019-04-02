@@ -266,9 +266,9 @@ Set the constants (as floats) of every PID controller in Hackflight.
   - ``altHold_vel_I``: Vertical velocity controller. Integral constant.
   - ``altHold_vel_D``: Vertical velocity controller. Derivative constant.
   - ``min_altitude``: Minimum altitude, in meters.
-  - ``param6``: Param6.
-  - ``param7``: Param7.
-  - ``param8``: Param8.
+  - ``posHold_vel_P``: Horizontal velocity controller. Proportional constant.
+  - ``posHold_vel_I``: Horizontal velocity controller. Integral constant.
+  - ``posHold_vel_D``: Horizontal velocity controller. Derivative constant.
   - ``param9``: Param9
   
 * Returns: None
@@ -278,7 +278,7 @@ Set the constants (as floats) of every PID controller in Hackflight.
            >>> Mosquito.set_PID(gyro_roll_pitch_P, gyro_roll_pitch_I, gyro_roll_pitch_D,
               gyro_yaw_P, gyro_yaw_I, demands_to_rate,
               level_P, altHold_P, altHold_vel_P, altHold_vel_I, altHold_vel_D, min_altitude,
-              param6, param7, param8, param9)
+              posHold_vel_P, posHold_vel_I, posHold_vel_D, param9)
 
 Mosquito.get_PID
 ................
