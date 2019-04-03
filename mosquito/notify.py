@@ -17,6 +17,10 @@ def publisher(subscriber):
 		"""
 		Notify the subscriber with the newly received values
 		"""
+		# MSP received data is collected in values as a tuple.
+		# The processing of this values (extracting single values,
+		# casting to boolean) should be performed by the API getter
+		# linked to the subscriber 
 		subscriber.on_update(values)
 	return update_subscriber
 
@@ -31,15 +35,15 @@ class Subscriber(object):
 		"""
 		self.__timeout = timeout 
 		self.__updated = False
-		self.__value = None
+		self.__data = None
 
-	def on_update(self, value):
+	def on_update(self, data):
 		"""
 		Method that the publisher calls when a new value arrives.
 		It notifies the subscriber, which changes its state to 
 		updated and stores the value
 		"""
-		self.__value = value
+		self.__data = data
 		self.__updated = True
 
 	def get_value(self):
@@ -54,4 +58,4 @@ class Subscriber(object):
 				raise TimeoutError("Timed out while waiting for response")
 			pass
 		self.__updated = False
-		return self.__value
+		return self.__data
