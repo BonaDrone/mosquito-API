@@ -84,7 +84,7 @@ class TXCalibration(object):
 
 		print("TX Calibration stages:")
 		print("0 - Throttle minimum and Roll, Pitch and Yaw center")
-		print("1 - Throttle maximun and Roll Pitch and Yaw center") 
+		print("1 - Throttle, Roll, Pitch and Yaw maximun and minimum") 
 		print("2 - End Calibration")
 
 		self.__calibration = True
