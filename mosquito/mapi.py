@@ -341,6 +341,15 @@ class Mosquito(MosquitoComms):
 		"""
 		self._send_data(msppg.serialize_SET_EMERGENCY_STOP(0))
 
+	def execute_mission(self):
+		"""
+		Begin the execution of a flight mission stored in the EEPROM
+
+		:return: None
+		:rtype: None
+		"""
+		self._send_data(msppg.serialize_WP_MISSION_BEGIN(1))
+
 	def set_target_altitude(self, altitude):
 		"""
 		Set the target altitude at which the Mosquito
