@@ -336,8 +336,8 @@ Begin the execution of a flight mission stored in the EEPROM
 
            >>> Mosquito.execute_mission()
 
-Mosquito.emergency_stop
-.......................
+Mosquito.stop
+.............
 Trigger an emergency stop that will hault the Mosquito and stop any action being performed.
 
 * Parameters: None
@@ -345,7 +345,7 @@ Trigger an emergency stop that will hault the Mosquito and stop any action being
 
    .. code:: python
 
-           >>> Mosquito.emergency_stop()
+           >>> Mosquito.stop()
 
 Examples
 --------

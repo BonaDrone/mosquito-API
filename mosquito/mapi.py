@@ -331,7 +331,7 @@ class Mosquito(MosquitoComms):
 		"""
 		self._send_data(msppg.serialize_CLEAR_EEPROM(section))
 
-	def emergency_stop(self):
+	def stop(self):
 		"""
 		Trigger an emergency stop that will hault the Mosquito and stop any action
 		being performed
