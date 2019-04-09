@@ -325,6 +325,17 @@ Clear a specific section, or all, of the Mosquito's EEPROM. There are three avai
 
            >>> Mosquito.clear_EEPROM(section)
 
+Mosquito.execute_mission
+........................
+Begin the execution of a flight mission stored in the EEPROM
+
+* Parameters: None
+* Returns: None
+
+   .. code:: python
+
+           >>> Mosquito.execute_mission()
+
 Mosquito.emergency_stop
 .......................
 Trigger an emergency stop that will hault the Mosquito and stop any action being performed.
