@@ -315,7 +315,7 @@ Clear a specific section, or all, of the Mosquito's EEPROM. There are three avai
 2. Clear the mission section - section 1
 3. Clear the whole EEPROM - section 2 
 
-* Parameters: 
+* Parameters:
   
   - ``section``: Integer indicating the section to clear. 0 - Parameters, 1 - Mission, 2 - all
 
@@ -346,6 +346,20 @@ Trigger an emergency stop that will hault the Mosquito and stop any action being
    .. code:: python
 
            >>> Mosquito.stop()
+
+Mosquito.take_off
+.................
+Take off and hover at the specified height.
+
+* Parameters: 
+  
+  - ``height``: Integer indicating the height (in cm) at which the drone should hover after takeoff.
+
+* Returns: None
+
+   .. code:: python
+
+           >>> Mosquito.take_off(100)
 
 Examples
 --------

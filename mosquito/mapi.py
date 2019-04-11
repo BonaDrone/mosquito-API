@@ -350,6 +350,17 @@ class Mosquito(MosquitoComms):
 		"""
 		self._send_data(msppg.serialize_WP_MISSION_BEGIN(1))
 
+	def take_off(self, height=1):
+		"""
+		Take off and hover at the specified height
+
+		:param height: Target take off height. When reached, the drone will start hovering
+		:type height: int
+		:return: None
+		:rtype: None
+		"""
+		self._send_data(msppg.serialize_WP_TAKE_OFF(height, 0))
+
 	def set_target_altitude(self, altitude):
 		"""
 		Set the target altitude at which the Mosquito
