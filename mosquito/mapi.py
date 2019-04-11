@@ -370,6 +370,16 @@ class Mosquito(MosquitoComms):
 		"""
 		self._send_data(msppg.serialize_WP_LAND(0))
 
+	def hover(self, time):
+		"""
+		Hover at the current position for the specified amount of time
+		
+		:param time: Number of seconds that the hover action should last
+		:type time: int
+		:return: None
+		:rtype: None
+		"""
+		self._send_data(msppg.serialize_WP_HOVER(time, 0))
 
 	def set_target_altitude(self, altitude):
 		"""

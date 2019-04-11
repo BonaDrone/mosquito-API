@@ -352,14 +352,14 @@ Mosquito.take_off
 Take off and hover at the specified height.
 
 * Parameters: 
-  
+
   - ``height``: Integer indicating the height (in cm) at which the drone should hover after takeoff.
 
 * Returns: None
 
    .. code:: python
 
-           >>> Mosquito.take_off(100)
+           >>> Mosquito.take_off(height)
 
 Mosquito.land
 .............
@@ -371,6 +371,20 @@ Land the Mosquito.
    .. code:: python
 
            >>> Mosquito.land()
+
+Mosquito.hover
+..............
+Hover at the current position for the specified amount of time.
+
+* Parameters:
+
+  - ``time``: Integer indicating number of seconds that the hover action should last.
+
+* Returns: None
+
+   .. code:: python
+
+           >>> Mosquito.hover(time)
 
 Examples
 --------
