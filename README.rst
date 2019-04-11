@@ -446,3 +446,10 @@ M90_set_parameters.py
 `Script <https://github.com/juangallostra/mosquito-API/blob/master/examples/M90_set_parameters.py>`_
 
 Set the values of the PID controllers for the Mosquito 90.
+
+land.py
+~~~~~~~
+
+`Script <https://github.com/juangallostra/mosquito-API/blob/master/examples/land.py>`_
+
+Trigger a land action 20 seconds after estblishing connection with the Mosquito.
