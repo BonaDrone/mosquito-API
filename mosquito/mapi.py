@@ -361,6 +361,16 @@ class Mosquito(MosquitoComms):
 		"""
 		self._send_data(msppg.serialize_WP_TAKE_OFF(height, 0))
 
+	def land(self):
+		"""
+		Land the drone
+
+		:return: None
+		:rtype: None
+		"""
+		self._send_data(msppg.serialize_WP_LAND(0))
+
+
 	def set_target_altitude(self, altitude):
 		"""
 		Set the target altitude at which the Mosquito

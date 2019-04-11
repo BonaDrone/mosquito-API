@@ -361,6 +361,17 @@ Take off and hover at the specified height.
 
            >>> Mosquito.take_off(100)
 
+Mosquito.land
+.............
+Land the Mosquito.
+
+* Parameters: None
+* Returns: None
+
+   .. code:: python
+
+           >>> Mosquito.land()
+
 Examples
 --------
 Under the ``examples`` `folder <https://github.com/BonaDrone/mosquito-API/tree/master/examples>`_ there are several scripts that show how the API can be used. For the examples to work one should either have installed the API via ``pip`` or cloned this repository. A part from that, the laptop should be connected to the Mosquito WiFi.
