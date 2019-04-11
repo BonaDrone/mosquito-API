@@ -353,7 +353,7 @@ Take off and hover at the specified height.
 
 * Parameters: 
 
-  - ``height``: Integer indicating the height (in cm) at which the drone should hover after takeoff.
+  - ``height``: Integer indicating the height (in cm) at which the drone should hover after takeoff. By default, the take off height is 1m.
 
 * Returns: None
 
@@ -385,6 +385,21 @@ Hover at the current position for the specified amount of time.
    .. code:: python
 
            >>> Mosquito.hover(time)
+
+
+Mosquito.change_height
+......................
+Set the target height at which the Mosquito should hover.
+
+* Parameters:
+
+  - ``height``: Integer indicating the desired hovering altitude in centimeters.
+
+* Returns: None
+
+   .. code:: python
+
+           >>> Mosquito.change_height(height)
 
 Examples
 --------
