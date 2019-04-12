@@ -523,3 +523,10 @@ land.py
 `Script <https://github.com/juangallostra/mosquito-API/blob/master/examples/land.py>`_
 
 Trigger a land action 20 seconds after estblishing connection with the Mosquito.
+
+simple_flight.py
+~~~~~~~~~~~~~~~~
+
+`Script <https://github.com/juangallostra/mosquito-API/blob/master/examples/simple_flight.py>`_
+
+Execute a simple flight that consists in taking off to a height of 50 cm, hovering for 2 seconds and landing.
