@@ -392,3 +392,62 @@ class Mosquito(MosquitoComms):
 		:rtype: None
 		"""
 		self._send_data(msppg.serialize_WP_CHANGE_ALTITUDE(height, 0))
+
+	def move_forward(self, time):
+		"""
+		Move forward for the specified amount of time
+
+		:param time: Number of seconds the action should last
+		:type time: int
+		:return: None
+		:rtype: None
+		"""
+		self._send_data(msppg.serialize_WP_GO_FORWARD(time, 0))
+
+	def move_backwards(self, time):
+		"""
+		Move backwards for the specified amount of time
+
+		:param time: Number of seconds the action should last
+		:type time: int
+		:return: None
+		:rtype: None
+		"""
+		self._send_data(msppg.serialize_WP_GO_BACKWARD(time, 0))
+
+	def move_left(self, time):
+		"""
+		Move left for the specified amount of time
+
+		:param time: Number of seconds the action should last
+		:type time: int
+		:return: None
+		:rtype: None
+		"""
+		self._send_data(msppg.serialize_WP_GO_LEFT(time, 0))
+
+	def move_right(self, time):
+		"""
+		Move right for the specified amount of time
+
+		:param time: Number of seconds the action should last
+		:type time: int
+		:return: None
+		:rtype: None
+		"""
+		self._send_data(msppg.serialize_WP_GO_RIGHT(time, 0))
+
+	def turn(self, angle):
+		"""
+		Turn the specified angle. If the angle is greater than 0 
+		the rotation will be counter clockwise, and clockwise otherwise
+
+		:param angle: Number of degrees the drone should turn
+		:type angle: int
+		:return: None
+		:rtype: None
+		"""
+		if angle > 0:
+			self._send_data(msppg.serialize_WP_TURN_CCW(angle, 0))
+		else:
+			self._send_data(msppg.serialize_WP_TURN_CW(angle, 0))
