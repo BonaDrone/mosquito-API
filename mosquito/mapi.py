@@ -139,7 +139,7 @@ class Mosquito(MosquitoComms):
 		:return: None
 		:rtype: None
 		"""
-		self._send_data(msppg.serialize_SET_ARMED(1))
+		self._send_data(msppg.serialize_WP_ARM_Request())
 
 	def disarm(self):
 		"""
@@ -148,7 +148,7 @@ class Mosquito(MosquitoComms):
 		:return: None
 		:rtype: None
 		"""
-		self._send_data(msppg.serialize_SET_ARMED(0))
+		self._send_data(msppg.serialize_WP_DISARM_Request())
 
 	def set_position_board(self, has_position_board):
 		"""
