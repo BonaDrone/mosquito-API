@@ -401,6 +401,76 @@ Set the target height at which the Mosquito should hover.
 
            >>> Mosquito.change_height(height)
 
+Mosquito.move_forward
+.....................
+Move forward for the specified amount of time
+
+* Parameters:
+
+  - ``time``: Integer indicating the number of seconds the action should last.
+
+* Returns: None
+
+   .. code:: python
+
+           >>> Mosquito.move_forward(time)
+
+Mosquito.move_backwards
+.......................
+Move backwards for the specified amount of time
+
+* Parameters:
+
+  - ``time``: Integer indicating the number of seconds the action should last.
+
+* Returns: None
+
+   .. code:: python
+
+           >>> Mosquito.move_backwards(time)
+
+Mosquito.move_left
+..................
+Move left for the specified amount of time
+
+* Parameters:
+
+  - ``time``: Integer indicating the number of seconds the action should last.
+
+* Returns: None
+
+   .. code:: python
+
+           >>> Mosquito.move_left(time)
+
+Mosquito.move_right
+...................
+Move right for the specified amount of time
+
+* Parameters:
+
+  - ``time``: Integer indicating the number of seconds the action should last.
+
+* Returns: None
+
+   .. code:: python
+
+           >>> Mosquito.move_right(time)
+
+Mosquito.turn
+.............
+Turn the specified angle. If the angle is greater than 0 the rotation will be counter clockwise, and clockwise otherwise.
+
+* Parameters:
+
+  - ``angle``: Integer indicating the number of degrees of the turn.
+
+* Returns: None
+
+   .. code:: python
+
+           >>> Mosquito.turn(angle)
+
 Examples
 --------
 Under the ``examples`` `folder <https://github.com/BonaDrone/mosquito-API/tree/master/examples>`_ there are several scripts that show how the API can be used. For the examples to work one should either have installed the API via ``pip`` or cloned this repository. A part from that, the laptop should be connected to the Mosquito WiFi.
