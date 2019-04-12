@@ -31,9 +31,11 @@ def main():
 	# Set of actions to be executed by the Mosquito:
 	# Take off at 50 cm, hover for 2 seconds and land
 	Mosquito.arm()
+	time.sleep(0.5)
 	Mosquito.take_off(50)
 	Mosquito.hover(2)
 	Mosquito.land()
+	time.sleep(0.5)
 	Mosquito.disarm()
 
 	# disconnect
