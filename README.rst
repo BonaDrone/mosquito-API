@@ -493,6 +493,18 @@ get_attitude.py
 
 Until exiting the program via ``Ctrl-C`` it constantly asks the Mosquito for its attitude and prints it on the terminal.
 
+get_velocities.py
+~~~~~~~~~~~~~~~~~
+
+`Script <https://github.com/juangallostra/mosquito-API/blob/master/examples/get_velocities.py>`_
+
+Asks the Mosquito for its linear velocities and prints them on the terminal. This script accepts three command line arguments.
+
+* ``--save, -s``: If set to 1 data is stored in CSV format at ``velocities.csv``. If set to 0 or omitted, data is not stored and it is only printed to the terminal.
+* ``--duration, -d``: Allows to set the log duration in seconds. If omitted, the script will run until interrupted.
+* ``--timestamp, -t``: if set to 1, the script also stores and prints the time, in seconds, at which data was collected with respect to the start of the program execution. If set to 0 or omitted, no timestamps are stored or printed.
+
+
 set_motors.py
 ~~~~~~~~~~~~~~~
 
