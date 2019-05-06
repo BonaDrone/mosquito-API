@@ -154,7 +154,7 @@ Trigger the different stages (0,1,2) of the transmitter calibration. This calibr
    .. code:: python
 
            >>> Mosquito.calibrate_transmitter(stage)
-    
+
 Mosquito.get_attitude
 .....................
 Get the orientation of the Mosquito in radians or degrees. By default (if the parameter ``degrees`` is omitted) the attitude will be obtained in radians.
@@ -168,6 +168,17 @@ Get the orientation of the Mosquito in radians or degrees. By default (if the pa
    .. code:: python
 
            >>> Mosquito.get_attitude(degrees=True/False)
+
+Mosquito.get_velocities
+.......................
+Get the linear velocities of the Mosquito in meters per second.
+
+* Parameters: None
+* Returns: 3 value tuple with the linear velocities of the Mosquito in the x, y and z IMU axis. Note that, in the IMU reference frame, the y axis points to the front, the x axis to the left and the z axis folloes the right hand rule.
+
+   .. code:: python
+
+           >>> Mosquito.get_velocities()
 
 Mosquito.set_motor
 .....................
