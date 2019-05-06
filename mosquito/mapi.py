@@ -38,6 +38,7 @@ class Mosquito(MosquitoComms):
 		self.__position_board_connected_sub = Subscriber()
 		self.__firmware_version_sub = Subscriber()
 		self.__attitude_sub = Subscriber()
+		self.__velocities_sub = Subscriber()
 		self.__motors_sub = Subscriber()
 		self.__voltage_sub = Subscriber()
 		self.__PID_sub = Subscriber()
@@ -48,6 +49,7 @@ class Mosquito(MosquitoComms):
 		self.__position_board_connected_pub = publisher(self.__position_board_connected_sub)
 		self.__firmware_version_pub = publisher(self.__firmware_version_sub)
 		self.__attitude_pub = publisher(self.__attitude_sub)
+		self.__velocities_pub = publisher(self.__velocities_sub)
 		self.__motors_pub = publisher(self.__motors_sub)
 		self.__voltage_pub = publisher(self.__voltage_sub)
 		self.__PID_pub = publisher(self.__PID_sub)
@@ -56,6 +58,7 @@ class Mosquito(MosquitoComms):
 		self._parser.set_POSITION_BOARD_CONNECTED_Handler(self.__position_board_connected_pub)
 		self._parser.set_FIRMWARE_VERSION_Handler(self.__firmware_version_pub)
 		self._parser.set_ATTITUDE_RADIANS_Handler(self.__attitude_pub)
+		self._parser.set_GET_VELOCITIES_Handler(self.__velocities_pub)
 		self._parser.set_GET_MOTOR_NORMAL_Handler(self.__motors_pub)
 		self._parser.set_GET_BATTERY_VOLTAGE_Handler(self.__voltage_pub)
 		self._parser.set_GET_PID_CONSTANTS_Handler(self.__PID_pub)
@@ -99,6 +102,16 @@ class Mosquito(MosquitoComms):
 		if not degrees:
 			return attitude
 		return tuple([angle*180/math.pi for angle in attitude])
+
+	def get_velocities(self):
+		"""
+		Get the linear velocities of the Mosquito
+
+		:return: Linear velocities of the Mosquito in meters per second
+		:rtype: tuple
+		"""
+		self._send_data(msppg.serialize_GET_VELOCITIES_Request())
+		return self.__velocities_sub.get_value()
 
 	def get_voltage(self):
 		"""
