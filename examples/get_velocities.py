@@ -20,11 +20,23 @@ parser = argparse.ArgumentParser(description='Mosquito get linear velocities')
 parser.add_argument('-s','--save', type=int, action='store', help="CSV data storage")
 parser.add_argument('-d','--duration', type=int, action='store', help="data log duration in seconds")
 parser.add_argument('-t','--timestamp', type=int, action='store', help="store time stamp of measures")
+
 args = parser.parse_args()
 
 class SharedState():
+	"""
+	Class used to store the data file
+	"""
 	def __init__(self):
 		self.file = None
+
+def cleanup(shared_state):
+	"""
+	Prevent file from remaining open when interrupting the data log
+	via Keyboard Interrupt 
+	"""
+	if shared_state.file:
+		shared_state.file.close()
 
 def main(shared_state, save_data, duration, timestamp):
 	"""
@@ -32,7 +44,8 @@ def main(shared_state, save_data, duration, timestamp):
 	called from the command line.
 
 	What it does is request the linear velocities of the Mosquito
-	and print it to the command line.
+	and print them to the command line. If requested, velocities
+	are also stored in a csv file
 	"""
 	Mosquito = mapi.Mosquito()
 	Mosquito.connect()
@@ -48,21 +61,16 @@ def main(shared_state, save_data, duration, timestamp):
 		if isinstance(velocities, tuple):
 			if timestamp:
 				velocities = tuple([time.time() - intial_time] + list(velocities))
-			# print to terminal so that one can see what's being stored
+			# print velocities to terminal so that one can see what's being stored
 			print(velocities)
-			# write velocities to csv
+			# write velocities to csv if requested
 			if save_data:
 				shared_state.file.write(",".join(map(str, velocities)) + "\n")
 
 		if duration:
 			log = time.time() - intial_time < duration
 
-		time.sleep(0.1)
 	if save_data:
-		shared_state.file.close()
-
-def cleanup(shared_state):
-	if shared_state.file:
 		shared_state.file.close()
 
 if __name__ == "__main__":
