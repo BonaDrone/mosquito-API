@@ -552,4 +552,4 @@ simple_flight.py
 
 `Script <https://github.com/juangallostra/mosquito-API/blob/master/examples/simple_flight.py>`_
 
-Execute a simple flight that consists in taking off to a height of 50 cm, hovering for 2 seconds and landing.
+Execute a simple flight that consists in taking off to a height of 100 cm, hovering for 2 seconds and landing.
