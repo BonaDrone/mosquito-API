@@ -36,10 +36,10 @@ def main():
 			print(attitude)
 
 			if abs(attitude[0]) > 20 or abs(attitude[1]) > 20:
-				Mosquito.set_motors([0.2,0.2,0.2,0.2])
+				Mosquito.set_motors([0.2, 0.2, 0.2, 0.2])
 
 			else:
-				Mosquito.set_motors([0,0,0,0])
+				Mosquito.set_motors([0, 0, 0, 0])
 		
 		time.sleep(0.1)
 
