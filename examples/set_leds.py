@@ -32,27 +32,22 @@ def main():
 
 	print("Turning on blue Led...")
 	Mosquito.set_leds(blue=1) # The status of the other LEDs is preserved
-
 	time.sleep(2)
-
 	Mosquito.set_leds(blue=0)
+
 	print("Turning on red Led...")
 	Mosquito.set_leds(red=1)
-	
 	time.sleep(2)
-	
 	Mosquito.set_leds(red=0)
+	
 	print("Turning on green Led...")
 	Mosquito.set_leds(green=1)
-	
 	time.sleep(2)
-	
 	Mosquito.set_leds(green=0)
+	
 	print("Turning on all three Leds...")
 	Mosquito.set_leds(blue=1, red=1, green=1)
-	
 	time.sleep(2)
-	
 	Mosquito.set_leds(blue=0, red=0, green=0)
 
 	time.sleep(0.1)
