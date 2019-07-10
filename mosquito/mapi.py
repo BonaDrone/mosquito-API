@@ -65,7 +65,7 @@ class Mosquito(MosquitoComms):
 		# Mosquito's status attributes
 		self.__motor_values = tuple([0]*4)
 		self.__led_status = tuple([0]*3)
-		self.__voltage = 0.0
+		self.__voltage = 0
 		# Mosquito's PID constants
 		self.__controller_constants = tuple([0]*19)
 
